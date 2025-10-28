@@ -67,7 +67,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
           <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg">
             <Image
               src={`http://localhost:3001${currentImage.urls.large || currentImage.urls.medium}`}
-              alt={currentImage.caption}
+              alt={currentImage.caption || 'Property image'}
               fill
               unoptimized
               className="object-cover"
@@ -128,7 +128,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                   >
                     <Image
                       src={`http://localhost:3001${image.urls.thumb}`}
-                      alt={image.caption}
+                      alt={image.caption || `Property image ${index + 1}`}
                       fill
                       unoptimized
                       className="object-cover"
@@ -148,7 +148,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
           <div className="relative max-w-7xl max-h-full">
             <Image
               src={`http://localhost:3001${currentImage.urls.original || currentImage.urls.large}`}
-              alt={currentImage.caption}
+              alt={currentImage.caption || 'Property image'}
               width={1200}
               height={800}
               unoptimized
