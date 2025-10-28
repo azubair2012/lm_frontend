@@ -14,7 +14,7 @@ interface PropertyGalleryProps {
 export default function PropertyGallery({ property }: PropertyGalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [galleryImages, setGalleryImages] = useState(property.images.gallery);
+  const [galleryImages, setGalleryImages] = useState(property.images?.gallery || []);
   const [isLoadingGallery, setIsLoadingGallery] = useState(false);
   const [galleryLoaded, setGalleryLoaded] = useState(false);
 
@@ -26,8 +26,8 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     
     setIsLoadingGallery(true);
     try {
-      const galleryData = await rentmanApi.getPropertyGallery(property.id);
-      setGalleryImages(galleryData);
+      const galleryData = await rentmanApi.getPropertyGallery(property.propref);
+      setGalleryImages(galleryData?.gallery || []);
       setGalleryLoaded(true);
     } catch (error) {
       console.error('Failed to load gallery images:', error);
@@ -36,7 +36,33 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     }
   };
 
-  const allImages = [
+  // Create images from raw photo fields if images object is not available
+  const createImagesFromRawPhotos = () => {
+    const photos = [
+      property.photo1,
+      property.photo2,
+      property.photo3,
+      property.photo4,
+      property.photo5,
+      property.photo6,
+      property.photo7,
+      property.photo8,
+      property.photo9,
+    ].filter(photo => photo && photo.trim() !== '');
+
+    return photos.map((photo, index) => ({
+      id: `photo-${index}`,
+      caption: `Property Image ${index + 1}`,
+      urls: {
+        thumb: `http://localhost:3001/api/images/${photo}`,
+        medium: `http://localhost:3001/api/images/${photo}`,
+        large: `http://localhost:3001/api/images/${photo}`,
+        original: `http://localhost:3001/api/images/${photo}`,
+      },
+    }));
+  };
+
+  const allImages = images ? [
     {
       id: 'main',
       caption: 'Main Image',
@@ -51,7 +77,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
       ...img,
       id: `gallery-${img.id}-${index}`, // Ensure unique IDs for gallery images
     })),
-  ];
+  ] : createImagesFromRawPhotos();
 
   const currentImage = allImages[currentImageIndex];
 
@@ -91,7 +117,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
         <CardContent className="p-0">
           <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg">
             <Image
-              src={`http://localhost:3001${currentImage.urls.large || currentImage.urls.medium}`}
+              src={currentImage.urls.large || currentImage.urls.medium}
               alt={currentImage.caption || 'Property image'}
               fill
               unoptimized
@@ -152,7 +178,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                     }`}
                   >
                     <Image
-                      src={`http://localhost:3001${image.urls.thumb}`}
+                      src={image.urls.thumb}
                       alt={image.caption || `Property image ${index + 1}`}
                       fill
                       unoptimized
@@ -193,7 +219,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
         <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
           <div className="relative max-w-7xl max-h-full">
             <Image
-              src={`http://localhost:3001${currentImage.urls.original || currentImage.urls.large}`}
+              src={currentImage.urls.original || currentImage.urls.large}
               alt={currentImage.caption || 'Property image'}
               width={1200}
               height={800}
