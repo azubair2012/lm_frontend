@@ -34,28 +34,82 @@ api.interceptors.response.use(
 );
 
 export interface Property {
-  id: string;
-  address: string;
-  price: string;
-  rentMonth: number;
-  type: string;
-  beds: number;
-  singles: number;
-  doubles: number;
-  baths: number;
-  receptions: number;
-  furnished: string;
-  heating: string;
-  available: string;
-  status: string;
-  rating: number;
-  age: string;
-  description: string;
-  strapline: string;
+  // Raw API fields
+  propref: string;
+  displayaddress: string;
+  displayprice: string;
+  rentmonth: string;
+  rentorbuy: number;
+  number: string;
+  street: string;
+  address3: string;
+  address4: string;
   postcode: string;
   area: string;
+  nearesttsation: string;
+  TYPE: string;
+  nonres: number;
+  commercial: number;
+  beds: string;
+  singles: string;
+  doubles: string;
+  baths: string;
+  receps: string;
+  furnished: number;
+  bullets: string;
+  FLOOR: string;
+  heating: string;
+  available: string;
+  STATUS: string;
+  servicecharges: string;
+  leaselength: string;
+  tenure: number;
+  shortlet: number;
+  rating: string;
+  age: string;
+  DESCRIPTION: string;
+  comments: string;
+  strapline: string;
+  thoughts: string;
+  floorplan: string;
   url: string;
-  images: {
+  photo1: string;
+  photo2: string;
+  photo3: string;
+  photo4: string;
+  photo5: string;
+  photo6: string;
+  photo7: string;
+  photo8: string;
+  photo9: string;
+  epc: string;
+  branch: string | null;
+  branchtel: string | null;
+  evt: string;
+  featured: number;
+  brochure: string;
+  geolocation: string;
+  negotiatorname: string;
+  negotiatoremail: string;
+  negotiatormobile: string;
+  category: string | null;
+  
+  // Optional transformed fields for backward compatibility
+  id?: string;
+  address?: string;
+  price?: string;
+  rentMonth?: number;
+  type?: string;
+  bedsNum?: number;
+  singlesNum?: number;
+  doublesNum?: number;
+  bathsNum?: number;
+  receptionsNum?: number;
+  furnishedText?: string;
+  status?: string;
+  ratingNum?: number;
+  description?: string;
+  images?: {
     main: {
       thumb: string;
       medium: string;
@@ -163,8 +217,8 @@ export const rentmanApi = {
   },
 
   // Get gallery images for a property (lazy loading)
-  getPropertyGallery: async (propertyId: string): Promise<Property['images']['gallery']> => {
-    const response = await api.get<ApiResponse<Property['images']['gallery']>>(`/properties/${propertyId}/gallery`);
+  getPropertyGallery: async (propertyId: string): Promise<Property['images']> => {
+    const response = await api.get<ApiResponse<Property['images']>>(`/properties/${propertyId}/gallery`);
     return response.data.data;
   },
 

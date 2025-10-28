@@ -176,11 +176,11 @@ export default function HomePage() {
               <Star className="w-6 h-6 text-primary" />
               <h2 className="text-2xl font-bold">Featured Properties</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {featuredProperties.slice(0, 4).map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
-            </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {featuredProperties.slice(0, 4).map((property) => (
+                    <PropertyCard key={property.propref} property={property} />
+                  ))}
+                </div>
           </div>
         </section>
       )}
@@ -209,7 +209,7 @@ export default function HomePage() {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {properties.map((property) => (
-                  <PropertyCard key={property.id} property={property} />
+                  <PropertyCard key={property.propref} property={property} />
                 ))}
               </div>
 

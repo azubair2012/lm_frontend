@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Property } from '@/lib/api';
-import { formatPrice, truncateText, generateSlug } from '@/lib/utils';
+import { formatPrice, truncateText } from '@/lib/utils';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MapPin, Bed, Bath, Car, Star, Calendar } from 'lucide-react';
@@ -14,16 +14,16 @@ interface PropertyCardProps {
 
 export default function PropertyCard({ property }: PropertyCardProps) {
   const {
-    id,
-    address,
-    price,
-    rentMonth,
-    type,
+    propref,
+    displayaddress,
+    displayprice,
+    rentmonth,
+    TYPE,
     beds,
     singles,
     doubles,
     baths,
-    receptions,
+    receps,
     furnished,
     available,
     rating,
@@ -31,15 +31,14 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     images,
   } = property;
 
-  const totalBeds = beds + singles + doubles;
-  const slug = generateSlug(`${address}-${id}`);
+  const totalBeds = parseInt(beds) + parseInt(singles) + parseInt(doubles);
 
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
-          src={`http://localhost:3001${images.main.medium || images.main.thumb}`}
-          alt={address}
+          src={images?.main?.medium || images?.main?.thumb || `http://localhost:3001/api/images/${property.photo1}` || '/placeholder-property.jpg'}
+          alt={displayaddress}
           fill
           unoptimized
           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -47,13 +46,13 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         />
         <div className="absolute top-4 left-4">
           <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium">
-            {type}
+            {TYPE}
           </span>
         </div>
         <div className="absolute top-4 right-4">
           <div className="flex items-center gap-1 bg-black/70 text-white px-2 py-1 rounded-full text-xs">
             <Star className="w-3 h-3 fill-current" />
-            <span>{rating}</span>
+            <span>{parseInt(rating)}</span>
           </div>
         </div>
       </div>
@@ -61,7 +60,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       <CardContent className="p-4">
         <div className="space-y-2">
           <h3 className="font-semibold text-lg leading-tight line-clamp-2">
-            {address}
+            {displayaddress}
           </h3>
           
           {strapline && (
@@ -77,12 +76,12 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             </div>
             <div className="flex items-center gap-1">
               <Bath className="w-4 h-4" />
-              <span>{baths} bath{baths !== 1 ? 's' : ''}</span>
+              <span>{parseInt(baths)} bath{parseInt(baths) !== 1 ? 's' : ''}</span>
             </div>
-            {receptions > 0 && (
+            {parseInt(receps) > 0 && (
               <div className="flex items-center gap-1">
                 <Car className="w-4 h-4" />
-                <span>{receptions} reception{receptions !== 1 ? 's' : ''}</span>
+                <span>{parseInt(receps)} reception{parseInt(receps) !== 1 ? 's' : ''}</span>
               </div>
             )}
           </div>
@@ -102,7 +101,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           {furnished && (
             <div className="text-sm">
               <span className="text-muted-foreground">Furnished: </span>
-              <span className="font-medium">{furnished}</span>
+              <span className="font-medium">{furnished === 1 ? 'Yes' : furnished === 2 ? 'No' : furnished === 3 ? 'Part' : 'Unknown'}</span>
             </div>
           )}
         </div>
@@ -112,17 +111,17 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         <div className="flex items-center justify-between w-full">
           <div className="space-y-1">
             <div className="text-2xl font-bold text-primary">
-              {formatPrice(rentMonth)}
+              {formatPrice(parseFloat(rentmonth))}
               <span className="text-sm font-normal text-muted-foreground">/month</span>
             </div>
-            {price && price !== '0' && (
+            {displayprice && displayprice !== '0' && (
               <div className="text-sm text-muted-foreground">
-                Sale: {formatPrice(parseInt(price))}
+                Sale: {displayprice}
               </div>
             )}
           </div>
           <Button asChild>
-            <Link href={`/properties/${id}`}>
+            <Link href={`/properties/${propref}`}>
               View Details
             </Link>
           </Button>
