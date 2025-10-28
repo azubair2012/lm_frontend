@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lm-backend-omega.vercel.app/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -206,7 +206,7 @@ export const rentmanApi = {
 
   // Get property media
   getPropertyMedia: async (propertyId: string) => {
-    const response = await api.get<ApiResponse<any[]>>(`/media/${propertyId}`);
+    const response = await api.get<ApiResponse<unknown[]>>(`/media/${propertyId}`);
     return response.data.data;
   },
 
@@ -224,7 +224,7 @@ export const rentmanApi = {
 
   // Health check
   healthCheck: async () => {
-    const response = await api.get<ApiResponse<any>>('/health');
+    const response = await api.get<ApiResponse<unknown>>('/health');
     return response.data;
   },
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { Property, rentmanApi } from '@/lib/api';
 import { Button } from '@/components/ui/button';
@@ -54,10 +54,10 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
       id: `photo-${index}`,
       caption: `Property Image ${index + 1}`,
       urls: {
-        thumb: `http://localhost:3001/api/images/${photo}`,
-        medium: `http://localhost:3001/api/images/${photo}`,
-        large: `http://localhost:3001/api/images/${photo}`,
-        original: `http://localhost:3001/api/images/${photo}`,
+        thumb: `https://lm-backend-omega.vercel.app/api/images/${photo}`,
+        medium: `https://lm-backend-omega.vercel.app/api/images/${photo}`,
+        large: `https://lm-backend-omega.vercel.app/api/images/${photo}`,
+        original: `https://lm-backend-omega.vercel.app/api/images/${photo}`,
       },
     }));
   };
