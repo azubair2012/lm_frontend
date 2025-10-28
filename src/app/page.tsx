@@ -16,7 +16,7 @@ export default function HomePage() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchParams, setSearchParams] = useState<SearchParams>({
     page: 1,
-    limit: 12,
+    limit: 1000,
   });
   const [pagination, setPagination] = useState({
     page: 1,
@@ -39,7 +39,7 @@ export default function HomePage() {
     try {
       setLoading(true);
       const [propertiesData, featuredData] = await Promise.all([
-        rentmanApi.getProperties({ page: 1, limit: 12 }),
+        rentmanApi.getProperties({ page: 1, limit: 1000 }),
         rentmanApi.getFeaturedProperties(),
       ]);
       

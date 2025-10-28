@@ -31,7 +31,7 @@ export default function SearchFilters({
     maxPrice: undefined,
     featured: false,
     page: 1,
-    limit: 12,
+    limit: 1000,
   });
 
   const [showFilters, setShowFilters] = useState(false);
@@ -57,7 +57,7 @@ export default function SearchFilters({
       maxPrice: undefined,
       featured: false,
       page: 1,
-      limit: 12,
+      limit: 1000,
     };
     setFilters(resetFilters);
     onSearch(resetFilters);
