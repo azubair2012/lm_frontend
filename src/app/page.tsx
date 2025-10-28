@@ -154,19 +154,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary/10 to-primary/5 py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold">
-              Find Your Perfect
-              <span className="text-primary"> Property</span>
-            </h1>
-          
-          </div>
-        </div>
-      </section>
-
+    
       {/* Search Filters */}
       <section className="py-8">
         <div className="container mx-auto px-4">
