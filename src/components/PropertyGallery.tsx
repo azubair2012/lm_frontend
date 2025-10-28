@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Property } from '@/lib/api';
+import { Property, rentmanApi } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ChevronLeft, ChevronRight, X, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Maximize2, Loader2 } from 'lucide-react';
 
 interface PropertyGalleryProps {
   property: Property;
@@ -14,8 +14,28 @@ interface PropertyGalleryProps {
 export default function PropertyGallery({ property }: PropertyGalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [galleryImages, setGalleryImages] = useState(property.images.gallery);
+  const [isLoadingGallery, setIsLoadingGallery] = useState(false);
+  const [galleryLoaded, setGalleryLoaded] = useState(false);
 
   const { images } = property;
+  
+  // Load gallery images on demand
+  const loadGalleryImages = async () => {
+    if (galleryLoaded || isLoadingGallery) return;
+    
+    setIsLoadingGallery(true);
+    try {
+      const galleryData = await rentmanApi.getPropertyGallery(property.id);
+      setGalleryImages(galleryData);
+      setGalleryLoaded(true);
+    } catch (error) {
+      console.error('Failed to load gallery images:', error);
+    } finally {
+      setIsLoadingGallery(false);
+    }
+  };
+
   const allImages = [
     {
       id: 'main',
@@ -27,7 +47,10 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
       caption: 'Floor Plan',
       urls: images.floorplan,
     }] : []),
-    ...images.gallery,
+    ...galleryImages.map((img, index) => ({
+      ...img,
+      id: `gallery-${img.id}-${index}`, // Ensure unique IDs for gallery images
+    })),
   ];
 
   const currentImage = allImages[currentImageIndex];
@@ -42,6 +65,8 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
 
   const openModal = () => {
     setIsModalOpen(true);
+    // Load gallery images when modal opens
+    loadGalleryImages();
   };
 
   const closeModal = () => {
@@ -113,9 +138,9 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
           </div>
 
           {/* Thumbnail Strip */}
-          {allImages.length > 1 && (
-            <div className="p-4">
-              <div className="flex gap-2 overflow-x-auto">
+          <div className="p-4">
+            {allImages.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto mb-4">
                 {allImages.map((image, index) => (
                   <button
                     key={image.id}
@@ -137,8 +162,29 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                   </button>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+            
+            {/* Load More Images Button */}
+            {!galleryLoaded && (
+              <div className="text-center">
+                <Button
+                  onClick={loadGalleryImages}
+                  disabled={isLoadingGallery}
+                  variant="outline"
+                  className="w-full"
+                >
+                  {isLoadingGallery ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Loading more images...
+                    </>
+                  ) : (
+                    'Load More Images'
+                  )}
+                </Button>
+              </div>
+            )}
+          </div>
         </CardContent>
       </Card>
 
@@ -193,6 +239,12 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
               <div className="text-xs text-muted-foreground">
                 {currentImageIndex + 1} of {allImages.length}
               </div>
+              {isLoadingGallery && (
+                <div className="flex items-center gap-2 mt-2">
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                  <span className="text-xs">Loading more images...</span>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -136,7 +136,17 @@ export const rentmanApi = {
 
   // Search properties
   searchProperties: async (params: SearchParams): Promise<SearchResponse> => {
-    const response = await api.get<ApiResponse<SearchResponse>>('/search/properties', { params });
+    // Filter out empty string parameters, but keep search query even if it's empty
+    const cleanParams = Object.fromEntries(
+      Object.entries(params).filter(([key, value]) => {
+        // Always keep the search query (q) parameter
+        if (key === 'q') return true;
+        // Filter out empty strings, undefined, and null for other parameters
+        return value !== '' && value !== undefined && value !== null;
+      })
+    );
+    console.log('🔍 API: Cleaned search params:', cleanParams);
+    const response = await api.get<ApiResponse<SearchResponse>>('/properties/search', { params: cleanParams });
     return response.data.data;
   },
 
@@ -149,6 +159,12 @@ export const rentmanApi = {
   // Get featured properties
   getFeaturedProperties: async (): Promise<Property[]> => {
     const response = await api.get<ApiResponse<Property[]>>('/properties/featured');
+    return response.data.data;
+  },
+
+  // Get gallery images for a property (lazy loading)
+  getPropertyGallery: async (propertyId: string): Promise<Property['images']['gallery']> => {
+    const response = await api.get<ApiResponse<Property['images']['gallery']>>(`/properties/${propertyId}/gallery`);
     return response.data.data;
   },
 

@@ -37,6 +37,7 @@ export default function SearchFilters({
   const [showFilters, setShowFilters] = useState(false);
 
   const handleInputChange = (field: keyof SearchParams, value: string | number | boolean | undefined) => {
+    console.log(`🔍 SearchFilters: Input changed - ${field}:`, value);
     setFilters(prev => ({
       ...prev,
       [field]: value,
@@ -44,6 +45,7 @@ export default function SearchFilters({
   };
 
   const handleSearch = () => {
+    console.log('🔍 SearchFilters: handleSearch called with filters:', JSON.stringify(filters, null, 2));
     onSearch(filters);
   };
 
@@ -59,6 +61,7 @@ export default function SearchFilters({
       page: 1,
       limit: 1000,
     };
+    console.log('🔄 SearchFilters: handleReset called with resetFilters:', resetFilters);
     setFilters(resetFilters);
     onSearch(resetFilters);
   };

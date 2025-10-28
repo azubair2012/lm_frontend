@@ -17,6 +17,13 @@ export default function HomePage() {
   const [searchParams, setSearchParams] = useState<SearchParams>({
     page: 1,
     limit: 1000,
+    q: '',
+    area: '',
+    type: '',
+    beds: undefined,
+    minPrice: undefined,
+    maxPrice: undefined,
+    featured: false,
   });
   const [pagination, setPagination] = useState({
     page: 1,
@@ -38,19 +45,33 @@ export default function HomePage() {
   const loadInitialData = async () => {
     try {
       setLoading(true);
-      const [propertiesData, featuredData] = await Promise.all([
-        rentmanApi.getProperties({ page: 1, limit: 1000 }),
+      const [searchResponse, featuredData] = await Promise.all([
+        rentmanApi.searchProperties({ page: 1, limit: 1000 }),
         rentmanApi.getFeaturedProperties(),
       ]);
       
-      setProperties(propertiesData);
+      console.log('🏠 Initial search response:', searchResponse);
+      console.log('🏠 Properties count:', searchResponse.properties?.length);
+      console.log('🏠 Featured count:', featuredData?.length);
+      
+      setProperties(searchResponse.properties);
       setFeaturedProperties(featuredData);
       
-      // Extract filters from first search
-      if (propertiesData.length > 0) {
-        const areas = [...new Set(propertiesData.map(p => p.area).filter(Boolean))];
-        const types = [...new Set(propertiesData.map(p => p.type).filter(Boolean))];
-        setFilters({ areas, types, priceRange: { min: 0, max: 10000 } });
+      // Update pagination from search response
+      setPagination({
+        page: searchResponse.pagination.page,
+        totalPages: searchResponse.pagination.totalPages,
+        hasNext: searchResponse.pagination.hasNext,
+        hasPrev: searchResponse.pagination.hasPrev,
+      });
+      
+      // Extract filters from search response
+      if (searchResponse.filters) {
+        setFilters({
+          areas: searchResponse.filters.areas || [],
+          types: searchResponse.filters.types || [],
+          priceRange: searchResponse.filters.priceRange || { min: 0, max: 10000 },
+        });
       }
     } catch (error) {
       console.error('Error loading initial data:', error);
@@ -61,19 +82,36 @@ export default function HomePage() {
 
   const handleSearch = async (params: SearchParams) => {
     try {
+      console.log('🔍 Search called with params:', JSON.stringify(params, null, 2));
       setSearchLoading(true);
       setSearchParams(params);
       
       const response = await rentmanApi.searchProperties(params);
-      setProperties(response.properties);
-      setPagination({
-        page: response.pagination.page,
-        totalPages: response.pagination.totalPages,
-        hasNext: response.pagination.hasNext,
-        hasPrev: response.pagination.hasPrev,
-      });
+      console.log('📊 Search response:', JSON.stringify(response, null, 2));
+      console.log('🏠 Properties:', response?.properties);
+      console.log('📄 Pagination:', response?.pagination);
+      
+      if (response && response.properties && response.pagination) {
+        console.log('✅ Valid search response, setting properties:', response.properties.length);
+        setProperties(response.properties);
+        setPagination({
+          page: response.pagination.page,
+          totalPages: response.pagination.totalPages,
+          hasNext: response.pagination.hasNext,
+          hasPrev: response.pagination.hasPrev,
+        });
+      } else {
+        console.error('❌ Invalid search response:', response);
+        setProperties([]);
+        setPagination({
+          page: 1,
+          totalPages: 0,
+          hasNext: false,
+          hasPrev: false,
+        });
+      }
     } catch (error) {
-      console.error('Error searching properties:', error);
+      console.error('❌ Error searching properties:', error);
     } finally {
       setSearchLoading(false);
     }
