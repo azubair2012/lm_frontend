@@ -124,9 +124,7 @@ export default function HomePage() {
               Find Your Perfect
               <span className="text-primary"> Property</span>
             </h1>
-            <p className="text-xl text-muted-foreground">
-              Discover amazing properties for rent and sale across the UK
-            </p>
+          
           </div>
         </div>
       </section>
