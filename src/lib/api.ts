@@ -1,10 +1,12 @@
 import axios from 'axios';
 
-<<<<<<< HEAD
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lm-backend-omega.vercel.app/api';
-=======
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lm-backend-omega.vercel.app';
->>>>>>> 70dd40beb6f54cc1c9393758ca8ce0ecf62d2a74
+
+// Helper function to get the base URL without /api suffix for image URLs
+export const getBaseUrl = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lm-backend-omega.vercel.app/api';
+  return baseUrl.replace('/api', '');
+};
 
 const api = axios.create({
   baseURL: API_BASE_URL,

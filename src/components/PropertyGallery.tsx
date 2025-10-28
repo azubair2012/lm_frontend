@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Property, rentmanApi } from '@/lib/api';
+import { Property, rentmanApi, getBaseUrl } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronLeft, ChevronRight, X, Maximize2, Loader2 } from 'lucide-react';
@@ -54,10 +54,10 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
       id: `photo-${index}`,
       caption: `Property Image ${index + 1}`,
       urls: {
-        thumb: `https://lm-backend-omega.vercel.app/api/images/${photo}`,
-        medium: `https://lm-backend-omega.vercel.app/api/images/${photo}`,
-        large: `https://lm-backend-omega.vercel.app/api/images/${photo}`,
-        original: `https://lm-backend-omega.vercel.app/api/images/${photo}`,
+        thumb: `${getBaseUrl()}/api/images/${photo}`,
+        medium: `${getBaseUrl()}/api/images/${photo}`,
+        large: `${getBaseUrl()}/api/images/${photo}`,
+        original: `${getBaseUrl()}/api/images/${photo}`,
       },
     }));
   };
