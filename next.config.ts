@@ -2,12 +2,12 @@ import type { NextConfig } from "next";
 
 // Extract hostname from API URL for image configuration
 const getImageHostname = () => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lm-backend-omega.vercel.app/api';
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001/api';
   try {
     const url = new URL(apiUrl);
     return url.hostname;
   } catch {
-    return 'lm-backend-omega.vercel.app';
+    return 'localhost';
   }
 };
 
@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
     ],
   },
   env: {
-    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lm-backend-omega.vercel.app/api',
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001/api',
   },
 };
 

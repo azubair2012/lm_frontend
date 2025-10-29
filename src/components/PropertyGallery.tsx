@@ -54,10 +54,10 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
       id: `photo-${index}`,
       caption: `Property Image ${index + 1}`,
       urls: {
-        thumb: `${getBaseUrl()}/api/images/${photo}`,
-        medium: `${getBaseUrl()}/api/images/${photo}`,
-        large: `${getBaseUrl()}/api/images/${photo}`,
-        original: `${getBaseUrl()}/api/images/${photo}`,
+        thumb: `http://localhost:3001/api/images/${photo}`,
+        medium: `http://localhost:3001/api/images/${photo}`,
+        large: `http://localhost:3001/api/images/${photo}`,
+        original: `http://localhost:3001/api/images/${photo}`,
       },
     }));
   };
