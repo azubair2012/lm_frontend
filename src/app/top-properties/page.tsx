@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Property } from '@/lib/api';
 import { rentmanApi } from '@/lib/api';
-import PropertyCard from '@/components/PropertyCard';
+import TopPropertyCard from '@/components/TopPropertyCard';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, Home, Star } from 'lucide-react';
 
@@ -86,9 +86,13 @@ export default function TopPropertiesPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {properties.map((property) => (
-                <PropertyCard key={property.propref} property={property} />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {properties.map((property, index) => (
+                <TopPropertyCard 
+                  key={property.propref} 
+                  property={property}
+                  rank={index + 1}
+                />
               ))}
             </div>
           )}
