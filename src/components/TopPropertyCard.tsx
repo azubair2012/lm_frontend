@@ -17,10 +17,10 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
   } = property;
 
   return (
-    <Link href={`/properties/${propref}`} className="block">
-      <Card className="group relative overflow-hidden border-2 transition-all duration-500 hover:shadow-2xl hover:border-primary/50 hover:-translate-y-2 bg-gradient-to-br from-background via-background to-primary/5 cursor-pointer">
+    <Link href={`/properties/${propref}`} className="block h-full">
+      <Card className="h-full rounded-none group relative overflow-hidden border-2 transition-all duration-500 hover:shadow-2xl hover:border-primary/50 bg-gradient-to-br from-background via-background to-primary/5 cursor-pointer">
         {/* Image Section */}
-        <div className="relative aspect-[16/10] overflow-hidden">
+        <div className="relative aspect-[16/10] overflow-hidden rounded-none">
           <Image
             src={images?.main?.large || images?.main?.medium || `${getBaseUrl()}/api/images/${property.photo1}` || '/placeholder-property.jpg'}
             alt={displayaddress}
@@ -31,10 +31,10 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
             priority
           />
           {/* Property Title */}
-          <div className="space-y-2 absolute z-20">
-            <h3 className="font-bold text-xl leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+          <div className="space-y-2 absolute z-20 bg-[#383e42b1] backdrop-blur-sm p-2 w-full bottom-8 left-0">
+            <p className="font-medium text-white text-md leading-tight line-clamp-2 group-hover:text-primary transition-colors" style={{ fontFamily: 'Roboto, sans-serif' }}>
               {displayaddress}
-            </h3>
+            </p>
           </div>
         </div>
       </Card>

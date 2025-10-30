@@ -49,31 +49,12 @@ export default function TopPropertiesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary/10 via-primary/5 to-background py-12 border-b">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-4">
-              <Star className="w-8 h-8 text-primary fill-primary" />
-              <h1 className="text-4xl font-bold">Top 7 Properties</h1>
-            </div>
-            <p className="text-lg text-muted-foreground">
-              Our handpicked selection of the best properties available right now. 
-              Browse through our featured collection with full details and galleries.
-            </p>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Properties Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold">Featured Properties</h2>
-            <div className="text-sm text-muted-foreground">
-              {properties.length} propert{properties.length !== 1 ? 'ies' : 'y'}
-            </div>
-          </div>
+          
 
           {properties.length === 0 ? (
             <Card>
@@ -86,14 +67,29 @@ export default function TopPropertiesPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {properties.map((property) => (
-                <TopPropertyCard 
-                  key={property.propref} 
-                  property={property}
-                />
-              ))}
-            </div>
+            (() => {
+              // Build 9 slots, leave 0 (top-left) and 8 (bottom-right) empty
+              const slots: Array<Property | null> = Array(9).fill(null);
+              const items = properties.slice(0, 7);
+              const positions = [1, 2, 3, 4, 5, 6, 7];
+              positions.forEach((pos, idx) => {
+                slots[pos] = items[idx] || null;
+              });
+
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:gap-0 gap-6 auto-rows-[220px] md:auto-rows-[260px] lg:auto-rows-[300px]">
+                  {slots.map((prop, idx) => (
+                    <div key={idx} className="relative">
+                      {prop ? (
+                        <TopPropertyCard property={prop} />
+                      ) : (
+                        <div className="h-full w-full hidden md:block" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              );
+            })()
           )}
         </div>
       </section>
