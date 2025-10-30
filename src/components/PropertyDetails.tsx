@@ -33,7 +33,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
     singles,
     doubles,
     baths,
-    receptions,
+    receps,
     furnished,
     heating,
     available,
@@ -52,7 +52,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
   const features = [
     { icon: Bed, label: 'Bedrooms', value: `${totalBeds} bed${totalBeds !== 1 ? 's' : ''}` },
     { icon: Bath, label: 'Bathrooms', value: `${baths} bath${baths !== 1 ? 's' : ''}` },
-    { icon: Car, label: 'Receptions', value: `${receptions} reception${receptions !== 1 ? 's' : ''}` },
+    { icon: Car, label: 'Receptions', value: `${receps} reception${receps !== 1 ? 's' : ''}` },
     { icon: Home, label: 'Property Type', value: type },
     { icon: Ruler, label: 'Age', value: age || 'Not specified' },
     { icon: Star, label: 'Rating', value: `${rating}/5` },
@@ -61,7 +61,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
   const amenities = [
     { icon: Wifi, label: 'Internet', available: true },
     { icon: Shield, label: 'Security', available: true },
-    { icon: CarIcon, label: 'Parking', available: receptions > 0 },
+    { icon: CarIcon, label: 'Parking', available: receps > 0 },
     { icon: TreePine, label: 'Garden', available: Math.random() > 0.5 }, // Mock data
   ];
 
