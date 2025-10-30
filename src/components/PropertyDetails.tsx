@@ -27,7 +27,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
   const {
     address,
     price,
-    rentMonth,
+    rentmonth,
     type,
     beds,
     singles,
@@ -81,7 +81,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
           </div>
           <div className="text-right">
             <div className="text-3xl font-bold text-primary">
-              {formatPrice(rentMonth)}
+              {formatPrice(parseInt(rentmonth || '0'))}
               <span className="text-lg font-normal text-muted-foreground">/month</span>
             </div>
             {price && price !== '0' && (
