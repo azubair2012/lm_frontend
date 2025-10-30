@@ -54,29 +54,32 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
       id: `photo-${index}`,
       caption: `Property Image ${index + 1}`,
       urls: {
-        thumb: `http://localhost:3001/api/images/${photo}`,
-        medium: `http://localhost:3001/api/images/${photo}`,
-        large: `http://localhost:3001/api/images/${photo}`,
-        original: `http://localhost:3001/api/images/${photo}`,
+        thumb: `${getBaseUrl()}/api/images/${photo}`,
+        medium: `${getBaseUrl()}/api/images/${photo}`,
+        large: `${getBaseUrl()}/api/images/${photo}`,
+        original: `${getBaseUrl()}/api/images/${photo}`,
       },
     }));
   };
 
+  const toAbsolute = (u?: string) =>
+    u && u.startsWith('/api') ? `${getBaseUrl()}${u}` : u || '';
+
   const allImages = images ? [
-    {
-      id: 'main',
-      caption: 'Main Image',
-      urls: images.main,
-    },
-    ...(images.floorplan ? [{
-      id: 'floorplan',
-      caption: 'Floor Plan',
-      urls: images.floorplan,
-    }] : []),
-    ...galleryImages.map((img, index) => ({
-      ...img,
-      id: `gallery-${img.id}-${index}`, // Ensure unique IDs for gallery images
-    })),
+    ...(images.gallery || []).map((img, index) => {
+      const url = toAbsolute(img.url);
+      const thumb = toAbsolute(img.thumbnail) || url;
+      return {
+        id: `gallery-${index}`,
+        caption: img.alt || `Property Image ${index + 1}`,
+        urls: {
+          thumb,
+          medium: url,
+          large: url,
+          original: url,
+        },
+      };
+    }),
   ] : createImagesFromRawPhotos();
 
   const currentImage = allImages[currentImageIndex];

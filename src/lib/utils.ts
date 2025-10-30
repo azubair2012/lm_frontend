@@ -28,7 +28,7 @@ export function truncateText(text: string, maxLength: number): string {
 }
 
 export function getImageUrl(filename: string, size: 'thumb' | 'medium' | 'large' | 'original' = 'medium'): string {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000/api';
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001/api';
   return `${baseUrl}/images/${filename}`;
 }
 

@@ -37,7 +37,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
-          src={images?.main?.medium || images?.main?.thumb || `http://localhost:3001/api/images/${property.photo1}` || '/placeholder-property.jpg'}
+          src={images?.main?.medium || images?.main?.thumb || `${getBaseUrl()}/api/images/${property.photo1}` || '/placeholder-property.jpg'}
           alt={displayaddress}
           fill
           unoptimized

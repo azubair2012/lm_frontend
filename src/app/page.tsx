@@ -7,11 +7,10 @@ import PropertyCard from '@/components/PropertyCard';
 import SearchFilters from '@/components/SearchFilters';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, Home, TrendingUp, Star } from 'lucide-react';
+import { Loader2, Home, TrendingUp } from 'lucide-react';
 
 export default function HomePage() {
   const [properties, setProperties] = useState<Property[]>([]);
-  const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchParams, setSearchParams] = useState<SearchParams>({
@@ -45,17 +44,12 @@ export default function HomePage() {
   const loadInitialData = async () => {
     try {
       setLoading(true);
-      const [searchResponse, featuredData] = await Promise.all([
-        rentmanApi.searchProperties({ page: 1, limit: 1000 }),
-        rentmanApi.getFeaturedProperties(),
-      ]);
+      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 1000 });
       
       console.log('🏠 Initial search response:', searchResponse);
       console.log('🏠 Properties count:', searchResponse.properties?.length);
-      console.log('🏠 Featured count:', featuredData?.length);
       
       setProperties(searchResponse.properties);
-      setFeaturedProperties(featuredData);
       
       // Update pagination from search response
       setPagination({
@@ -167,23 +161,6 @@ export default function HomePage() {
           />
         </div>
       </section>
-
-      {/* Featured Properties */}
-      {featuredProperties.length > 0 && (
-        <section className="py-8 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center gap-2 mb-6">
-              <Star className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-bold">Featured Properties</h2>
-            </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {featuredProperties.slice(0, 4).map((property) => (
-                    <PropertyCard key={property.propref} property={property} />
-                  ))}
-                </div>
-          </div>
-        </section>
-      )}
 
       {/* Properties Grid */}
       <section className="py-8">
