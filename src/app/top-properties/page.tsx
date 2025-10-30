@@ -87,11 +87,10 @@ export default function TopPropertiesPage() {
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {properties.map((property, index) => (
+              {properties.map((property) => (
                 <TopPropertyCard 
                   key={property.propref} 
                   property={property}
-                  rank={index + 1}
                 />
               ))}
             </div>
