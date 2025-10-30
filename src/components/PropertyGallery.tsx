@@ -14,7 +14,7 @@ interface PropertyGalleryProps {
 export default function PropertyGallery({ property }: PropertyGalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [galleryImages, setGalleryImages] = useState(property.images?.gallery || []);
+  // const [galleryImages, setGalleryImages] = useState(property.images?.gallery || []);
   const [isLoadingGallery, setIsLoadingGallery] = useState(false);
   const [galleryLoaded, setGalleryLoaded] = useState(false);
 
@@ -27,7 +27,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     setIsLoadingGallery(true);
     try {
       const galleryData = await rentmanApi.getPropertyGallery(property.propref);
-      setGalleryImages(galleryData?.gallery || []);
+      // setGalleryImages(galleryData?.gallery || []);
       setGalleryLoaded(true);
     } catch (error) {
       console.error('Failed to load gallery images:', error);
@@ -62,22 +62,37 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     }));
   };
 
-  const toAbsolute = (u?: string) =>
-    u && u.startsWith('/api') ? `${getBaseUrl()}${u}` : u || '';
+  const toAbsolute = (u?: string) => u && u.startsWith('/api') ? `${getBaseUrl()}${u}` : u || '';
 
   const allImages = images ? [
     ...(images.gallery || []).map((img, index) => {
-      const url = toAbsolute(img.url);
-      const thumb = toAbsolute(img.thumbnail) || url;
+      type GalleryFlat = { id?: string; caption?: string; url?: string; thumbnail?: string };
+      type GalleryUrls = { urls?: { thumb?: string; medium?: string; large?: string; original?: string } };
+      const g: GalleryFlat & GalleryUrls = img as GalleryFlat & GalleryUrls;
+
+      const hasUrlsObj = typeof g.urls === 'object' && g.urls !== null;
+
+      const urlFromFlat = toAbsolute(g.url);
+      const thumbFromFlat = toAbsolute(g.thumbnail);
+
+      const normalizedFromObj = hasUrlsObj
+        ? {
+            thumb: toAbsolute(g.urls?.thumb),
+            medium: toAbsolute(g.urls?.medium),
+            large: toAbsolute(g.urls?.large),
+            original: toAbsolute(g.urls?.original),
+          }
+        : { thumb: undefined, medium: undefined, large: undefined, original: undefined };
+
+      const medium = normalizedFromObj.medium || urlFromFlat;
+      const thumb = normalizedFromObj.thumb || thumbFromFlat || medium;
+      const large = normalizedFromObj.large || medium;
+      const original = normalizedFromObj.original || large;
+
       return {
-        id: `gallery-${index}`,
-        caption: img.alt || `Property Image ${index + 1}`,
-        urls: {
-          thumb,
-          medium: url,
-          large: url,
-          original: url,
-        },
+        id: g.id || `gallery-${index}`,
+        caption: g.caption || `Property Image ${index + 1}`,
+        urls: { thumb, medium, large, original },
       };
     }),
   ] : createImagesFromRawPhotos();
