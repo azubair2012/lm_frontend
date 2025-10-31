@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { Property } from '@/lib/api';
 import { formatPrice, formatDate } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { 
   MapPin, 
   Bed, 
@@ -13,10 +15,7 @@ import {
   Calendar, 
   Home, 
   Ruler,
-  Wifi,
-  Shield,
-  Car as CarIcon,
-  TreePine
+  
 } from 'lucide-react';
 
 interface PropertyDetailsProps {
@@ -24,10 +23,13 @@ interface PropertyDetailsProps {
 }
 
 export default function PropertyDetails({ property }: PropertyDetailsProps) {
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  
   const {
     address,
     price,
     rentmonth,
+    TYPE,
     type,
     beds,
     singles,
@@ -87,9 +89,9 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
     { icon: Bed, label: 'Bedrooms', value: `${totalBeds} bed${totalBeds !== 1 ? 's' : ''}` },
     { icon: Bath, label: 'Bathrooms', value: `${bathsNum} bath${bathsNum !== 1 ? 's' : ''}` },
     { icon: Car, label: 'Receptions', value: `${recepsNum} reception${recepsNum !== 1 ? 's' : ''}` },
-    { icon: Home, label: 'Property Type', value: type },
+    { icon: Home, label: 'Property Type', value: type || TYPE || 'Not specified' },
     { icon: Ruler, label: 'Age', value: age || 'Not specified' },
-    { icon: Star, label: 'Rating', value: `${rating}/5` },
+    { icon: Star, label: 'Rating', value: rating ? `${rating}/5` : 'Not rated' },
   ];
 
 
@@ -156,8 +158,18 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
             <CardTitle>Description</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="prose max-w-none">
-              <p className="whitespace-pre-wrap">{descriptionText}</p>
+            <div className="space-y-4">
+              <div className={`prose max-w-none ${!isDescriptionExpanded ? 'line-clamp-3' : ''}`}>
+                <p className="whitespace-pre-wrap">{descriptionText}</p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                className="w-full sm:w-auto"
+              >
+                {isDescriptionExpanded ? 'Read Less' : 'Read More'}
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -172,7 +184,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
             <CardTitle>Availability</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-2 text-green-600">
+            <div className="flex items-center gap-2 text-[#B87333]">
               <Calendar className="w-5 h-5" />
               <span className="font-medium">Available {available}</span>
             </div>
@@ -188,7 +200,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
            
-            <button className="flex-1 text-white border border-input bg-[#282e32] hover:bg-accent hover:text-accent-foreground px-6 py-3 font-medium transition-colors">
+            <button className="flex-1 text-white hover:text-[#B87333] border border-input bg-[#282e32] hover:bg-accent hover:text-accent-foreground px-6 py-3 font-medium transition-colors">
               Contact Us
             </button>
           </div>

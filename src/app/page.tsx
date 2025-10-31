@@ -15,7 +15,7 @@ export default function HomePage() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchParams, setSearchParams] = useState<SearchParams>({
     page: 1,
-    limit: 1000,
+    limit: 20,
     q: '',
     area: '',
     type: '',
@@ -44,10 +44,16 @@ export default function HomePage() {
   const loadInitialData = async () => {
     try {
       setLoading(true);
-      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 1000 });
+      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 20 });
       
       console.log('🏠 Initial search response:', searchResponse);
       console.log('🏠 Properties count:', searchResponse.properties?.length);
+      console.log('📄 Initial pagination:', {
+        page: searchResponse.pagination.page,
+        totalPages: searchResponse.pagination.totalPages,
+        hasNext: searchResponse.pagination.hasNext,
+        total: searchResponse.pagination.total
+      });
       
       setProperties(searchResponse.properties);
       
@@ -78,9 +84,12 @@ export default function HomePage() {
     try {
       console.log('🔍 Search called with params:', JSON.stringify(params, null, 2));
       setSearchLoading(true);
-      setSearchParams(params);
       
-      const response = await rentmanApi.searchProperties(params);
+      // Ensure limit is always 20
+      const searchParamsWithLimit = { ...params, limit: 20 };
+      setSearchParams(searchParamsWithLimit);
+      
+      const response = await rentmanApi.searchProperties(searchParamsWithLimit);
       console.log('📊 Search response:', JSON.stringify(response, null, 2));
       console.log('🏠 Properties:', response?.properties);
       console.log('📄 Pagination:', response?.pagination);
@@ -117,17 +126,26 @@ export default function HomePage() {
     try {
       setSearchLoading(true);
       const nextPage = pagination.page + 1;
+      console.log('📄 Loading more - Page:', nextPage, 'Current total:', properties.length);
+      
       const response = await rentmanApi.searchProperties({
         ...searchParams,
         page: nextPage,
+        limit: 20,
+      });
+      
+      console.log('📄 Load more response:', {
+        newProperties: response.properties.length,
+        pagination: response.pagination
       });
       
       setProperties(prev => [...prev, ...response.properties]);
-      setPagination(prev => ({
-        ...prev,
-        page: nextPage,
+      setPagination({
+        page: response.pagination.page,
+        totalPages: response.pagination.totalPages,
         hasNext: response.pagination.hasNext,
-      }));
+        hasPrev: response.pagination.hasPrev,
+      });
     } catch (error) {
       console.error('Error loading more properties:', error);
     } finally {

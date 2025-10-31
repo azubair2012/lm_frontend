@@ -103,7 +103,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </div>
 
           {available && (
-            <div className="flex items-center gap-1 text-sm text-green-600">
+            <div className="flex items-center gap-1 text-sm text-[#B87333]">
               <Calendar className="w-4 h-4" />
               <span>Available {available}</span>
             </div>
