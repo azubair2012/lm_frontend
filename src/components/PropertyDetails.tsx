@@ -100,7 +100,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
     <div className="space-y-6">
       {/* Header */}
       <div className="space-y-4">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between pt-8">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">{address}</h1>
             <div className="flex items-center gap-2 text-muted-foreground">

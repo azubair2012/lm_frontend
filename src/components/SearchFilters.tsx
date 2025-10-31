@@ -11,16 +11,13 @@ interface SearchFiltersProps {
   onSearch: (params: SearchParams) => void;
   loading?: boolean;
   areas?: string[];
-  types?: string[];
-  priceRange?: { min: number; max: number };
+ 
 }
 
 export default function SearchFilters({ 
   onSearch, 
   loading = false, 
   areas = [], 
-  types = [], 
-  priceRange = { min: 0, max: 10000 } 
 }: SearchFiltersProps) {
   const [filters, setFilters] = useState<SearchParams>({
     q: '',
@@ -31,7 +28,7 @@ export default function SearchFilters({
     maxPrice: undefined,
     featured: false,
     page: 1,
-    limit: 1000,
+    limit: 20,
   });
 
   const [showFilters, setShowFilters] = useState(false);
@@ -59,7 +56,7 @@ export default function SearchFilters({
       maxPrice: undefined,
       featured: false,
       page: 1,
-      limit: 1000,
+      limit: 20,
     };
     console.log('🔄 SearchFilters: handleReset called with resetFilters:', resetFilters);
     setFilters(resetFilters);
@@ -96,37 +93,16 @@ export default function SearchFilters({
           <div className={`space-y-4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                  {/* Search Input */}
-                 <div >               
+                 <div>               
                   <Input
                   placeholder="Search by address, area, or postcode..."
                   value={filters.q || ''}
                   onChange={(e) => handleInputChange('q', e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               className="w-full h-10 px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-            /></div>
-              
-              
-              {/* Area Filter */}
-              <div>
-            
-                <select
-                  value={filters.area || ''}
-                  onChange={(e) => handleInputChange('area', e.target.value)}
-                  className="w-full h-10 px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-                >
-                  <option value="">All Areas</option>
-                  {areas.map((area) => (
-                    <option key={area} value={area}>
-                      {area}
-                    </option>
-                  ))}
-                </select>
-              </div>
-                            
-
+            /></div>             
               {/* Bedrooms Filter */}
               <div>
-                
                 <select
                   value={filters.beds || ''}
                   onChange={(e) => handleInputChange('beds', e.target.value ? parseInt(e.target.value) : undefined)}
@@ -140,7 +116,7 @@ export default function SearchFilters({
                   ))}
                 </select>
               </div>
-            <div className="flex gap-2">
+            <div className="flex gap-6">
             <Button onClick={handleSearch} disabled={loading} className='bg-[#383E42] text-white rounded-none hover:text-[#B87333]'>
               <Search className="w-4 h-4 mr-2" />
               Search

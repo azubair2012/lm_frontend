@@ -174,8 +174,7 @@ export default function HomePage() {
             onSearch={handleSearch}
             loading={searchLoading}
             areas={filters.areas}
-            types={filters.types}
-            priceRange={filters.priceRange}
+          
           />
         </div>
       </section>
