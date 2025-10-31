@@ -40,6 +40,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
     status,
     rating,
     age,
+    DESCRIPTION,
     description,
     strapline,
     postcode,
@@ -51,6 +52,22 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
   const bathsNum = parseInt(baths || '0');
   const recepsNum = parseInt(receps || '0');
 
+  // Get description value (check both fields and ensure it's not empty)
+  const descriptionText = (DESCRIPTION && DESCRIPTION.trim()) || (description && description.trim()) || '';
+
+  // Debug: Log description fields
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Property Description Debug:', {
+      DESCRIPTION,
+      description,
+      descriptionText,
+      hasDESCRIPTION: !!DESCRIPTION,
+      hasDescription: !!description,
+      hasDescriptionText: !!descriptionText,
+      propertyKeys: Object.keys(property).filter(k => k.toLowerCase().includes('desc'))
+    });
+  }
+
   const features = [
     { icon: Bed, label: 'Bedrooms', value: `${totalBeds} bed${totalBeds !== 1 ? 's' : ''}` },
     { icon: Bath, label: 'Bathrooms', value: `${bathsNum} bath${bathsNum !== 1 ? 's' : ''}` },
@@ -60,12 +77,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
     { icon: Star, label: 'Rating', value: `${rating}/5` },
   ];
 
-  const amenities = [
-    { icon: Wifi, label: 'Internet', available: true },
-    { icon: Shield, label: 'Security', available: true },
-    { icon: CarIcon, label: 'Parking', available: recepsNum > 0 },
-    { icon: TreePine, label: 'Garden', available: Math.random() > 0.5 }, // Mock data
-  ];
+
 
   return (
     <div className="space-y-6">
@@ -99,7 +111,7 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
         <div className="flex flex-wrap gap-2">
           <Badge variant="secondary">{type}</Badge>
           <Badge variant="outline">{status}</Badge>
-          {furnished && <Badge variant="outline">Furnished: {furnished}</Badge>}
+          {furnished && <Badge variant="outline">Furnished: {furnished === 1 ? 'Yes' : furnished === 2 ? 'No' : furnished === 3 ? 'Part' : 'Unknown'}</Badge>}
           {heating && <Badge variant="outline">Heating: {heating}</Badge>}
         </div>
       </div>
@@ -123,37 +135,20 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
       </Card>
 
       {/* Description */}
-      {description && (
+      {descriptionText && (
         <Card>
           <CardHeader>
             <CardTitle>Description</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="prose max-w-none">
-              <p className="whitespace-pre-wrap">{description}</p>
+              <p className="whitespace-pre-wrap">{descriptionText}</p>
             </div>
           </CardContent>
         </Card>
       )}
 
-      {/* Amenities */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Amenities</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {amenities.map((amenity, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <amenity.icon className={`w-5 h-5 ${amenity.available ? 'text-green-600' : 'text-muted-foreground'}`} />
-                <span className={amenity.available ? 'text-foreground' : 'text-muted-foreground'}>
-                  {amenity.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      
 
       {/* Availability */}
       {available && (
@@ -177,16 +172,9 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-md text-center font-medium transition-colors"
-            >
-              View on Rentman
-            </a>
-            <button className="flex-1 border border-input bg-background hover:bg-accent hover:text-accent-foreground px-6 py-3 rounded-md font-medium transition-colors">
-              Contact Agent
+           
+            <button className="flex-1 text-white border border-input bg-[#282e32] hover:bg-accent hover:text-accent-foreground px-6 py-3 font-medium transition-colors">
+              Contact Us
             </button>
           </div>
         </CardContent>

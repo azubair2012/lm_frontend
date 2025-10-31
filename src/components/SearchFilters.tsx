@@ -90,27 +90,25 @@ export default function SearchFilters({
 
       <CardContent>
         <div className="space-y-4">
-          {/* Search Input */}
-          <div className="flex gap-2">
-            <Input
-              placeholder="Search by address, area, or postcode..."
-              value={filters.q || ''}
-              onChange={(e) => handleInputChange('q', e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              className="flex-1"
-            />
-            <Button onClick={handleSearch} disabled={loading}>
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
-          </div>
+          
 
           {/* Filters */}
           <div className={`space-y-4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                 {/* Search Input */}
+                 <div >               
+                  <Input
+                  placeholder="Search by address, area, or postcode..."
+                  value={filters.q || ''}
+                  onChange={(e) => handleInputChange('q', e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              className="w-full h-10 px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+            /></div>
+              
+              
               {/* Area Filter */}
               <div>
-                <label className="text-sm font-medium mb-1 block">Area</label>
+            
                 <select
                   value={filters.area || ''}
                   onChange={(e) => handleInputChange('area', e.target.value)}
@@ -124,33 +122,17 @@ export default function SearchFilters({
                   ))}
                 </select>
               </div>
-
-              {/* Property Type Filter */}
-              <div>
-                <label className="text-sm font-medium mb-1 block">Type</label>
-                <select
-                  value={filters.type || ''}
-                  onChange={(e) => handleInputChange('type', e.target.value)}
-                  className="w-full h-10 px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
-                >
-                  <option value="">All Types</option>
-                  {types.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                            
 
               {/* Bedrooms Filter */}
               <div>
-                <label className="text-sm font-medium mb-1 block">Bedrooms</label>
+                
                 <select
                   value={filters.beds || ''}
                   onChange={(e) => handleInputChange('beds', e.target.value ? parseInt(e.target.value) : undefined)}
                   className="w-full h-10 px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 >
-                  <option value="">Any</option>
+                  <option value="">Number of Bedrooms</option>
                   {bedOptions.map((beds) => (
                     <option key={beds} value={beds}>
                       {beds} bed{beds !== 1 ? 's' : ''}
@@ -158,53 +140,18 @@ export default function SearchFilters({
                   ))}
                 </select>
               </div>
-
-              {/* Featured Filter */}
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="featured"
-                  checked={filters.featured || false}
-                  onChange={(e) => handleInputChange('featured', e.target.checked)}
-                  className="rounded border-input"
-                />
-                <label htmlFor="featured" className="text-sm font-medium">
-                  Featured Only
-                </label>
-              </div>
-            </div>
-
-            {/* Price Range */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium mb-1 block">Min Price (per month)</label>
-                <Input
-                  type="number"
-                  placeholder="Min price"
-                  value={filters.minPrice || ''}
-                  onChange={(e) => handleInputChange('minPrice', e.target.value ? parseInt(e.target.value) : undefined)}
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium mb-1 block">Max Price (per month)</label>
-                <Input
-                  type="number"
-                  placeholder="Max price"
-                  value={filters.maxPrice || ''}
-                  onChange={(e) => handleInputChange('maxPrice', e.target.value ? parseInt(e.target.value) : undefined)}
-                />
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-2 pt-4">
-              <Button onClick={handleSearch} disabled={loading}>
-                {loading ? 'Searching...' : 'Search Properties'}
-              </Button>
-              <Button variant="outline" onClick={handleReset}>
-                <X className="w-4 h-4 mr-2" />
-                Reset
-              </Button>
+            <div className="flex gap-2">
+            <Button onClick={handleSearch} disabled={loading}>
+              <Search className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+             
+             <Button variant="outline" onClick={handleReset}>
+               <X className="w-4 h-4 mr-2" />
+               Reset
+             </Button>
+           </div>
+             
             </div>
           </div>
         </div>
