@@ -141,12 +141,12 @@ export default function SearchFilters({
                 </select>
               </div>
             <div className="flex gap-2">
-            <Button onClick={handleSearch} disabled={loading}>
+            <Button onClick={handleSearch} disabled={loading} className='bg-[#383E42] text-white rounded-none hover:text-[#B87333]'>
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
              
-             <Button variant="outline" onClick={handleReset}>
+             <Button variant="outline" onClick={handleReset} className='hover:bg-[#9d3434] rounded-none border border-[#383E42] text-[#383E42] hover:text-white'>
                <X className="w-4 h-4 mr-2" />
                Reset
              </Button>

@@ -42,6 +42,8 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
     age,
     DESCRIPTION,
     description,
+    comments,
+    thoughts,
     strapline,
     postcode,
     area,
@@ -52,19 +54,32 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
   const bathsNum = parseInt(baths || '0');
   const recepsNum = parseInt(receps || '0');
 
-  // Get description value (check both fields and ensure it's not empty)
-  const descriptionText = (DESCRIPTION && DESCRIPTION.trim()) || (description && description.trim()) || '';
+  // Get description value (check all possible description fields and ensure it's not empty)
+  const descriptionText = 
+    (DESCRIPTION && DESCRIPTION.trim()) || 
+    (description && description.trim()) || 
+    (comments && comments.trim()) || 
+    (thoughts && thoughts.trim()) || 
+    '';
 
   // Debug: Log description fields
   if (process.env.NODE_ENV === 'development') {
     console.log('Property Description Debug:', {
       DESCRIPTION,
       description,
+      comments,
+      thoughts,
       descriptionText,
-      hasDESCRIPTION: !!DESCRIPTION,
-      hasDescription: !!description,
+      hasDESCRIPTION: !!(DESCRIPTION && DESCRIPTION.trim()),
+      hasDescription: !!(description && description.trim()),
+      hasComments: !!(comments && comments.trim()),
+      hasThoughts: !!(thoughts && thoughts.trim()),
       hasDescriptionText: !!descriptionText,
-      propertyKeys: Object.keys(property).filter(k => k.toLowerCase().includes('desc'))
+      propertyKeys: Object.keys(property).filter(k => 
+        k.toLowerCase().includes('desc') || 
+        k.toLowerCase().includes('comment') || 
+        k.toLowerCase().includes('thought')
+      )
     });
   }
 

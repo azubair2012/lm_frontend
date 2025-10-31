@@ -6,7 +6,7 @@ import { Property, getBaseUrl, rentmanApi } from '@/lib/api';
 import { formatPrice, truncateText } from '@/lib/utils';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { MapPin, Bed, Bath, Car, Calendar, Loader2 } from 'lucide-react';
 import PropertyDetails from '@/components/PropertyDetails';
 import PropertyGallery from '@/components/PropertyGallery';
@@ -129,7 +129,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </div>
           <Button 
             onClick={handleOpenModal}
-            className="rounded-none bg-black text-white hover:bg-black/90"
+            className="rounded-none bg-[#383E42] text-white hover:text-[#B87333] hover:bg-black/90"
           >
             View Details
           </Button>
@@ -141,6 +141,9 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           <DialogTitle className="sr-only">
             {fullProperty?.displayaddress || property.displayaddress || 'Property Details'}
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Property details and gallery for {fullProperty?.displayaddress || property.displayaddress}
+          </DialogDescription>
           {loadingProperty ? (
             <div className="flex items-center justify-center min-h-[400px]">
               <div className="text-center space-y-4">
