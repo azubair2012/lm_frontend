@@ -44,17 +44,6 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           className="object-cover transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute top-4 left-4">
-          <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-medium">
-            {TYPE}
-          </span>
-        </div>
-        <div className="absolute top-4 right-4">
-          <div className="flex items-center gap-1 bg-black/70 text-white px-2 py-1 rounded-full text-xs">
-            <Star className="w-3 h-3 fill-current" />
-            <span>{parseInt(rating)}</span>
-          </div>
-        </div>
       </div>
 
       <CardContent className="p-4">
@@ -114,13 +103,12 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               {formatPrice(parseFloat(rentmonth))}
               <span className="text-sm font-normal text-muted-foreground">/month</span>
             </div>
-            {displayprice && displayprice !== '0' && (
-              <div className="text-sm text-muted-foreground">
-                Sale: {displayprice}
-              </div>
-            )}
+           
           </div>
-          <Button asChild>
+          <Button 
+            asChild
+            className="rounded-none bg-black text-white hover:bg-black/90"
+          >
             <Link href={`/properties/${propref}`}>
               View Details
             </Link>
