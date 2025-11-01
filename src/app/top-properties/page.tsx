@@ -5,7 +5,8 @@ import { Property } from '@/lib/api';
 import { rentmanApi } from '@/lib/api';
 import TopPropertyCard from '@/components/TopPropertyCard';
 import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, Home, Star } from 'lucide-react';
+import { Loader2, Home } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const CACHE_KEY = 'top-properties-cache';
 const CACHE_TIMESTAMP_KEY = 'top-properties-cache-timestamp';
@@ -18,7 +19,6 @@ export default function TopPropertiesPage() {
   // Load first 7 properties
   useEffect(() => {
     loadTopProperties();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadTopProperties = async () => {
@@ -110,11 +110,43 @@ export default function TopPropertiesPage() {
               });
 
               return (
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:gap-0 gap-6 auto-rows-[220px] md:auto-rows-[260px] lg:auto-rows-[300px]">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:gap-0 gap-6 auto-rows-[180px] md:auto-rows-[220px] lg:auto-rows-[240px] max-w-6xl mx-auto">
                   {slots.map((prop, idx) => (
                     <div key={idx} className="relative">
                       {prop ? (
                         <TopPropertyCard property={prop} />
+                      ) : idx === 0 ? (
+                        // Position 0 (top-left): Featured section
+                        <div className="h-full w-full md:flex flex-col items-center gap-3 p-2 justify-center">
+                          <div className='flex flex-col items-end'>
+                          <p className="text-5xl font-bold text-[#383E42] uppercase" style={{ fontFamily: 'Roboto, sans-serif' }}>FEATURED</p>
+                          <p className="text-6xl font-light text-[#B87333]" style={{ fontFamily: 'Southland, serif' }}>Listings</p>
+                          </div>
+                          <Button 
+                            className="bg-[#383E42] text-sm hover:text-[#B87333] text-white rounded-none h-[55px] w-fit mt-2" style={{ fontFamily: 'Roboto, sans-serif' }}
+                          >
+                            VIEW ALL PROPERTIES
+                          </Button>
+                        </div>
+                      ) : idx === 8 ? (
+                        // Position 8 (bottom-right): Action buttons
+                        <div className="h-full w-full md:flex flex-col items-center gap-3 p-2 justify-center" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                          <Button 
+                            className="bg-[#383E42] text-md hover:text-[#B87333] text-white rounded-none h-[55px] w-[320px]"
+                          >
+                            SELL YOUR HOMES
+                          </Button>
+                          <Button 
+                            className="bg-[#383E42] text-md hover:text-[#B87333] text-white rounded-none h-[55px] w-[320px]"
+                          >
+                            TO LET
+                          </Button>
+                          <Button 
+                            className="bg-[#383E42] text-md hover:text-[#B87333] text-white rounded-none h-[55px] w-[320px]"
+                          >
+                            GET VALUATION
+                          </Button>
+                        </div>
                       ) : (
                         <div className="h-full w-full hidden md:block" />
                       )}
