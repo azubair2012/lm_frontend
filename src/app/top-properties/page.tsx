@@ -7,6 +7,10 @@ import TopPropertyCard from '@/components/TopPropertyCard';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, Home, Star } from 'lucide-react';
 
+const CACHE_KEY = 'top-properties-cache';
+const CACHE_TIMESTAMP_KEY = 'top-properties-cache-timestamp';
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export default function TopPropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
@@ -14,11 +18,34 @@ export default function TopPropertiesPage() {
   // Load first 7 properties
   useEffect(() => {
     loadTopProperties();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadTopProperties = async () => {
     try {
       setLoading(true);
+      
+      // Check sessionStorage cache
+      if (typeof window !== 'undefined') {
+        const cachedData = sessionStorage.getItem(CACHE_KEY);
+        const cachedTimestamp = sessionStorage.getItem(CACHE_TIMESTAMP_KEY);
+        
+        if (cachedData && cachedTimestamp) {
+          const age = Date.now() - parseInt(cachedTimestamp);
+          if (age < CACHE_DURATION) {
+            console.log('✅ Loading top properties from cache');
+            const parsed = JSON.parse(cachedData);
+            setProperties(parsed);
+            setLoading(false);
+            return;
+          } else {
+            console.log('⏰ Cache expired, fetching fresh data');
+          }
+        }
+      }
+
+      console.log('📄 Fetching top 7 properties from API');
+      
       // Fetch only the first 7 properties
       const searchResponse = await rentmanApi.searchProperties({ 
         page: 1, 
@@ -29,6 +56,12 @@ export default function TopPropertiesPage() {
       console.log('🏠 Properties count:', searchResponse.properties?.length);
       
       setProperties(searchResponse.properties);
+      
+      // Cache to sessionStorage
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify(searchResponse.properties));
+        sessionStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
+      }
     } catch (error) {
       console.error('Error loading top properties:', error);
     } finally {

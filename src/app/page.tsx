@@ -7,7 +7,7 @@ import PropertyCard from '@/components/PropertyCard';
 import SearchFilters from '@/components/SearchFilters';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, Home, TrendingUp } from 'lucide-react';
+import { Loader2, Home, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function HomePage() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -35,10 +35,12 @@ export default function HomePage() {
     types: [] as string[],
     priceRange: { min: 0, max: 10000 },
   });
+  const [pageCache, setPageCache] = useState<Map<string, Property[]>>(new Map());
 
   // Load initial data
   useEffect(() => {
     loadInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadInitialData = async () => {
@@ -56,6 +58,10 @@ export default function HomePage() {
       });
       
       setProperties(searchResponse.properties);
+      
+      // Cache the initial page
+      const cacheKey = JSON.stringify({ ...searchParams, page: 1 });
+      setPageCache(new Map([[cacheKey, searchResponse.properties]]));
       
       // Update pagination from search response
       setPagination({
@@ -85,8 +91,11 @@ export default function HomePage() {
       console.log('🔍 Search called with params:', JSON.stringify(params, null, 2));
       setSearchLoading(true);
       
-      // Ensure limit is always 20
-      const searchParamsWithLimit = { ...params, limit: 20 };
+      // Clear page cache on new search
+      setPageCache(new Map());
+      
+      // Always start at page 1 for new search, ensure limit is always 20
+      const searchParamsWithLimit = { ...params, page: 1, limit: 20 };
       setSearchParams(searchParamsWithLimit);
       
       const response = await rentmanApi.searchProperties(searchParamsWithLimit);
@@ -97,12 +106,20 @@ export default function HomePage() {
       if (response && response.properties && response.pagination) {
         console.log('✅ Valid search response, setting properties:', response.properties.length);
         setProperties(response.properties);
+        
+        // Cache the first page of search results
+        const cacheKey = JSON.stringify(searchParamsWithLimit);
+        setPageCache(new Map([[cacheKey, response.properties]]));
+        
         setPagination({
           page: response.pagination.page,
           totalPages: response.pagination.totalPages,
           hasNext: response.pagination.hasNext,
           hasPrev: response.pagination.hasPrev,
         });
+        
+        // Scroll to top on new search
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         console.error('❌ Invalid search response:', response);
         setProperties([]);
@@ -120,34 +137,60 @@ export default function HomePage() {
     }
   };
 
-  const loadMore = async () => {
-    if (!pagination.hasNext || searchLoading) return;
+  const goToPage = async (pageNumber: number) => {
+    if (pageNumber < 1 || pageNumber > pagination.totalPages || searchLoading) return;
+    
+    // Create cache key based on search params + page number
+    const cacheKey = JSON.stringify({ ...searchParams, page: pageNumber });
+    
+    // Check if page is already cached
+    if (pageCache.has(cacheKey)) {
+      console.log(`✅ Loading page ${pageNumber} from cache`);
+      setProperties(pageCache.get(cacheKey)!);
+      setPagination({
+        page: pageNumber,
+        totalPages: pagination.totalPages,
+        hasNext: pageNumber < pagination.totalPages,
+        hasPrev: pageNumber > 1,
+      });
+      setSearchParams(prev => ({ ...prev, page: pageNumber }));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     
     try {
       setSearchLoading(true);
-      const nextPage = pagination.page + 1;
-      console.log('📄 Loading more - Page:', nextPage, 'Current total:', properties.length);
+      console.log(`📄 Fetching page ${pageNumber} from API`);
       
       const response = await rentmanApi.searchProperties({
         ...searchParams,
-        page: nextPage,
+        page: pageNumber,
         limit: 20,
       });
       
-      console.log('📄 Load more response:', {
-        newProperties: response.properties.length,
+      console.log('📄 Page response:', {
+        page: pageNumber,
+        properties: response.properties.length,
         pagination: response.pagination
       });
       
-      setProperties(prev => [...prev, ...response.properties]);
+      // Cache the page data
+      setPageCache(prev => new Map(prev).set(cacheKey, response.properties));
+      
+      // Replace properties instead of appending
+      setProperties(response.properties);
       setPagination({
         page: response.pagination.page,
         totalPages: response.pagination.totalPages,
         hasNext: response.pagination.hasNext,
         hasPrev: response.pagination.hasPrev,
       });
+      setSearchParams(prev => ({ ...prev, page: pageNumber }));
+      
+      // Scroll to top of results
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
-      console.error('Error loading more properties:', error);
+      console.error('Error loading page:', error);
     } finally {
       setSearchLoading(false);
     }
@@ -207,27 +250,93 @@ export default function HomePage() {
                 ))}
               </div>
 
-              {/* Load More Button */}
-              {pagination.hasNext && (
-                <div className="text-center mt-8">
+              {/* Pagination Controls */}
+              {pagination.totalPages > 1 && (
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-8">
+                  {/* Previous Button */}
                   <Button
-                    onClick={loadMore}
-                    disabled={searchLoading}
-                    size="lg"
-                    className="min-w-32"
+                    onClick={() => goToPage(pagination.page - 1)}
+                    disabled={!pagination.hasPrev || searchLoading}
+                    variant="outline"
+                    size="sm"
                   >
-                    {searchLoading ? (
+                    <ChevronLeft className="w-4 h-4 mr-1" />
+                    Previous
+                  </Button>
+                  
+                  {/* Page Numbers */}
+                  <div className="flex items-center gap-1">
+                    {/* First page */}
+                    {pagination.page > 3 && (
                       <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Loading...
-                      </>
-                    ) : (
-                      <>
-                        <TrendingUp className="w-4 h-4 mr-2" />
-                        Load More
+                        <Button
+                          onClick={() => goToPage(1)}
+                          disabled={searchLoading}
+                          variant={pagination.page === 1 ? "default" : "outline"}
+                          size="sm"
+                          className="min-w-10"
+                        >
+                          1
+                        </Button>
+                        {pagination.page > 4 && (
+                          <span className="px-2 text-muted-foreground">...</span>
+                        )}
                       </>
                     )}
+                    
+                    {/* Page range around current page */}
+                    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+                      .filter(page => {
+                        // Show pages within 2 of current page
+                        return page >= pagination.page - 2 && page <= pagination.page + 2;
+                      })
+                      .map(page => (
+                        <Button
+                          key={page}
+                          onClick={() => goToPage(page)}
+                          disabled={searchLoading}
+                          variant={pagination.page === page ? "default" : "outline"}
+                          size="sm"
+                          className="min-w-10"
+                        >
+                          {page}
+                        </Button>
+                      ))}
+                    
+                    {/* Last page */}
+                    {pagination.page < pagination.totalPages - 2 && (
+                      <>
+                        {pagination.page < pagination.totalPages - 3 && (
+                          <span className="px-2 text-muted-foreground">...</span>
+                        )}
+                        <Button
+                          onClick={() => goToPage(pagination.totalPages)}
+                          disabled={searchLoading}
+                          variant={pagination.page === pagination.totalPages ? "default" : "outline"}
+                          size="sm"
+                          className="min-w-10"
+                        >
+                          {pagination.totalPages}
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                  
+                  {/* Next Button */}
+                  <Button
+                    onClick={() => goToPage(pagination.page + 1)}
+                    disabled={!pagination.hasNext || searchLoading}
+                    variant="outline"
+                    size="sm"
+                  >
+                    Next
+                    <ChevronRight className="w-4 h-4 ml-1" />
                   </Button>
+                  
+                  {/* Page info */}
+                  <span className="text-sm text-muted-foreground ml-0 sm:ml-4 mt-2 sm:mt-0">
+                    Page {pagination.page} of {pagination.totalPages}
+                  </span>
                 </div>
               )}
             </>
