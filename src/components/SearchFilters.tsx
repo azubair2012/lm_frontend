@@ -66,10 +66,10 @@ export default function SearchFilters({
   const bedOptions = [1, 2, 3, 4, 5, 6];
 
   return (
-    <Card className="mb-6">
+    <Card className="mb-0">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
+        <div className="lg:flex flex-col lg:items-start lg:justify-start items-center justify-between">
+          <CardTitle className="text-[16px] lg:text-[24px] flex items-center gap-3 lg:gap-2">
             <Search className="w-5 h-5" />
             Search Properties
           </CardTitle>
@@ -77,7 +77,7 @@ export default function SearchFilters({
             variant="outline"
             size="sm"
             onClick={() => setShowFilters(!showFilters)}
-            className="lg:hidden"
+            className="lg:hidden mt-4"
           >
             <Filter className="w-4 h-4 mr-2" />
             Filters
@@ -87,8 +87,6 @@ export default function SearchFilters({
 
       <CardContent>
         <div className="space-y-4">
-          
-
           {/* Filters */}
           <div className={`space-y-4 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

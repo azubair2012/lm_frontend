@@ -209,7 +209,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
-    
       {/* Search Filters */}
       <section className="py-4">
         <div className="container mx-auto px-4">
@@ -217,7 +216,6 @@ export default function HomePage() {
             onSearch={handleSearch}
             loading={searchLoading}
             areas={filters.areas}
-          
           />
         </div>
       </section>
@@ -225,8 +223,6 @@ export default function HomePage() {
       {/* Properties Grid */}
       <section className="py-8">
         <div className="container mx-auto px-4">
-          
-
           {properties.length === 0 ? (
             <Card>
               <CardContent className="p-8 text-center">
