@@ -117,13 +117,13 @@ export default function TopPropertiesPage() {
                         <TopPropertyCard property={prop} />
                       ) : idx === 0 ? (
                         // Position 0 (top-left): Featured section
-                        <div className="h-full w-full md:flex flex-col items-center gap-3 p-2 justify-center">
+                        <div className="h-full w-full md:flex flex-col items-center p-2 justify-center">
                           <div className='flex flex-col items-end relative'>
-                         <p className="text-7xl text-black uppercase" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}>FEATURED</p>
-                         <p className="text-6xl font-light text-[#B87333] absolute" style={{ fontFamily: 'Southland, serif' }}>Listings</p>
+                         <p className="text-[80px] text-black uppercase" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}>FEATURED</p>
+                         <p className="text-7xl font-medium top-16 text-[#B87333] absolute" style={{ fontFamily: 'Southland, serif' }}>Listings</p>
                           </div>
                           <Button 
-                            className="bg-[#383E42] text-sm hover:text-[#B87333] text-white rounded-none h-[55px] w-fit mt-8" style={{ fontFamily: 'Roboto, sans-serif' }}
+                            className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none h-[55px] w-fit mt-4" style={{ fontFamily: 'Roboto, sans-serif' }}
                           >
                             VIEW ALL PROPERTIES
                           </Button>
