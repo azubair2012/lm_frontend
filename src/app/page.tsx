@@ -211,7 +211,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
     
       {/* Search Filters */}
-      <section className="py-8">
+      <section className="py-4">
         <div className="container mx-auto px-4">
           <SearchFilters
             onSearch={handleSearch}
@@ -225,12 +225,7 @@ export default function HomePage() {
       {/* Properties Grid */}
       <section className="py-8">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">All Properties</h2>
-            <div className="text-sm text-muted-foreground">
-              {properties.length} propert{properties.length !== 1 ? 'ies' : 'y'} found
-            </div>
-          </div>
+          
 
           {properties.length === 0 ? (
             <Card>

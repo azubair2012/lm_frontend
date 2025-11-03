@@ -31,7 +31,7 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
             priority
           />
           {/* Property Title */}
-          <div className="space-y-2 absolute z-20 bg-[#383e42b1] backdrop-blur-sm p-2 w-full bottom-8 left-0">
+          <div className="space-y-2 absolute z-20 bg-[#383e42b1] backdrop-blur-sm p-2 w-full bottom-14 lg:bottom-8 left-0">
             <p className="font-medium text-white text-md leading-tight line-clamp-2 group-hover:text-primary transition-colors" style={{ fontFamily: 'Roboto, sans-serif' }}>
               {displayaddress}
             </p>

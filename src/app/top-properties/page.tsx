@@ -117,8 +117,8 @@ export default function TopPropertiesPage() {
                         <TopPropertyCard property={prop} />
                       ) : idx === 0 ? (
                         // Position 0 (top-left): Featured section
-                        <div className="h-full w-full md:flex flex-col items-center p-2 justify-center">
-                          <div className='flex flex-col items-end relative'>
+                        <div className="h-full w-full flex flex-col items-center p-2 justify-center">
+                          <div className='flex flex-col items-center md:items-end relative'>
                          <p className="text-[80px] text-black uppercase" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}>FEATURED</p>
                          <p className="text-7xl font-medium top-16 text-[#B87333] absolute" style={{ fontFamily: 'Southland, serif' }}>Listings</p>
                           </div>
@@ -130,19 +130,19 @@ export default function TopPropertiesPage() {
                         </div>
                       ) : idx === 8 ? (
                         // Position 8 (bottom-right): Action buttons
-                        <div className="h-full w-full md:flex flex-col items-center gap-3 p-2 justify-center" style={{ fontFamily: 'Roboto, sans-serif' }}>
+                        <div className="h-full w-full flex flex-col items-center gap-3 p-2 justify-center" style={{ fontFamily: 'Roboto, sans-serif' }}>
                           <Button 
-                            className="bg-[#383E42] text-md hover:text-[#B87333] text-white rounded-none h-[55px] w-[320px]"
+                            className="bg-[#383E42] text-md hover:text-[#B87333] text-white rounded-none h-[55px] w-full md:w-[320px]"
                           >
                             SELL YOUR HOMES
                           </Button>
                           <Button 
-                            className="bg-[#383E42] text-md hover:text-[#B87333] text-white rounded-none h-[55px] w-[320px]"
+                            className="bg-[#383E42] text-md hover:text-[#B87333] text-white rounded-none h-[55px] w-full md:w-[320px]"
                           >
                             TO LET
                           </Button>
                           <Button 
-                            className="bg-[#383E42] text-md hover:text-[#B87333] text-white rounded-none h-[55px] w-[320px]"
+                            className="bg-[#383E42] text-md hover:text-[#B87333] text-white rounded-none h-[55px] w-full md:w-[320px]"
                           >
                             GET VALUATION
                           </Button>
