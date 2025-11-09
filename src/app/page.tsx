@@ -15,7 +15,7 @@ export default function HomePage() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchParams, setSearchParams] = useState<SearchParams>({
     page: 1,
-    limit: 20,
+    limit: 12,
     q: '',
     area: '',
     type: '',
@@ -46,7 +46,7 @@ export default function HomePage() {
   const loadInitialData = async () => {
     try {
       setLoading(true);
-      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 20 });
+      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 12 });
       
       console.log('🏠 Initial search response:', searchResponse);
       console.log('🏠 Properties count:', searchResponse.properties?.length);
@@ -94,8 +94,8 @@ export default function HomePage() {
       // Clear page cache on new search
       setPageCache(new Map());
       
-      // Always start at page 1 for new search, ensure limit is always 20
-      const searchParamsWithLimit = { ...params, page: 1, limit: 20 };
+      // Always start at page 1 for new search, ensure limit is always 12
+      const searchParamsWithLimit = { ...params, page: 1, limit: 12 };
       setSearchParams(searchParamsWithLimit);
       
       const response = await rentmanApi.searchProperties(searchParamsWithLimit);
@@ -165,7 +165,7 @@ export default function HomePage() {
       const response = await rentmanApi.searchProperties({
         ...searchParams,
         page: pageNumber,
-        limit: 20,
+        limit: 12,
       });
       
       console.log('📄 Page response:', {
