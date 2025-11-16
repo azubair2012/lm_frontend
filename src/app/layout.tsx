@@ -32,7 +32,7 @@ export default function RootLayout({
           <NavBar />
           <HeroSlider />
           <main className="flex-1">
-            {children}
+          {children}
           </main>
           <Footer />
         </div>

@@ -46,7 +46,7 @@ export default function HomePage() {
 
       const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 7 });
       setProperties(searchResponse.properties);
-
+      
       if (typeof window !== 'undefined') {
         sessionStorage.setItem(CACHE_KEY, JSON.stringify(searchResponse.properties));
         sessionStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
@@ -68,7 +68,7 @@ export default function HomePage() {
                 <Loader2 className="mx-auto h-8 w-8 animate-spin" />
                 <p className="text-muted-foreground">Loading top properties...</p>
               </div>
-            </div>
+        </div>
           ) : properties.length === 0 ? (
             <Card>
               <CardContent className="p-8 text-center">
@@ -107,14 +107,14 @@ export default function HomePage() {
                             >
                               Listings
                             </p>
-                          </div>
+              </div>
                           <Link href="/properties">
-                            <Button
+                  <Button
                               className="mt-4 h-[55px] rounded-none bg-[#383E42] px-6 text-sm tracking-tight text-white transition hover:text-[#B87333]"
                               style={{ fontFamily: 'Roboto, sans-serif' }}
                             >
                               VIEW ALL PROPERTIES
-                            </Button>
+                  </Button>
                           </Link>
                         </div>
                       ) : idx === 8 ? (
@@ -124,18 +124,18 @@ export default function HomePage() {
                         >
                           <Button className="h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
                             SELL YOUR HOMES
-                          </Button>
+                        </Button>
                           <Button className="h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
                             TO LET
-                          </Button>
+                        </Button>
                           <Button className="h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
                             GET VALUATION
-                          </Button>
+                        </Button>
                         </div>
                       ) : (
                         <div className="hidden h-full w-full md:block" />
-                      )}
-                    </div>
+                    )}
+                  </div>
                   ))}
                 </div>
               );
@@ -217,7 +217,7 @@ export default function HomePage() {
             bother me for unnecessary things. Very personable too! I highly recommend their team for a smooth letting
             experience.”
           </p>
-        </div>
+    </div>
       </section>
 
       <HomeContactPreview />
