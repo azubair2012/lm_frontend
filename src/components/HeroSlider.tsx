@@ -1,90 +1,74 @@
 'use client';
 
-import Image from 'next/image';
-import { useEffect } from 'react';
-import { useKeenSlider } from 'keen-slider/react';
-import 'keen-slider/keen-slider.min.css';
+import { useEffect, useState } from 'react';
+import { Button } from './ui/button';
+import Link from 'next/link';
 
-type Slide = {
+type VideoSlide = {
   id: number;
   src: string;
-  alt: string;
   title: string;
   subtitle: string;
 };
 
-const SLIDES: Slide[] = [
-  {
-    id: 1,
-    src: 'https://framerusercontent.com/images/dkpVPiJfr1AJeuHnZUECtNJVrk.jpg?width=1920&height=1280',
-    alt: 'Modern luxury apartment exterior at sunset',
-    title: 'Discover Your Next Home',
-    subtitle: 'Premium listings across London and worldwide',
-  },
+const VIDEO_SLIDES: VideoSlide[] = [
   {
     id: 2,
-    src: 'https://framerusercontent.com/images/rmQJCAUw2V8FQrSQy9fAmxfyxo.jpg?width=1920&height=1280',
-    alt: 'Open plan living space with contemporary design',
-    title: 'Tailored Property Services',
-    subtitle: 'Valuations, management, maintenance, and strategy',
+    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/%5B1080p60fps%5D%20dubai-downtown-skyline-day-to-night-transition.mp4',
+    title: 'Global Cityscapes',
+    subtitle: 'From Dubai to London, experience world-class destinations.',
   },
   {
-    id: 3,
-    src: 'https://framerusercontent.com/images/rn0pYXxV1L6mqFqFZwz2dsdwY.jpg?width=1920&height=1280',
-    alt: 'Townhouse façade illuminated at dusk',
-    title: 'Global Reach, Local Expertise',
-    subtitle: 'International offices with deep market knowledge',
+    id: 1,
+    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/%5B1080p60fps%5D%20london_bridge_aerial_daytime%20%281%29.mp4',
+    title: 'London Living',
+    subtitle: 'Exceptional homes in one of the world’s great cities.',
   },
 ];
 
+const SLIDE_DURATION = 10000; // 10 seconds per video (adjust to match clip length)
+
 export default function HeroSlider() {
-  const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
-    loop: true,
-    slides: {
-      perView: 1,
-      spacing: 0,
-    },
-    drag: false,
-    renderMode: 'performance',
-  });
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (!slider) return;
-
     const interval = setInterval(() => {
-      slider.current?.next();
-    }, 6000);
+      setActiveIndex((prev) => (prev + 1) % VIDEO_SLIDES.length);
+    }, SLIDE_DURATION);
 
     return () => clearInterval(interval);
-  }, [slider]);
+  }, []);
 
   return (
-    <section className="relative h-[50vh] min-h-[360px] w-full overflow-hidden bg-black sm:h-[70vh]">
-      <div ref={sliderRef} className="keen-slider h-full">
-        {SLIDES.map((slide) => (
-          <div key={slide.id} className="keen-slider__slide relative h-full w-full">
-            <Image
-              src={slide.src}
-              alt={slide.alt}
-              fill
-              priority={slide.id === 1}
-              sizes="100vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-[rgba(0,0,0,0.35)]" />
-            <div className="absolute inset-x-4 bottom-10 flex max-w-3xl flex-col gap-4 text-white sm:inset-x-12 sm:bottom-16">
-              <span className="text-[0.65rem] uppercase tracking-[0.35em] text-white/70 sm:text-xs">
-                Rentman Properties
-              </span>
-              <h1 className="text-2xl font-semibold uppercase tracking-[0.3em] sm:text-4xl">
-                {slide.title}
-              </h1>
-              <p className="max-w-xl text-sm uppercase tracking-[0.2em] text-white/80 sm:text-base">
-                {slide.subtitle}
-              </p>
-            </div>
-          </div>
-        ))}
+    <section className="relative h-[50vh] min-h-[360px] w-full overflow-hidden bg-black sm:h-[80vh]">
+      {/* Video layers */}
+      {VIDEO_SLIDES.map((slide, index) => {
+        const isActive = index === activeIndex;
+
+        return (
+          <video
+            key={slide.id}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
+              isActive ? 'opacity-100' : 'opacity-0'
+            }`}
+            src={slide.src}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        );
+      })}
+
+     
+
+      <div className="absolute left-1/2 bottom-[50px] transform -translate-x-1/2 flex flex-col items-center justify-center text-white bg-[#f3f5f68e] backdrop-blur-sm p-4 pb-4">
+       <div className="flex items-center justify-center gap-10 my-6">                  
+                  <Link href="/properties" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px] p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>LONDON</Link>
+                  <Link href="/valuation" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>GET VALUATION</Link>
+                  <Link href="/international-properties" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>INTERNATIONAL</Link>
+
+        </div>
       </div>
     </section>
   );

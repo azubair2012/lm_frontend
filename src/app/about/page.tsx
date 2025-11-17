@@ -1,6 +1,12 @@
+import ImageSlideShow from '@/components/ImageSlideShow';
+
+
+
+
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background">
+      <ImageSlideShow />
       <section className="container mx-auto px-4 py-16">
         <div className="flex justify-center">
           <div className="relative flex flex-col items-center md:items-end">
@@ -19,7 +25,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="mx-auto mt-16 max-w-4xl space-y-8 text-justify text-base leading-8 text-muted-foreground" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
+        <div className="mx-auto mt-12 max-w-3xl space-y-6 text-justify text-base leading-8 text-muted-foreground" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
           <p>
             It is widely accepted amongst those involved in the residential property industry that the sale, letting and management of property are all independent fields of expertise. All too commonly vendors, landlords and tenants find themselves pigeon-holed within a rigid procedure which ultimately stifles both the spirit, ethos and results achieved by their real estate advisors.
           </p>

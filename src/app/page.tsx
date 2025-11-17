@@ -12,6 +12,7 @@ import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import HomeServicesGrid from '@/components/HomeServicesGrid';
 import HomeAboutPreview from '@/components/HomeAboutPreview';
 import HomeContactPreview from '@/components/HomeContactPreview';
+import HeroSlider from '@/components/HeroSlider';
 
 const CACHE_KEY = 'home-top-properties-cache';
 const CACHE_TIMESTAMP_KEY = 'home-top-properties-cache-timestamp';
@@ -60,6 +61,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-background">
+      <HeroSlider />
       <section className="py-12">
         <div className="container mx-auto px-4">
           {loading ? (

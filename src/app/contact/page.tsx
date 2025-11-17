@@ -86,6 +86,7 @@ our entire resources into perfect service delivery.
                 <li>Thursday 9.00am - 6.00pm</li>
                 <li>Friday 9.00am - 6.00pm</li>
                 <li>Saturday 10.00am - 3.00pm</li>
+                <li>Sunday: Closed</li>
               </ul>
             </div>
           </div>

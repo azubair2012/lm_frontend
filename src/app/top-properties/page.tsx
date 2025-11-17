@@ -44,7 +44,7 @@ export default function TopPropertiesPage() {
         }
       }
 
-      console.log('📄 Fetching top 7 properties from API');
+ 
       
       // Fetch only the first 7 properties
       const searchResponse = await rentmanApi.searchProperties({ 
