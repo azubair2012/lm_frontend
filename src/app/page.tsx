@@ -146,8 +146,70 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-black/95 py-16 text-white">
+      {/* Testimonials */}
+      <section className='relative'>
+      <div className="flex justify-center items-center py-12 max-w-[1400px] mx-auto h-[500px]"  style={{
+    backgroundImage: "url('/bg1.jpg')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+      }}>
+  
+          <div className="absolute z-50 flex flex-col items-center">
+            <span
+              className="text-[64px] text-black uppercase sm:text-[90px]"
+              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}
+            >
+              WHAT OUR
+            </span>
+            <span
+              className="absolute top-10 text-5xl text-[#B87333] sm:top-16 sm:text-[5.5rem] text-center"
+              style={{ fontFamily: 'Southland, serif' }}
+            >
+              Customers Are Saying
+            </span>
+            <div className='w-[900px] mt-8 text-[18px]'>
+              <span>I have used London move for a few years now. Great communication. They support when I need them and don’t bother me for unnecessary things. Very personable too! I highly recommend!
+                <br />
+                
+                -Kel
+              </span>
+              <div className='flex items-center justify-center mb-4'>              
+                <Link href="/testimonial" className="bg-[#383E42] text-sm hover:text-[#B87333] text-white rounded-none text-center font-semibold h-[50px] w-[280px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>SEE MORE TESTIMONIALS</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Before and After */}
+      <section className="py-16 text-black">
         <div className="container mx-auto flex max-w-6xl flex-col gap-8 rounded-[32px] bg-white/5 p-6 backdrop-blur-lg md:flex-row md:p-10">
+          <div className="flex max-w-xl flex-1 flex-col gap-6 text-left" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
+            <header className="relative flex flex-col items-start">
+            <span
+              className="text-[64px] text-black uppercase sm:text-[90px]"
+              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}
+            >
+              CONCIERGE
+            </span>
+            <span
+              className="absolute top-10 text-5xl text-[#B87333] sm:top-16 sm:text-[5.5rem] text-center"
+              style={{ fontFamily: 'Southland, serif' }}
+            >
+              Service
+            </span>
+            </header>
+           
+            <p className="text-base leading-7">
+              London Move&apos;s concierge service transforms properties to maximize their market value. Our team of experts
+              handles everything from minor repairs to complete renovations, staging, and bespoke marketing strategies,
+              ensuring your home launches with impact.
+            </p>
+            <div className="mt-auto flex flex-col gap-3 sm:flex-row">
+            <Link href="/concierge" className="bg-[#383E42] text-sm hover:text-[#B87333] text-white rounded-none text-center font-semibold h-[50px] w-[250px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>LEARN MORE</Link>
+            </div>
+          </div>
+          
           <div className="flex-1">
             <BeforeAfterSlider
               beforeSrc="https://framerusercontent.com/images/dkpVPiJfr1AJeuHnZUECtNJVrk.jpg?width=1920&height=1280"
@@ -155,73 +217,14 @@ export default function HomePage() {
               alt="Before and after concierge transformation"
             />
           </div>
-          <div className="flex max-w-xl flex-1 flex-col gap-6 text-left" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
-            <header className="space-y-3 text-[#101418]">
-              <h2 className="text-3xl font-semibold uppercase tracking-[0.25em] text-white" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}>
-                Before & After
-              </h2>
-              <div className="h-px w-24 bg-[#B87333]" />
-            </header>
-            <p className="text-base leading-7 text-white/80">
-              Concierge Service
-            </p>
-            <p className="text-base leading-7 text-white/80">
-              London Move&apos;s concierge service transforms properties to maximize their market value. Our team of experts
-              handles everything from minor repairs to complete renovations, staging, and bespoke marketing strategies,
-              ensuring your home launches with impact.
-            </p>
-            <div className="mt-auto flex flex-col gap-3 sm:flex-row">
-              <a
-                href="/concierge"
-                className="rounded-none bg-[#B87333] px-8 py-3 text-center text-xs uppercase tracking-[0.4em] text-white transition hover:bg-[#9f622b]"
-              >
-                Concierge Service
-              </a>
-              <a
-                href="/contact"
-                className="rounded-none border border-white/60 px-8 py-3 text-center text-xs uppercase tracking-[0.4em] text-white transition hover:border-white hover:bg-white/10"
-              >
-                Book a Consultation
-              </a>
-            </div>
-          </div>
+          
         </div>
       </section>
-
+          {/* Services */}
       <HomeServicesGrid />
-
+          {/* About Us */}
       <HomeAboutPreview />
-
-      <section className="py-20">
-        <div className="container mx-auto max-w-4xl px-4 text-center">
-          <div className="relative mb-12 flex flex-col items-center md:items-end">
-            <span
-              className="text-[56px] text-black uppercase sm:text-[72px]"
-              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 700, letterSpacing: '0.25em' }}
-            >
-              WHAT OUR
-            </span>
-            <span
-              className="absolute top-10 text-4xl text-[#B87333] sm:top-14 sm:text-6xl"
-              style={{ fontFamily: 'Southland, serif', fontWeight: 400 }}
-            >
-              Customers
-            </span>
-            <span
-              className="mt-12 text-[56px] text-black uppercase sm:text-[72px]"
-              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 700, letterSpacing: '0.25em' }}
-            >
-              Are Saying
-            </span>
-          </div>
-          <p className="mx-auto max-w-xl text-lg leading-9 text-[#383E42]" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
-            “I have used London Move for a few years now. Great communication. They support when I need them and don’t
-            bother me for unnecessary things. Very personable too! I highly recommend their team for a smooth letting
-            experience.”
-          </p>
-    </div>
-      </section>
-
+          {/* Contact Us */}
       <HomeContactPreview />
 
     </main>

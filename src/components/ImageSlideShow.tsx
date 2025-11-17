@@ -14,14 +14,20 @@ type ImageSlide = {
 const IMAGE_SLIDES: ImageSlide[] = [
   {
     id: 1,
-    src: '/lm_next/public/pexels-f4photography-813362.jpg',
-    title: 'Majestic Mountains',
+    src: '/s1.webp',
+    title: 'London Move',
     subtitle: 'Experience the beauty of nature.',
   },
   {
     id: 2,
-    src: '/lm_next/public/pexels-pho-tomass-883344227-32506477.jpg',
-    title: 'Urban Skyline',
+    src: '/s2.webp',
+    title: 'London Move',
+    subtitle: 'Discover city adventures.',
+  },
+  {
+    id: 3,
+    src: '/s3.webp',
+    title: 'London Move',
     subtitle: 'Discover city adventures.',
   },
 ];

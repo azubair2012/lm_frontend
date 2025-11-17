@@ -1,8 +1,9 @@
 import TestimonialsGrid from '@/components/TestimonialsGrid';
-
+import ImageSlideShow from '@/components/ImageSlideShow'; 
 export default function TestimonialPage() {
   return (
     <main className="min-h-screen bg-background">
+      <ImageSlideShow />
       <section className="container mx-auto px-4 py-16">
         <div className="flex justify-center">
           <div className="relative flex flex-col items-center md:items-end">

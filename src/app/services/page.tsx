@@ -1,6 +1,9 @@
+import ImageSlideShow from '@/components/ImageSlideShow'; 
+
 export default function ServicesPage() {
   return (
     <main className="min-h-screen bg-background">
+      <ImageSlideShow />
       <section className="container mx-auto px-4 py-16">
         {/* Heading */}
         <div className="flex flex-col items-center gap-6 text-center">

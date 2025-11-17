@@ -1,8 +1,10 @@
+import ImageSlideShow from '@/components/ImageSlideShow';
+
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-background">
+      <ImageSlideShow />
       <section className="container mx-auto px-4">
-
 {/* London Move Islington section */}
         <div className="mx-auto mt-16 flex max-w-4xl flex-col items-center gap-8 text-center">
           <div className="relative flex flex-col items-center md:items-end">

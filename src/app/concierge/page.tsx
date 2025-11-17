@@ -1,6 +1,9 @@
+import ImageSlideShow from '@/components/ImageSlideShow'; 
+
 export default function ConciergePage() {
   return (
     <main className="min-h-screen bg-background">
+      <ImageSlideShow />
       <section className="container mx-auto px-4 py-16">
         <div className="flex flex-col items-center text-center">
           <div className="relative flex flex-col items-center md:items-end">

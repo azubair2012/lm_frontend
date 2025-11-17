@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
-
+import ImageSlideShow from '@/components/ImageSlideShow'; 
 type PropertyCTA = { label: string; href: string };
 
 type PropertyData = {
@@ -22,6 +22,7 @@ export default function InternationalPropertiesPage() {
 
   return (
     <main className="min-h-screen bg-background">
+      <ImageSlideShow />
       <section className="container mx-auto px-4 py-16">
         <div className="flex flex-col items-center text-center">
           <div className="relative flex flex-col items-center md:items-end">

@@ -38,7 +38,11 @@ const SERVICES = [
 
 export default function HomeServicesGrid() {
   return (
-    <section className="bg-[url('https://framerusercontent.com/images/T1EU2RtCyYCMN9Gdyqs8fGbCKc.jpg?width=1920&height=1080')] bg-cover bg-center py-24">
+    <section className="py-32 max-w-[1400px] mx-auto" style={{
+      backgroundImage: "url('/bg2.jpg')",
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+        }}>
       <div className="container mx-auto max-w-6xl px-4">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {SERVICES.map((service) => (

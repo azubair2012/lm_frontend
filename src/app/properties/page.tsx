@@ -8,6 +8,7 @@ import SearchFilters from '@/components/SearchFilters';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Home, Loader2 } from 'lucide-react';
+import ImageSlideShow from '@/components/ImageSlideShow'; 
 
 export default function PropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -166,7 +167,8 @@ export default function PropertiesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <section className="py-4">
+      <ImageSlideShow />
+      <section className="py-4 mt-8">
         <div className="container mx-auto px-4">
           <SearchFilters onSearch={handleSearch} loading={searchLoading} areas={filters.areas} />
         </div>
