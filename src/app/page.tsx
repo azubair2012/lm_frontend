@@ -183,8 +183,8 @@ export default function HomePage() {
 
       {/* Before and After */}
       <section className="py-16 text-black">
-        <div className="container mx-auto flex max-w-6xl flex-col gap-8 rounded-[32px] bg-white/5 p-6 backdrop-blur-lg md:flex-row md:p-10">
-          <div className="flex max-w-xl flex-1 flex-col gap-6 text-left" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
+        <div className="container mx-auto flex max-w-7xl flex-col gap-8 rounded-[32px] bg-white/5 p-6 backdrop-blur-lg md:flex-row md:p-10">
+          <div className="flex max-w-lg flex-1 flex-col gap-6 text-left" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
             <header className="relative flex flex-col items-start">
             <span
               className="text-[64px] text-black uppercase sm:text-[90px]"
@@ -193,7 +193,7 @@ export default function HomePage() {
               CONCIERGE
             </span>
             <span
-              className="absolute top-10 text-5xl text-[#B87333] sm:top-16 sm:text-[5.5rem] text-center"
+              className="absolute top-10 text-5xl text-[#B87333] mt-4 sm:top-16 sm:text-[5.5rem] text-center"
               style={{ fontFamily: 'Southland, serif' }}
             >
               Service
@@ -205,12 +205,12 @@ export default function HomePage() {
               handles everything from minor repairs to complete renovations, staging, and bespoke marketing strategies,
               ensuring your home launches with impact.
             </p>
-            <div className="mt-auto flex flex-col gap-3 sm:flex-row">
+            <div className="flex flex-col gap-3 sm:flex-row">
             <Link href="/concierge" className="bg-[#383E42] text-sm hover:text-[#B87333] text-white rounded-none text-center font-semibold h-[50px] w-[250px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>LEARN MORE</Link>
             </div>
           </div>
           
-          <div className="flex-1">
+          <div className="flex-1 h-[450px]">
             <BeforeAfterSlider
               beforeSrc="https://framerusercontent.com/images/dkpVPiJfr1AJeuHnZUECtNJVrk.jpg?width=1920&height=1280"
               afterSrc="https://framerusercontent.com/images/a2WN7l3qDsoWAYmC7wnAKXTdY8Q.jpg?width=1920&height=1280"

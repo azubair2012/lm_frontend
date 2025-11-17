@@ -13,7 +13,7 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt }: BeforeAf
   const [position, setPosition] = useState(50);
 
   return (
-    <div className="relative h-full w-full select-none overflow-hidden border-[10px] border-[#383E42]" >
+    <div className="relative h-full w-full select-none overflow-hidden border-[16px] border-[rgba(15,15,15,0.9)]" >
       <Image
         src={afterSrc}
         alt={alt}
