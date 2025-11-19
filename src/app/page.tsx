@@ -210,10 +210,10 @@ export default function HomePage() {
             </div>
           </div>
           
-          <div className="flex-1 h-[450px]">
+          <div className="flex-1 h-[430px]">
             <BeforeAfterSlider
-              beforeSrc="https://framerusercontent.com/images/dkpVPiJfr1AJeuHnZUECtNJVrk.jpg?width=1920&height=1280"
-              afterSrc="https://framerusercontent.com/images/a2WN7l3qDsoWAYmC7wnAKXTdY8Q.jpg?width=1920&height=1280"
+              beforeSrc="https://framerusercontent.com/images/vQ8Uyh4tRjaJSM7ZB2ggJ1wCT4s.png?width=740&height=482"
+              afterSrc="https://framerusercontent.com/images/vyrQsg8QSVd2iah4yT0C4lldotE.png?width=740&height=600"
               alt="Before and after concierge transformation"
             />
           </div>

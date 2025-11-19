@@ -60,27 +60,25 @@ our entire resources into perfect service delivery.
         </div>
 
         {/* Content */}
-        <div className="mx-auto mt-10 flex w-full max-w-5xl flex-col items-center justify-center gap-3 md:flex-row md:gap-5">
+        <div className="mx-auto mt-10 flex w-full max-w-5xl justify-center gap-[100px] md:flex-row " style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>
           {/* Information column */}
           <div
-            className="flex-1 space-y-8 text-sm leading-7 text-[#383E42]"
-            style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}
-          >
+            className="space-y-8 text-sm leading-7 text-[#383E42]">
             <div>
-              <h3 className="font-semibold text-[#111518]">London Move</h3>
+              <h3 className="font-semibold text-lg text-[#111518]">London Move</h3>
               <p>312 St. Pauls Road</p>
               <p>Islington, London N1 2LF</p>
               <p>United Kingdom</p>
             </div>
 
             <div>
-              <h3 className="font-semibold text-[#111518]">Contact</h3>
+              <h3 className="font-semibold text-[#111518] text-lg">Contact</h3>
               <p>Phone: <a href="tel:+442072265252" className="hover:text-[#B87333]">0207 226 5252</a></p>
               <p>Email: <a href="mailto:admin@london-move.com" className="hover:text-[#B87333]">admin@london-move.com</a></p>
             </div>
 
             <div>
-              <h3 className="font-semibold text-[#111518]">Hours</h3>
+              <h3 className="font-semibold text-lg text-[#111518]">Hours</h3>
               <ul className="space-y-1">
                 <li>Monday 9.00am - 6.00pm</li>
                 <li>Tuesday 9.00am - 6.00pm</li>
@@ -94,14 +92,13 @@ our entire resources into perfect service delivery.
           </div>
 
           {/* Form column */}
-          <form className="flex-1 space-y-6" style={{ fontFamily: 'Public Sans, sans-serif' }}>
+          <form className="space-y-6" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 700}}>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <label className="flex flex-col gap-2 text-sm text-[#111518]">
                 <span>Name</span>
                 <input
                   type="text"
                   name="name"
-                  defaultValue="Jane Smith"
                   className="rounded-md border border-[#e5e7eb] bg-[#f5f5f5] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333] focus:bg-white"
                   placeholder="Jane Smith"
                 />
@@ -111,7 +108,6 @@ our entire resources into perfect service delivery.
                 <input
                   type="email"
                   name="email"
-                  defaultValue="jane@email.com"
                   className="rounded-md border border-[#e5e7eb] bg-[#f5f5f5] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333] focus:bg-white"
                   placeholder="jane@email.com"
                 />
@@ -140,7 +136,7 @@ our entire resources into perfect service delivery.
 
             <button
               type="submit"
-              className="w-full rounded-none bg-[#383E42] py-4 text-sm uppercase tracking-[0.45em] text-white transition hover:bg-[#2c3134]"
+              className="w-full rounded-none bg-[#383E42] py-4 text-sm uppercase tracking-[0.45em] text-white transition hover:text-[#B87333]"
             >
               Submit
             </button>

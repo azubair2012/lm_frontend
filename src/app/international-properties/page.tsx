@@ -28,42 +28,40 @@ export default function InternationalPropertiesPage() {
           <div className="relative flex flex-col items-center md:items-end">
             <span
               className="text-[64px] text-black uppercase sm:text-[80px]"
-              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 700, letterSpacing: '0.25em' }}
+              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 700 }}
             >
               Your Dream Home
             </span>
             <span
-              className="absolute top-10 text-5xl text-[#B87333] sm:top-14 sm:text-7xl"
+              className="absolute top-10 text-5xl text-[#B87333] sm:top-[80px] sm:text-7xl"
               style={{ fontFamily: 'Southland, serif', fontWeight: 400 }}
             >
               Around The Would
             </span>
           </div>
-          <p className="mt-8 text-xs uppercase tracking-[0.35em] text-[#383E42]" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
+          <div className='flex gap-10 mt-8'>
+            <div className='flex flex-col items-center gap-2'>
+              <img src="/LM_ICON.png" alt="Embayt" className="w-[24px] h-[40px] mx-auto" />
+              <img src="/logo.png" alt="Embayt" className="w-[200px] h-[20px] mx-auto" />
+            </div>
+              
+            <p className="mt-8 text-4xl font-bold uppercase text-[#383E42]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}>
             In partnership with
-          </p>
+            </p>
+              <img src="/emblogo.png" alt="Embayt" className="w-[90px] mx-auto" />
+          </div>
+          
         </div>
 
         <article
-          className="mx-auto mt-12 max-w-4xl space-y-8 text-justify text-sm leading-8 text-[#383E42] sm:text-base"
-          style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}
+          className="mx-auto mt-12 max-w-5xl space-y-8 text-justify text-xl leading-8 text-[#383E42] sm:text-center"
+          style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
         >
+          
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint.
+          We are proud to partner with <a href="https://www.embayt.com" target="_blank"><span className="text-[#2c8ed4] font-bold hover:underline">Embayt</span></a>, bringing you a global network and exclusive property opportunities. Together, we offer seamless international real estate solutions tailored to your needs.
           </p>
-          <p>
-            We are proud to partner with Embayt, bringing you a global network and exclusive property opportunities.
-            Together, we offer seamless international real estate solutions tailored to your needs.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint.
-          </p>
+         
         </article>
       </section>
 

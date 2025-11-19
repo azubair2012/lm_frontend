@@ -12,19 +12,19 @@ type VideoSlide = {
 };
 
 const VIDEO_SLIDES: VideoSlide[] = [
+   {
+    id: 1,
+    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/%5B1080p60fps%5D%20london_bridge_aerial_daytime%20%281%29.mp4',
+    title: 'London Living',
+    subtitle: 'Exceptional homes in one of the world’s great cities.',
+  },
   {
     id: 2,
     src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/%5B1080p60fps%5D%20dubai-downtown-skyline-day-to-night-transition.mp4',
     title: 'Global Cityscapes',
     subtitle: 'From Dubai to London, experience world-class destinations.',
   },
-  {
-    id: 1,
-    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/%5B1080p60fps%5D%20london_bridge_aerial_daytime%20%281%29.mp4',
-    title: 'London Living',
-    subtitle: 'Exceptional homes in one of the world’s great cities.',
-  },
-];
+ ];
 
 const SLIDE_DURATION = 10000; // 10 seconds per video (adjust to match clip length)
 
