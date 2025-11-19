@@ -17,6 +17,11 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'framerusercontent.com',
                 pathname: '/images/**',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.public.blob.vercel-storage.com',
+                pathname: '/**',
             }
         ],
     },

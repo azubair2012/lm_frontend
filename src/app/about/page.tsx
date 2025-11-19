@@ -1,5 +1,5 @@
 import ImageSlideShow from '@/components/ImageSlideShow';
-
+import Image from 'next/image';
 
 
 
@@ -7,8 +7,16 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background">
       <ImageSlideShow />
-      <section className="container mx-auto px-4 py-16">
-        <div className="flex justify-center">
+      <section className="mx-auto min-h-screen relative">
+
+      <div className="absolute -z-10 w-full h-full mx-auto opacity-50" style={{
+              backgroundImage: "url('/bg2.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              }}>
+          </div>
+
+        <div className="flex justify-center pt-12">
           <div className="relative flex flex-col items-center md:items-end">
             <span
               className="text-[64px] text-black uppercase sm:text-[80px]"
@@ -25,7 +33,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl space-y-6 text-justify text-base leading-8 text-muted-foreground" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
+        <div className="mx-auto mt-12 max-w-3xl space-y-6 text-justify text-lg leading-8 " style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>
           <p>
             It is widely accepted amongst those involved in the residential property industry that the sale, letting and management of property are all independent fields of expertise. All too commonly vendors, landlords and tenants find themselves pigeon-holed within a rigid procedure which ultimately stifles both the spirit, ethos and results achieved by their real estate advisors.
           </p>
@@ -35,6 +43,22 @@ export default function AboutPage() {
           <p>
             All staff and associates undergo ongoing training and development to ensure consistent quality and care. London Move is hosted by a team of property specialists each with accountability of their sales or lettings portfolios, ensuring dedicated focus and expertise at every step of your property journey.
           </p>
+        </div>
+        <div className="flex justify-center gap-8">
+        <Image
+            src="https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/1579144537.webp"
+            alt="About London Move"
+            width={500}
+            height={200}
+            className="rounded-lg object-cover"
+          />
+          <Image
+            src="https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/1579144537.webp"
+            alt="About London Move"
+            width={500}
+            height={200}
+            className="rounded-lg object-cover"
+          />
         </div>
       </section>
     </main>

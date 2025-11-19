@@ -10,7 +10,6 @@ export default function LondonOfficePage() {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
       }}>
-        
       </div>
           <div>
             <header className="relative flex flex-col items-center">

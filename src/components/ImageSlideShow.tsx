@@ -14,25 +14,25 @@ type ImageSlide = {
 const IMAGE_SLIDES: ImageSlide[] = [
   {
     id: 1,
-    src: '/s1.webp',
+    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/1579144537.webp',
     title: 'London Move',
     subtitle: 'Experience the beauty of nature.',
   },
   {
     id: 2,
-    src: '/s2.webp',
+    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/pexels-pho-tomass-883344227-32506477%20%282%29.webp',
     title: 'London Move',
     subtitle: 'Discover city adventures.',
   },
   {
     id: 3,
-    src: '/s3.webp',
+    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/Islington_Square_12.ec896ae94ee0fa956657a33126818815.webp',
     title: 'London Move',
     subtitle: 'Discover city adventures.',
   },
 ];
 
-const SLIDE_DURATION = 10000; // 10 seconds per image
+const SLIDE_DURATION = 5000; // 10 seconds per image
 
 export default function ImageSlider() {
   const [activeIndex, setActiveIndex] = useState(0);

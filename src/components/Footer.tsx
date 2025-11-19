@@ -29,7 +29,7 @@ export default function Footer() {
   return (
     <footer className=" text-[#383E42] border-t-2 border-[#383E42] mt-8">
       <div className="mx-auto w-full max-w-6xl px-6 pt-6">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
+        <div className="flex justify-evenly gap-10">
           <nav className="flex flex-col gap-3 uppercase tracking-[0.25em]">
             <h2 className="font-medium">Services</h2>
             <ul className="flex flex-col gap-4 text-[0.7rem] tracking-[0.2em]  sm:text-xs">
@@ -43,9 +43,9 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <nav className="flex flex-col gap-3 uppercase tracking-[0.25em]">
+          <nav className="flex flex-col items-center gap-3 uppercase tracking-[0.25em]">
             <h2 className="font-medium">About</h2>
-            <ul className="flex flex-col gap-4 text-[0.7rem] tracking-[0.2em] sm:text-xs">
+            <ul className="flex flex-col items-center gap-4 text-[0.7rem] tracking-[0.2em] sm:text-xs">
               {aboutLinks.map(({ label, href }) => (
                 <li key={href}>
                   <Link href={href} className="transition-colors hover:text-[#B87333]">
@@ -58,7 +58,7 @@ export default function Footer() {
 
           <nav className="flex flex-col gap-3 uppercase tracking-[0.25em]">
             <h2 className="font-medium">Resources</h2>
-            <ul className="flex flex-col gap-4 text-[0.7rem] tracking-[0.2em] sm:text-xs">
+            <ul className="flex flex-col items-end gap-4 text-[0.7rem] tracking-[0.2em] sm:text-xs">
               {resourcesLinks.map(({ label, href }) => (
                 <li key={href}>
                   <Link href={href} className="transition-colors hover:text-[#B87333]">
