@@ -65,6 +65,8 @@ export default function InternationalPropertiesPage() {
         </article>
       </section>
 
+      {/* Propety cards */}
+
       <section className="container mx-auto px-4 pb-16">
         <div
           className="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2"
@@ -73,7 +75,7 @@ export default function InternationalPropertiesPage() {
           {PROPERTIES.map((property) => (
             <article
               key={property.title}
-              className="flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/80 shadow-[0_20px_60px_rgba(24,28,32,0.08)] backdrop-blur"
+              className="flex h-full flex-col overflow-hidden border border-white/10 bg-white/80 shadow-[0_20px_60px_rgba(24,28,32,0.08)] backdrop-blur"
             >
               <div className="relative aspect-[4/3] w-full">
                 <Image
@@ -94,7 +96,7 @@ export default function InternationalPropertiesPage() {
                 <div className="mt-auto">
                   <button
                     onClick={() => setSelectedProperty(property)}
-                    className="w-full rounded-none bg-[#383E42] px-6 py-3 text-xs uppercase tracking-[0.4em] text-white transition hover:bg-[#2c3134]"
+                    className="w-full rounded-none bg-[#383E42] px-6 py-3 text-xs uppercase tracking-[0.4em] text-white transition hover:text-[#B87333]"
                   >
                     More Info
                   </button>
@@ -134,8 +136,12 @@ function PropertyModalContent({ property, onClose }: { property: PropertyData; o
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6">
       <div className="relative flex w-full max-w-5xl flex-col gap-8 overflow-hidden rounded-3xl bg-white shadow-2xl md:flex-row">
         <button
-          onClick={onClose}
-          className="absolute right-4 top-4 rounded-full bg-black/80 px-3 py-2 text-xs uppercase tracking-[0.3em] text-white hover:bg-black"
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+          className="absolute right-4 top-4 z-50 rounded-full bg-black/80 px-3 py-2 text-xs uppercase tracking-[0.3em] text-white hover:bg-black transition-colors"
         >
           Close
         </button>
@@ -144,8 +150,8 @@ function PropertyModalContent({ property, onClose }: { property: PropertyData; o
           <div ref={sliderRef} className="keen-slider h-full">
             {property.images.map((src, idx) => (
               <div key={idx} className="keen-slider__slide flex items-center justify-center">
-                <div className="relative h-full w-full">
-                  <Image src={src} alt={`${property.title} ${idx + 1}`} fill className="object-cover" sizes="100vw" />
+                <div className="relative h-[400px] w-full">
+                  <Image src={src} alt={`${property.title} ${idx}`} fill className="object-cover" sizes="400px" />
                 </div>
               </div>
             ))}
@@ -154,25 +160,27 @@ function PropertyModalContent({ property, onClose }: { property: PropertyData; o
           {property.images.length > 1 && (
             <>
               <button
-                onClick={() => instanceRef.current?.prev()}
-                className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white hover:bg-black"
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  instanceRef.current?.prev();
+                }}
+                className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/70 p-3 text-white transition-colors hover:bg-black"
+                aria-label="Previous image"
               >
-                <span className="text-lg">‹</span>
+                <span className="text-xl font-bold">‹</span>
               </button>
               <button
-                onClick={() => instanceRef.current?.next()}
-                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white hover:bg-black"
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  instanceRef.current?.next();
+                }}
+                className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/70 p-3 text-white transition-colors hover:bg-black"
+                aria-label="Next image"
               >
-                <span className="text-lg">›</span>
+                <span className="text-xl font-bold">›</span>
               </button>
-              <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2">
-                {property.images.map((_, idx) => (
-                  <div
-                    key={idx}
-                    className={`h-2 w-2 rounded-full transition ${currentSlide === idx ? 'bg-white' : 'bg-white/40'}`}
-                  />
-                ))}
-              </div>
             </>
           )}
         </div>
@@ -210,8 +218,8 @@ const PROPERTIES: PropertyData[] = [
     blurb: '',
     cardDescription:
       'An icon in the skyline, where bold architecture meets an artistic vision. Steel and glass merge with unparalleled finesse, creating an indelible mark of luxury.',
-    image: '/placeholder-property.jpg',
-    images: ['/placeholder-property.jpg', '/placeholder-property.jpg', '/placeholder-property.jpg'],
+    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/elit.jpg',
+    images: ['https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/Livingroom_Shot_1.jpg', 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/Lobby_Shot-1.jpg', 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/Bedroom_Shot_1.jpg'],
     modalDescription: [
       'In the heart of Dubai’s vibrant real estate landscape, Binghatti stands as a testament to architectural ingenuity and unwavering commitment to excellence. As a distinguished Emirati property brand, Binghatti has carved a niche for itself by creating iconic landmarks that redefine the skyline.',
       'The brand’s diverse portfolio caters to a wide spectrum of discerning clientele, offering projects that range from accessible elegance to ultra-high-end luxury. Binghatti’s signature design DNA, meticulously woven into each development, sets it apart on the global stage.',
@@ -226,7 +234,7 @@ const PROPERTIES: PropertyData[] = [
     blurb: '',
     cardDescription:
       'Skyblade stands at the heart of Downtown Dubai. Minutes from the Burj Khalifa and Dubai Mall, offering seamless access to the city’s main attractions.',
-    image: '/placeholder-property.jpg',
+    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/binghatti-skyblade-hero-banner.webp',
     images: ['/placeholder-property.jpg', '/placeholder-property.jpg'],
     modalDescription: [
       'Skyblade is the city within the city. Located directly on the Boulevard, it is minutes from the iconic Burj Khalifa and Dubai Mall. It offers strategic access to Dubai’s main tourist and business areas.',
@@ -242,7 +250,7 @@ const PROPERTIES: PropertyData[] = [
     blurb: '',
     cardDescription:
       'Flare’s design is a symphony of lines and light, a carefully orchestrated composition that evokes wonder and intrigue.',
-    image: '/placeholder-property.jpg',
+    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/binghatti-flare-hero-banner.webp',
     images: ['/placeholder-property.jpg', '/placeholder-property.jpg'],
     modalDescription: [
       'Flare’s design is a symphony of lines and light, a carefully orchestrated composition that evokes a sense of wonder and intrigue. It’s an architecture that transcends mere functionality, capturing the very essence of human emotion.',
@@ -257,7 +265,7 @@ const PROPERTIES: PropertyData[] = [
     blurb: '',
     cardDescription:
       'A joint vision between Binghatti and Mercedes-Benz, setting a new benchmark for intelligent, luxurious living.',
-    image: '/placeholder-property.jpg',
+    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/benz.jpg',
     images: ['/placeholder-property.jpg', '/placeholder-property.jpg'],
     modalDescription: [
       'This visionary project represents the zenith of Binghatti and Mercedes-Benz’s shared passion for iconic design and innovation, setting a new benchmark for luxurious and intelligent living.',
@@ -272,7 +280,7 @@ const PROPERTIES: PropertyData[] = [
     blurb: '',
     cardDescription:
       'Twilight is an exclusive collection of residences and office spaces, where every element is carefully considered to inspire.',
-    image: '/placeholder-property.jpg',
+    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/twilight-hero-banner.webp',
     images: ['/placeholder-property.jpg', '/placeholder-property.jpg', '/placeholder-property.jpg'],
     modalDescription: [
       'Twilight is an exclusive collection of 228 residential units, comprising 104 one-bedroom, 118 two-bedroom, and 6 three-bedroom residences. Alongside, 47 meticulously designed office spaces and two ground-floor retail shops complete this distinctive offering.',
@@ -287,7 +295,7 @@ const PROPERTIES: PropertyData[] = [
     blurb: '',
     cardDescription:
       'Inspired by the undulating slopes of nature, Hills captures dynamic movement and organic grandeur in a single expression.',
-    image: '/placeholder-property.jpg',
+    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/binghatti-hills.webp',
     images: ['/placeholder-property.jpg', '/placeholder-property.jpg'],
     modalDescription: [
       'Drawing inspiration from the undulating slopes of the terrain, Binghatti Hills captures the essence of dynamic movement and organic grandeur. The rhythmic waves form a captivating illustration of two limbs intertwined representing the seamless integration of modernity and tranquility.',

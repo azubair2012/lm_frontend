@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'HOME', href: '/' },
@@ -27,13 +28,14 @@ const NAV_ITEMS = [
 
 export default function NavBar() {
   const [logoHover, setLogoHover] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[rgba(56,62,66,0.95)] backdrop-blur-md py-4">
-      <nav className="mx-auto flex w-full px-[6rem] items-center justify-between font-semibold uppercase tracking-[0.3em] text-white sm:text-sm">
+      <nav className="mx-auto flex w-full px-4 sm:px-8 md:px-[6rem] items-center justify-between font-semibold uppercase tracking-[0.3em] text-white sm:text-sm">
         <Link
           href="/"
-          className="flex items-center gap-4"
+          className="flex items-center gap-2 sm:gap-4"
           onMouseEnter={() => setLogoHover(true)}
           onMouseLeave={() => setLogoHover(false)}
         >
@@ -44,7 +46,21 @@ export default function NavBar() {
             width={200}
             height={10}
             priority
-            className="transition-[filter] duration-900 ease-in-out"
+            className="hidden sm:block transition-[filter] duration-900 ease-in-out"
+            style={{
+              willChange: 'filter',
+              filter: logoHover
+                ? 'brightness(0) saturate(100%) invert(70%) sepia(44%) saturate(748%) hue-rotate(339deg) brightness(85%) contrast(99%)'
+                : 'brightness(0) invert(1)',
+            }}
+          />
+          <Image
+            src="/logo_white.png"
+            alt="London Move"
+            width={150}
+            height={10}
+            priority
+            className="block sm:hidden transition-[filter] duration-900 ease-in-out"
             style={{
               willChange: 'filter',
               filter: logoHover
@@ -53,12 +69,35 @@ export default function NavBar() {
             }}
           />
         </Link>
-        <div className="ml-auto flex flex-1 flex-wrap items-center justify-end gap-6 sm:gap-16">
+        
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex ml-auto flex-1 items-center justify-end gap-6 xl:gap-16">
           {NAV_ITEMS.map((item) => (
             <NavItemLink key={item.label} item={item} />
           ))}
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden text-white p-2"
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </nav>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden border-t border-white/10 bg-[rgba(56,62,66,0.98)]">
+          <div className="flex flex-col px-4 py-4 gap-4">
+            {NAV_ITEMS.map((item) => (
+              <MobileNavItem key={item.label} item={item} onClose={() => setMobileMenuOpen(false)} />
+            ))}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
@@ -99,6 +138,48 @@ function NavItemLink({ item }: { item: (typeof NAV_ITEMS)[number] }) {
           </Link>
         ))}
       </div>
+    </div>
+  );
+}
+
+function MobileNavItem({ item, onClose }: { item: (typeof NAV_ITEMS)[number]; onClose: () => void }) {
+  const [open, setOpen] = useState(false);
+
+  if (!item.submenu) {
+    return (
+      <Link 
+        href={item.href ?? '/'} 
+        onClick={onClose}
+        className="text-white transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px] py-2"
+      >
+        {item.label}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="flex flex-col">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center justify-between text-white transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px] py-2 text-left"
+      >
+        {item.label}
+        <span className={`text-white transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
+      </button>
+      {open && (
+        <div className="flex flex-col pl-4 gap-2 mt-2">
+          {item.submenu.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={onClose}
+              className="text-white text-[14px] py-2 transition hover:text-[#B87333]"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -168,6 +168,23 @@ export default function PropertiesPage() {
   return (
     <div className="min-h-screen bg-background">
       <ImageSlideShow />
+      <div className="flex justify-center  pt-20">
+          <div className="relative flex flex-col items-center md:items-end">
+            <span
+              className="text-[64px] text-black uppercase sm:text-[80px]"
+              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 700}}
+            >
+              our properties
+            </span>
+            <span
+              className="absolute top-10 text-5xl text-[#B87333] sm:top-16 sm:text-7xl"
+              style={{ fontFamily: 'Southland, serif', fontWeight: 400 }}
+            >
+              Live Where You Love
+            </span>
+          </div>
+         
+        </div>
       <section className="py-4 mt-8">
         <div className="container mx-auto px-4">
           <SearchFilters onSearch={handleSearch} loading={searchLoading} areas={filters.areas} />

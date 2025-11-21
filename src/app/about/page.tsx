@@ -33,7 +33,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl space-y-6 text-justify text-lg leading-8 " style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>
+        <div className="mx-auto mt-12 max-w-3xl space-y-6 text-justify text-lg leading-6 " style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 200 }}>
           <p>
             It is widely accepted amongst those involved in the residential property industry that the sale, letting and management of property are all independent fields of expertise. All too commonly vendors, landlords and tenants find themselves pigeon-holed within a rigid procedure which ultimately stifles both the spirit, ethos and results achieved by their real estate advisors.
           </p>
@@ -46,6 +46,13 @@ export default function AboutPage() {
         </div>
         <div className="flex justify-center gap-8">
         <Image
+            src="https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/1579144537.webp"
+            alt="About London Move"
+            width={500}
+            height={200}
+            className="rounded-lg object-cover"
+          />
+          <Image
             src="https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/1579144537.webp"
             alt="About London Move"
             width={500}
