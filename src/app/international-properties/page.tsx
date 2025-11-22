@@ -3,10 +3,18 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ImageSlideShow from '@/components/ImageSlideShow';
-import { PROPERTIES, type PropertyData } from './propertiesData';
+import { type PropertyData } from './types';
 
 export default function InternationalPropertiesPage() {
   const [selectedProperty, setSelectedProperty] = useState<PropertyData | null>(null);
+  const [properties, setProperties] = useState<PropertyData[]>([]);
+
+  useEffect(() => {
+    fetch('/data/properties.json')
+      .then((res) => res.json())
+      .then((data) => setProperties(data as PropertyData[]))
+      .catch((err) => console.error('Failed to load properties:', err));
+  }, []);
 
   return (
     <main className="min-h-screen bg-background">
@@ -59,7 +67,7 @@ export default function InternationalPropertiesPage() {
           className="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-2"
           style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}
         >
-          {PROPERTIES.map((property) => (
+          {properties.map((property) => (
             <article
               key={property.title}
               className="flex h-full flex-col overflow-hidden border border-white/10 bg-white/80 shadow-[0_20px_60px_rgba(24,28,32,0.08)] backdrop-blur"
