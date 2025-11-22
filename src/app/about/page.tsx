@@ -1,5 +1,6 @@
 import ImageSlideShow from '@/components/ImageSlideShow';
 import Image from 'next/image';
+import Link from 'next/link';
 
 
 
@@ -25,7 +26,7 @@ export default function AboutPage() {
               ABOUT
             </span>
             <span
-              className="absolute top-10 text-5xl text-[#B87333] sm:top-14 sm:text-7xl"
+              className="absolute top-[60px] md:top-10 text-5xl text-[#B87333] sm:top-14 sm:text-7xl"
               style={{ fontFamily: 'Southland, serif' }}
             >
               Us
@@ -44,6 +45,15 @@ export default function AboutPage() {
             All staff and associates undergo ongoing training and development to ensure consistent quality and care. London Move is hosted by a team of property specialists each with accountability of their sales or lettings portfolios, ensuring dedicated focus and expertise at every step of your property journey.
           </p>
         </div>
+
+        <div className="flex flex-col items-center justify-center text-white backdrop-blur-sm p-4 mt-8">
+        <h1 className="text-3xl font-bold text-black ">Find Out More</h1>
+       <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 my-6">    
+                  <Link href="/properties" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px] p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>LONDON PROPERTIES</Link>
+                  <Link href="/valuation" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>GET VALUATION</Link>
+                  <Link href="/contact" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>CONTACT US</Link>
+        </div>
+      </div>
         
       </section>
     </main>
