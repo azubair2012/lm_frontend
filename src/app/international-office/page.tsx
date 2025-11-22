@@ -14,7 +14,7 @@ export default function InternationalOfficePage() {
             <header className="relative flex flex-col items-center">
             <span
               className="text-[48px] sm:text-[64px] text-black uppercase md:text-[90px]"
-              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}
+              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
             >
               OFFICES
             </span>
