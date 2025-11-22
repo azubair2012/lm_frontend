@@ -1,21 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useKeenSlider } from 'keen-slider/react';
-import 'keen-slider/keen-slider.min.css';
-import ImageSlideShow from '@/components/ImageSlideShow'; 
-type PropertyCTA = { label: string; href: string };
-
-type PropertyData = {
-  title: string;
-  blurb: string;
-  cardDescription: string;
-  image: string;
-  images: string[];
-  modalDescription: string[];
-  ctas: PropertyCTA[];
-};
+import ImageSlideShow from '@/components/ImageSlideShow';
+import { PROPERTIES, type PropertyData } from './propertiesData';
 
 export default function InternationalPropertiesPage() {
   const [selectedProperty, setSelectedProperty] = useState<PropertyData | null>(null);
@@ -23,41 +11,40 @@ export default function InternationalPropertiesPage() {
   return (
     <main className="min-h-screen bg-background">
       <ImageSlideShow />
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
         <div className="flex flex-col items-center text-center">
           <div className="relative flex flex-col items-center md:items-end">
             <span
-              className="text-[64px] text-black uppercase sm:text-[80px]"
+              className="text-[36px] sm:text-[48px] md:text-[64px] lg:text-[80px] text-black uppercase"
               style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 700 }}
             >
               Your Dream Home
             </span>
             <span
-              className="absolute top-10 text-5xl text-[#B87333] sm:top-[80px] sm:text-7xl"
+              className="absolute top-6 text-3xl text-[#B87333] sm:top-8 sm:text-4xl md:top-10 md:text-5xl lg:top-[80px] lg:text-7xl"
               style={{ fontFamily: 'Southland, serif', fontWeight: 400 }}
             >
               Around The Would
             </span>
           </div>
-          <div className='flex gap-10 mt-8'>
+          <div className='flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-10 mt-6 sm:mt-8'>
             <div className='flex flex-col items-center gap-2'>
-              <img src="/LM_ICON.png" alt="Embayt" className="w-[24px] h-[40px] mx-auto" />
-              <img src="/logo.png" alt="Embayt" className="w-[200px] h-[20px] mx-auto" />
+              <img src="/LM_ICON.png" alt="Embayt" className="w-[20px] h-[32px] sm:w-[24px] sm:h-[40px] mx-auto" />
+              <img src="/logo.png" alt="Embayt" className="w-[150px] h-[15px] sm:w-[200px] sm:h-[20px] mx-auto" />
             </div>
               
-            <p className="mt-8 text-4xl font-bold uppercase text-[#383E42]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}>
+            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold uppercase text-[#383E42]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}>
             In partnership with
             </p>
-              <img src="/emblogo.png" alt="Embayt" className="w-[90px] mx-auto" />
+              <img src="/emblogo.png" alt="Embayt" className="w-[70px] sm:w-[90px] mx-auto" />
           </div>
           
         </div>
 
         <article
-          className="mx-auto mt-12 max-w-5xl space-y-8 text-justify text-xl leading-8 text-[#383E42] sm:text-center"
+          className="mx-auto mt-8 sm:mt-10 md:mt-12 max-w-5xl px-4 sm:px-6 space-y-4 sm:space-y-6 md:space-y-8 text-left sm:text-justify text-base md:text-center sm:text-lg md:text-xl leading-6 sm:leading-7 md:leading-8 text-[#383E42]"
           style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
         >
-          
           <p>
           We are proud to partner with <a href="https://www.embayt.com" target="_blank"><span className="text-[#2c8ed4] font-bold hover:underline">Embayt</span></a>, bringing you a global network and exclusive property opportunities. Together, we offer seamless international real estate solutions tailored to your needs.
           </p>
@@ -124,84 +111,153 @@ function PropertyModal({ property, onClose }: PropertyModalProps) {
 
 function PropertyModalContent({ property, onClose }: { property: PropertyData; onClose: () => void }) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    loop: true,
-    initial: 0,
-    slideChanged(s) {
-      setCurrentSlide(s.track.details.rel);
-    },
-  });
+
+  const nextSlide = () => {
+    if (property.images.length > 0) {
+      setCurrentSlide((prev) => (prev + 1) % property.images.length);
+    }
+  };
+
+  const prevSlide = () => {
+    if (property.images.length > 0) {
+      setCurrentSlide((prev) => (prev - 1 + property.images.length) % property.images.length);
+    }
+  };
+
+  const goToSlide = (index: number) => {
+    if (index >= 0 && index < property.images.length) {
+      setCurrentSlide(index);
+    }
+  };
+
+  // Auto-slide every 2 seconds
+  useEffect(() => {
+    if (property.images.length <= 1) return; // Don't auto-slide if only one image
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % property.images.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [property.images.length]); // Reset interval when images change
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6">
-      <div className="relative flex w-full max-w-5xl flex-col gap-8 overflow-hidden rounded-3xl bg-white shadow-2xl md:flex-row">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-2 sm:p-4 md:p-6" onClick={onClose}>
+      <div className="relative flex w-full h-full max-w-7xl max-h-[95vh] md:max-h-[90vh] flex-col overflow-y-auto md:overflow-hidden bg-white md:flex-row rounded-lg md:rounded-none" onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
             onClose();
           }}
-          className="absolute right-4 top-4 z-50 rounded-full bg-black/80 px-3 py-2 text-xs uppercase tracking-[0.3em] text-white hover:bg-black transition-colors"
+          className="absolute right-2 top-2 md:right-4 md:top-4 z-50 rounded-full bg-black/80 hover:bg-white px-2 py-1 md:px-3 md:py-2 text-xs uppercase tracking-[0.3em] text-white hover:text-black hover:border-[#b87333db] border-2 border-transparent transition-colors"
         >
           Close
         </button>
 
-        <div className="relative flex-1 bg-black/5">
-          <div ref={sliderRef} className="keen-slider h-full">
-            {property.images.map((src, idx) => (
-              <div key={idx} className="keen-slider__slide flex items-center justify-center">
-                <div className="relative h-[400px] w-full">
-                  <Image src={src} alt={`${property.title} ${idx}`} fill className="object-cover" sizes="400px" />
-                </div>
+        {/* Left side - Image Slideshow */}
+        <div className="relative flex-[0.7] h-[300px] sm:h-[400px] md:h-[600px] w-full my-auto overflow-hidden order-1 md:order-none">
+          {/* Image layers with fade transition */}
+          {property.images.map((src, idx) => {
+            const isActive = idx === currentSlide;
+            return (
+              <div 
+                key={idx} 
+                className={`absolute md:ml-8 inset-0 transition-opacity duration-1000 ${
+                  isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                }`}
+              >
+                <Image
+                  src={src}
+                  alt={`${property.title} ${idx + 1}`}
+                  fill
+                  className="h-full w-full object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 70vw, 60vw"
+                  priority={idx === 0}
+                />
               </div>
-            ))}
-          </div>
+            );
+          })}
 
+          {/* Navigation Arrows */}
           {property.images.length > 1 && (
             <>
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  instanceRef.current?.prev();
+                  prevSlide();
                 }}
-                className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/70 p-3 text-white transition-colors hover:bg-black"
+                className="absolute left-2 top-1/2 md:left-4 z-10 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-sm p-1.5 md:p-2 rounded-full transition-colors"
                 aria-label="Previous image"
               >
-                <span className="text-xl font-bold">‹</span>
+                <svg className="w-4 h-4 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  instanceRef.current?.next();
+                  nextSlide();
                 }}
-                className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/70 p-3 text-white transition-colors hover:bg-black"
+                className="absolute right-2 top-1/2 md:right-4 z-10 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-sm p-1.5 md:p-2 rounded-full transition-colors"
                 aria-label="Next image"
               >
-                <span className="text-xl font-bold">›</span>
+                <svg className="w-4 h-4 md:w-6 md:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </button>
             </>
           )}
+
+          {/* Dot Indicators */}
+          {property.images.length > 1 && (
+            <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-1.5 sm:gap-2">
+              {property.images.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToSlide(idx);
+                  }}
+                  className={`h-1.5 sm:h-2 rounded-full transition-all ${
+                    currentSlide === idx ? 'w-6 sm:w-8 bg-white' : 'w-1.5 sm:w-2 bg-white/50'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="flex max-w-md flex-1 flex-col gap-6 p-8" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
-          <div className="space-y-4 text-left">
-            <h3 className="text-2xl font-semibold uppercase tracking-[0.25em] text-[#111518]">{property.title}</h3>
-            {property.modalDescription.map((paragraph, idx) => (
-              <p key={idx} className="text-sm leading-7 text-[#383E42] sm:text-base">
-                {paragraph}
-              </p>
-            ))}
+        {/* Right side - Text Content */}
+        <div className="flex flex-[0.3] md:flex-[0.3] flex-col justify-center gap-4 sm:gap-6 md:gap-8 p-4 sm:p-6 md:p-8 lg:p-12 order-2 md:order-none" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
+          <div className="space-y-4 sm:space-y-6 text-left">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#111518] text-center" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}>
+              {property.title}
+            </h3>
+            <div className="h-[1px] w-1/2 bg-[#b87333db] mx-auto"></div>
+            <div className="space-y-3 sm:space-y-4">
+              {property.modalDescription.map((paragraph, idx) => (
+                <p key={idx} className="text-sm sm:text-base md:text-sm leading-6 md:leading-7 text-[#383E42]">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-auto flex flex-col gap-3">
+          {/* Links */}
+          <div className="flex flex-col items-center gap-3 sm:gap-4">
             {property.ctas.map((cta) => (
               <a
                 key={cta.label}
                 href={cta.href}
-                className="w-full rounded-none border border-[#383E42] px-6 py-3 text-center text-xs uppercase tracking-[0.35em] text-[#383E42] transition hover:bg-[#383E42] hover:text-white"
+                className="text-[#383E42] hover:underline hover:text-[#B87333] transition-colors text-sm sm:text-base md:text-lg w-full text-center"
+                onClick={(e) => e.stopPropagation()}
               >
+                <div className="h-[1px] w-full bg-[#b87333db] mx-auto mb-2 sm:mb-[10px]"></div>
                 {cta.label}
               </a>
             ))}
@@ -212,97 +268,3 @@ function PropertyModalContent({ property, onClose }: { property: PropertyData; o
   );
 }
 
-const PROPERTIES: PropertyData[] = [
-  {
-    title: 'Binghatti Elite',
-    blurb: '',
-    cardDescription:
-      'An icon in the skyline, where bold architecture meets an artistic vision. Steel and glass merge with unparalleled finesse, creating an indelible mark of luxury.',
-    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/elit.jpg',
-    images: ['https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/Livingroom_Shot_1.jpg', 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/Lobby_Shot-1.jpg', 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/Bedroom_Shot_1.jpg'],
-    modalDescription: [
-      'In the heart of Dubai’s vibrant real estate landscape, Binghatti stands as a testament to architectural ingenuity and unwavering commitment to excellence. As a distinguished Emirati property brand, Binghatti has carved a niche for itself by creating iconic landmarks that redefine the skyline.',
-      'The brand’s diverse portfolio caters to a wide spectrum of discerning clientele, offering projects that range from accessible elegance to ultra-high-end luxury. Binghatti’s signature design DNA, meticulously woven into each development, sets it apart on the global stage.',
-    ],
-    ctas: [
-      { label: 'Project Map', href: '#' },
-      { label: 'Brochure', href: '#' },
-    ],
-  },
-  {
-    title: 'Binghatti Skyblade',
-    blurb: '',
-    cardDescription:
-      'Skyblade stands at the heart of Downtown Dubai. Minutes from the Burj Khalifa and Dubai Mall, offering seamless access to the city’s main attractions.',
-    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/binghatti-skyblade-hero-banner.webp',
-    images: ['/placeholder-property.jpg', '/placeholder-property.jpg'],
-    modalDescription: [
-      'Skyblade is the city within the city. Located directly on the Boulevard, it is minutes from the iconic Burj Khalifa and Dubai Mall. It offers strategic access to Dubai’s main tourist and business areas.',
-      'This unmistakable location caters to those who appreciate the unparalleled, offering world-class landmarks, entertainment and glamour.',
-    ],
-    ctas: [
-      { label: 'Project Map', href: '#' },
-      { label: 'Brochure', href: '#' },
-    ],
-  },
-  {
-    title: 'Binghatti Flare',
-    blurb: '',
-    cardDescription:
-      'Flare’s design is a symphony of lines and light, a carefully orchestrated composition that evokes wonder and intrigue.',
-    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/binghatti-flare-hero-banner.webp',
-    images: ['/placeholder-property.jpg', '/placeholder-property.jpg'],
-    modalDescription: [
-      'Flare’s design is a symphony of lines and light, a carefully orchestrated composition that evokes a sense of wonder and intrigue. It’s an architecture that transcends mere functionality, capturing the very essence of human emotion.',
-    ],
-    ctas: [
-      { label: 'Project Map', href: '#' },
-      { label: 'Brochure', href: '#' },
-    ],
-  },
-  {
-    title: 'Mercedes-Benz Places',
-    blurb: '',
-    cardDescription:
-      'A joint vision between Binghatti and Mercedes-Benz, setting a new benchmark for intelligent, luxurious living.',
-    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/benz.jpg',
-    images: ['/placeholder-property.jpg', '/placeholder-property.jpg'],
-    modalDescription: [
-      'This visionary project represents the zenith of Binghatti and Mercedes-Benz’s shared passion for iconic design and innovation, setting a new benchmark for luxurious and intelligent living.',
-    ],
-    ctas: [
-      { label: 'Project Map', href: '#' },
-      { label: 'Brochure', href: '#' },
-    ],
-  },
-  {
-    title: 'Binghatti Twilight',
-    blurb: '',
-    cardDescription:
-      'Twilight is an exclusive collection of residences and office spaces, where every element is carefully considered to inspire.',
-    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/twilight-hero-banner.webp',
-    images: ['/placeholder-property.jpg', '/placeholder-property.jpg', '/placeholder-property.jpg'],
-    modalDescription: [
-      'Twilight is an exclusive collection of 228 residential units, comprising 104 one-bedroom, 118 two-bedroom, and 6 three-bedroom residences. Alongside, 47 meticulously designed office spaces and two ground-floor retail shops complete this distinctive offering.',
-    ],
-    ctas: [
-      { label: 'Project Map', href: '#' },
-      { label: 'Brochure', href: '#' },
-    ],
-  },
-  {
-    title: 'Binghatti Hills',
-    blurb: '',
-    cardDescription:
-      'Inspired by the undulating slopes of nature, Hills captures dynamic movement and organic grandeur in a single expression.',
-    image: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/binghatti-hills.webp',
-    images: ['/placeholder-property.jpg', '/placeholder-property.jpg'],
-    modalDescription: [
-      'Drawing inspiration from the undulating slopes of the terrain, Binghatti Hills captures the essence of dynamic movement and organic grandeur. The rhythmic waves form a captivating illustration of two limbs intertwined representing the seamless integration of modernity and tranquility.',
-    ],
-    ctas: [
-      { label: 'Project Map', href: '#' },
-      { label: 'Brochure', href: '#' },
-    ],
-  },
-];
