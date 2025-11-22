@@ -4,8 +4,8 @@ export default function InternationalOfficePage() {
   return (
     <main className="min-h-screen bg-background">
       <ImageSlideShow />
-<div className="flex flex-col justify-center mx-auto py-16">
-  <div className="absolute -z-10 w-full h-full opacity-50" style={{
+<div className="flex flex-col justify-center mx-auto py-8 sm:py-12 md:py-16 px-4 sm:px-6">
+  <div className="absolute -z-10 w-full h-full opacity-50 hidden md:block" style={{
     backgroundImage: "url('/bg1.jpg')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -13,26 +13,26 @@ export default function InternationalOfficePage() {
           <div>
             <header className="relative flex flex-col items-center">
             <span
-              className="text-[64px] text-black uppercase sm:text-[90px]"
+              className="text-[48px] sm:text-[64px] text-black uppercase md:text-[90px]"
               style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}
             >
               OFFICES
             </span>
             <span
-              className="absolute top-10 text-5xl text-[#B87333] mt-4 sm:top-16 sm:text-[5.5rem]"
+              className="absolute top-8 text-[48px] text-[#B87333] md:top-16 md:text-7xl"
               style={{ fontFamily: 'Southland, serif' }}
             >
-              Around the WorldS
+              Around the World
             </span>
             </header>
-            <span className="text-3xl mt-12 text-[#383E42] justify-center flex" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>Get in touch:</span>
+            <span className="text-xl sm:text-2xl md:text-3xl mt-8 sm:mt-10 md:mt-12 text-[#383E42] justify-center flex" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>Get in touch:</span>
             </div>
             
 
-          <div className="mx-auto mt-10 flex w-full max-w-5xl justify-center gap-[100px] md:flex-row ">
+          <div className="mx-auto mt-6 sm:mt-8 md:mt-10 flex flex-col md:flex-row w-full max-w-5xl justify-center gap-8 md:gap-12 lg:gap-[100px] px-4">
           {/* Information column */}
           <div
-            className="space-y-8 text-sm leading-7 text-[#383E42]"
+            className="order-2 md:order-1 space-y-6 sm:space-y-8 text-sm leading-7 text-[#383E42] w-full md:w-auto text-center md:text-start"
             style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
           >
             <div>
@@ -53,7 +53,7 @@ export default function InternationalOfficePage() {
           </div>
 
           {/* Form column */}
-          <form className="space-y-6" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>
+          <form className="order-1 md:order-2 space-y-4 sm:space-y-6 w-full md:w-auto md:min-w-[400px]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <label className="flex flex-col gap-2 text-sm text-[#111518]">
                 <span>Name</span>
@@ -97,7 +97,7 @@ export default function InternationalOfficePage() {
 
             <button
               type="submit"
-              className="w-full rounded-none bg-[#383E42] py-4 text-sm uppercase tracking-[0.45em] text-white transition hover:text-[#B87333]"
+              className="w-full rounded-none bg-[#383E42] py-3 sm:py-4 text-xs sm:text-sm uppercase tracking-[0.3em] sm:tracking-[0.45em] text-white transition hover:text-[#B87333]"
             >
               Submit
             </button>
