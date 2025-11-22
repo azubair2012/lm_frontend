@@ -2,7 +2,7 @@
 
 export default function HomeContactPreview() {
   return (
-    <section className="py-12 sm:py-16 md:py-24 px-4">
+    <section className="py-12 md:py-24 px-4">
       <div className="container items-center justify-center mx-auto max-w-5xl" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
             <div className="flex justify-center mb-8 sm:mb-12 md:mb-16">
               <header className="relative flex flex-col items-start">
