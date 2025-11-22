@@ -62,7 +62,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-background">
       <HeroSlider />
-      <section className="py-12">
+      <section className="md:py-12 py-2">
         <div className="container mx-auto px-4">
           {loading ? (
             <div className="flex min-h-[320px] items-center justify-center">
@@ -89,48 +89,48 @@ export default function HomePage() {
               });
 
               return (
-                <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 auto-rows-[180px] md:grid-cols-3 md:auto-rows-[220px] lg:auto-rows-[240px] lg:gap-0">
+                <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 sm:gap-6 auto-rows-[250px] sm:auto-rows-[200px] md:grid-cols-3 md:auto-rows-[220px] lg:auto-rows-[240px] lg:gap-0">
                   {slots.map((prop, idx) => (
                     <div key={idx} className="relative">
                       {prop ? (
                         <TopPropertyCard property={prop} />
                       ) : idx === 0 ? (
-                        <div className="flex h-full w-full flex-col items-center justify-center p-2">
+                        <div className="flex h-full w-full flex-col items-center justify-center p-4 sm:p-2">
                           <div className="relative flex flex-col items-center md:items-end">
                             <p
-                              className="text-[60px] text-black uppercase sm:text-[80px]"
-                              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}
+                              className="text-[60px] text-black uppercase md:text-[80px]"
+                              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
                             >
                               FEATURED
                             </p>
                             <p
-                              className="absolute top-12 text-5xl text-[#B87333] sm:top-16 sm:text-7xl"
+                              className="absolute top-12 text-[48px] text-[#B87333] md:top-16 md:text-7xl"
                               style={{ fontFamily: 'Southland, serif' }}
                             >
                               Listings
                             </p>
-              </div>
-                          <Link href="/properties">
-                  <Button
-                              className="mt-4 h-[55px] rounded-none bg-[#383E42] px-6 text-sm tracking-tight text-white transition hover:text-[#B87333]"
+                          </div>
+                          <Link href="/properties" className="w-full sm:w-auto">
+                          <Button
+                              className="mt-8 h-[50px] sm:h-[55px] w-full sm:w-auto rounded-none bg-[#383E42] px-6 text-xs sm:text-sm tracking-tight text-white transition hover:text-[#B87333]"
                               style={{ fontFamily: 'Roboto, sans-serif' }}
                             >
                               VIEW ALL PROPERTIES
-                  </Button>
+                          </Button>
                           </Link>
                         </div>
                       ) : idx === 8 ? (
                         <div
-                          className="flex h-full w-full flex-col items-center justify-center gap-3 p-2"
+                          className="flex h-full w-full flex-col items-center justify-center gap-3 p-4 sm:p-2"
                           style={{ fontFamily: 'Roboto, sans-serif' }}
                         >
-                          <Button className="h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
+                          <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
                             SELL YOUR HOMES
                         </Button>
-                          <Button className="h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
+                          <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
                             TO LET
                         </Button>
-                          <Button className="h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
+                          <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
                             GET VALUATION
                         </Button>
                         </div>
@@ -148,33 +148,33 @@ export default function HomePage() {
 
       {/* Testimonials */}
       <section className='relative'>
-      <div className="flex justify-center items-center py-12 max-w-[1400px] mx-auto h-[500px]"  style={{
+      <div className="flex justify-center items-center py-8 sm:py-12 px-4 max-w-[1400px] mx-auto min-h-[400px] sm:h-[500px]"  style={{
     backgroundImage: "url('/bg1.jpg')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
       }}>
   
-          <div className="absolute z-50 flex flex-col items-center">
+          <div className="relative z-50 flex flex-col items-center text-center px-4">
             <span
-              className="text-[64px] text-black uppercase sm:text-[90px]"
-              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}
+              className="text-[60px] text-black uppercase md:text-[80px]"
+              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
             >
               WHAT OUR
             </span>
             <span
-              className="absolute top-10 text-5xl text-[#B87333] sm:top-16 sm:text-[5.5rem] text-center"
+              className="absolute top-12 text-[42px] text-[#B87333] md:top-16 md:text-7xl"
               style={{ fontFamily: 'Southland, serif' }}
             >
               Customers Are Saying
             </span>
-            <div className='w-[900px] mt-8 text-[18px]'>
-              <span>I have used London move for a few years now. Great communication. They support when I need them and don’t bother me for unnecessary things. Very personable too! I highly recommend!
+            <div className='w-full max-w-[900px] mt-6 sm:mt-8 text-sm sm:text-base md:text-[18px] px-4'>
+              <span>I have used London move for a few years now. Great communication. They support when I need them and don&apos;t bother me for unnecessary things. Very personable too! I highly recommend!
                 <br />
-                
+                <br />
                 -Kel
               </span>
-              <div className='flex items-center justify-center mb-4'>              
-                <Link href="/testimonial" className="bg-[#383E42] text-sm hover:text-[#B87333] text-white rounded-none text-center font-semibold h-[50px] w-[280px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>SEE MORE TESTIMONIALS</Link>
+              <div className='flex items-center justify-center mt-6 sm:mb-4'>              
+                <Link href="/testimonial" className="bg-[#383E42] text-xs sm:text-sm hover:text-[#B87333] text-white rounded-none text-center font-semibold h-[45px] sm:h-[50px] w-full max-w-[280px] px-4 flex items-center justify-center" style={{ fontFamily: 'Roboto, sans-serif' }}>SEE MORE TESTIMONIALS</Link>
               </div>
             </div>
           </div>
@@ -182,18 +182,18 @@ export default function HomePage() {
       </section>
 
       {/* Before and After */}
-      <section className="py-16 text-black">
+      <section className="md:py-16 py-6 text-black">
         <div className="container mx-auto flex max-w-7xl flex-col gap-8 rounded-[32px] bg-white/5 p-6 backdrop-blur-lg md:flex-row md:p-10">
-          <div className="flex max-w-lg flex-1 flex-col gap-6 text-left" style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 300 }}>
-            <header className="relative flex flex-col items-start">
+          <div className="flex max-w-lg flex-1 flex-col gap-6 items-center text-center" style={{ fontFamily: 'Public Sans, sans-serif'}}>
+            <header className="relative flex flex-col items-center">
             <span
-              className="text-[64px] text-black uppercase sm:text-[90px]"
-              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}
+              className="text-[60px] text-black uppercase md:text-[80px]"
+              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}
             >
               CONCIERGE
             </span>
             <span
-              className="absolute top-10 text-5xl text-[#B87333] mt-4 sm:top-16 sm:text-[5.5rem] text-center"
+              className="absolute top-12 text-[48px] text-[#B87333] md:top-16 md:text-7xl"
               style={{ fontFamily: 'Southland, serif' }}
             >
               Service

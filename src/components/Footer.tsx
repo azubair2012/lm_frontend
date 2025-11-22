@@ -27,12 +27,12 @@ const resourcesLinks = [
 
 export default function Footer() {
   return (
-    <footer className=" text-[#383E42] border-t-2 border-[#383E42] mt-8">
-      <div className="mx-auto w-full max-w-6xl px-6 pt-6">
-        <div className="flex justify-evenly gap-10">
+    <footer className="text-[#383E42] border-t-2 border-[#383E42] mt-8">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 pt-6 pb-8">
+        <div className="flex flex-col sm:flex-row justify-between sm:justify-evenly gap-8 sm:gap-10">
           <nav className="flex flex-col gap-3 uppercase tracking-[0.25em]">
-            <h2 className="font-medium">Services</h2>
-            <ul className="flex flex-col gap-4 text-[0.7rem] tracking-[0.2em]  sm:text-xs">
+            <h2 className="font-medium text-sm sm:text-base">Services</h2>
+            <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-[0.7rem] tracking-[0.2em] sm:tracking-[0.2em]">
               {servicesLinks.map(({ label, href }) => (
                 <li key={href}>
                   <Link href={href} className="transition-colors hover:text-[#B87333]">
@@ -43,9 +43,9 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <nav className="flex flex-col items-center gap-3 uppercase tracking-[0.25em]">
-            <h2 className="font-medium">About</h2>
-            <ul className="flex flex-col items-center gap-4 text-[0.7rem] tracking-[0.2em] sm:text-xs">
+          <nav className="flex flex-col sm:items-center gap-3 uppercase tracking-[0.25em]">
+            <h2 className="font-medium text-sm sm:text-base">About</h2>
+            <ul className="flex flex-col sm:items-center gap-3 sm:gap-4 text-xs sm:text-[0.7rem] tracking-[0.2em]">
               {aboutLinks.map(({ label, href }) => (
                 <li key={href}>
                   <Link href={href} className="transition-colors hover:text-[#B87333]">
@@ -56,9 +56,9 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <nav className="flex flex-col gap-3 uppercase tracking-[0.25em]">
-            <h2 className="font-medium">Resources</h2>
-            <ul className="flex flex-col items-end gap-4 text-[0.7rem] tracking-[0.2em] sm:text-xs">
+          <nav className="flex flex-col sm:items-end gap-3 uppercase tracking-[0.25em]">
+            <h2 className="font-medium text-sm sm:text-base">Resources</h2>
+            <ul className="flex flex-col sm:items-end gap-3 sm:gap-4 text-xs sm:text-[0.7rem] tracking-[0.2em]">
               {resourcesLinks.map(({ label, href }) => (
                 <li key={href}>
                   <Link href={href} className="transition-colors hover:text-[#B87333]">
@@ -70,35 +70,35 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="mt-10 flex items-center justify-between text-[#383E42] border-t border-[#383E42] text-xs">
-         <div className="flex items-center justify-center gap-3">
-          <a aria-label="Facebook" href="https://facebook.com" target="_blank" rel="noreferrer" className="group">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-              <Facebook className="h-5 w-5" />
-            </span>
-          </a>
-          <a aria-label="Instagram" href="https://instagram.com" target="_blank" rel="noreferrer" className="group">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-              <Instagram className="h-5 w-5" />
-            </span>
-          </a>
-          <a aria-label="Twitter" href="https://twitter.com" target="_blank" rel="noreferrer" className="group">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-              <Twitter className="h-5 w-5" />
-            </span>
-          </a>
-          <a aria-label="LinkedIn" href="https://linkedin.com" target="_blank" rel="noreferrer" className="group">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-              <Linkedin className="h-5 w-5" />
-            </span>
-          </a>
-          <a aria-label="YouTube" href="https://youtube.com" target="_blank" rel="noreferrer" className="group">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-              <Youtube className="h-5 w-5" />
-            </span>
-          </a>
-        </div>
-           <div className="flex items-center justify-center gap-2">
+        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4 text-[#383E42] border-t border-[#383E42] pt-6 sm:pt-8 text-xs">
+          <div className="flex items-center justify-center gap-3 order-2 sm:order-1">
+            <a aria-label="Facebook" href="https://facebook.com" target="_blank" rel="noreferrer" className="group">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
+                <Facebook className="h-5 w-5" />
+              </span>
+            </a>
+            <a aria-label="Instagram" href="https://instagram.com" target="_blank" rel="noreferrer" className="group">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
+                <Instagram className="h-5 w-5" />
+              </span>
+            </a>
+            <a aria-label="Twitter" href="https://twitter.com" target="_blank" rel="noreferrer" className="group">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
+                <Twitter className="h-5 w-5" />
+              </span>
+            </a>
+            <a aria-label="LinkedIn" href="https://linkedin.com" target="_blank" rel="noreferrer" className="group">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
+                <Linkedin className="h-5 w-5" />
+              </span>
+            </a>
+            <a aria-label="YouTube" href="https://youtube.com" target="_blank" rel="noreferrer" className="group">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
+                <Youtube className="h-5 w-5" />
+              </span>
+            </a>
+          </div>
+          <div className="flex items-center justify-center gap-2 sm:gap-2 order-1 sm:order-2 flex-wrap">
             <Link href="https://safeagents.co.uk/" target="_blank" rel="noreferrer" aria-label="Safeagent" className="opacity-80 transition hover:opacity-100">
               <Image src="/f1.png" alt="Safeagent" width={90} height={28} className="h-fit w-fit" />
             </Link>
@@ -109,11 +109,11 @@ export default function Footer() {
               <Image src="/f3.png" alt="Property Redress" width={90} height={28} className="h-fit w-fit" />
             </Link>
           </div>
-           <div className="text-center">
+          <div className="text-center text-xs sm:text-xs order-3 w-full sm:w-auto">
             © 2025 London Move, All Rights Reserved
-            </div>
           </div>
         </div>
+      </div>
     </footer>
   );
 }

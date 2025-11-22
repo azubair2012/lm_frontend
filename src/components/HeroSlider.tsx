@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Button } from './ui/button';
 import Link from 'next/link';
 
 type VideoSlide = {
@@ -40,7 +39,7 @@ export default function HeroSlider() {
   }, []);
 
   return (
-    <section className="relative h-[50vh] min-h-[360px] w-full overflow-hidden bg-black sm:h-[80vh]">
+    <section className="relative h-[60vh] min-h-[360px] w-full overflow-hidden bg-black sm:h-[80vh]">
       {/* Video layers */}
       {VIDEO_SLIDES.map((slide, index) => {
         const isActive = index === activeIndex;
@@ -63,7 +62,7 @@ export default function HeroSlider() {
      
 
       <div className="absolute left-1/2 bottom-[50px] transform -translate-x-1/2 flex flex-col items-center justify-center text-white bg-[#f3f5f68e] backdrop-blur-sm p-4 pb-4">
-       <div className="flex items-center justify-center gap-10 my-6">                  
+       <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 my-6">                  
                   <Link href="/properties" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px] p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>LONDON</Link>
                   <Link href="/valuation" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>GET VALUATION</Link>
                   <Link href="/international-properties" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>INTERNATIONAL</Link>

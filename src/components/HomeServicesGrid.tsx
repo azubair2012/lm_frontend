@@ -38,7 +38,7 @@ const SERVICES = [
 
 export default function HomeServicesGrid() {
   return (
-    <section className="py-32 max-w-[1400px] mx-auto mb-20" style={{
+    <section className="md:py-32 py-12 max-w-[1400px] mx-auto mb-20" style={{
       backgroundImage: "url('/bg2.jpg')",
       backgroundSize: 'cover',
       backgroundPosition: 'center',

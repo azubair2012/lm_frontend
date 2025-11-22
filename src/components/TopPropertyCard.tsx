@@ -20,7 +20,7 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
     <Link href={`/properties/${propref}`} className="block h-full">
       <Card className="h-full rounded-none group relative overflow-hidden border-2 transition-all duration-500 hover:shadow-2xl hover:border-primary/50 bg-gradient-to-br from-background via-background to-primary/5 cursor-pointer">
         {/* Image Section */}
-        <div className="relative aspect-[16/10] overflow-hidden rounded-none">
+        <div className="relative md:aspect-[16/10] aspect-[16/12] overflow-hidden rounded-none">
           <Image
             src={images?.main?.large || images?.main?.medium || `${getBaseUrl()}/api/images/${property.photo1}` || '/placeholder-property.jpg'}
             alt={displayaddress}
