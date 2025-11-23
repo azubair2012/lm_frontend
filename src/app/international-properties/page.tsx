@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import ImageSlideShow from '@/components/ImageSlideShow';
+import InterImageSlider from '@/components/InterImageSlider';
 import { type PropertyData } from './types';
 
 export default function InternationalPropertiesPage() {
@@ -18,7 +18,7 @@ export default function InternationalPropertiesPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <ImageSlideShow />
+      <InterImageSlider />
       <section className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
         <div className="flex flex-col items-center text-center">
           <div className="relative flex flex-col items-center md:items-end">
