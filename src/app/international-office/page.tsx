@@ -1,10 +1,10 @@
 import ImageSlideShow from "@/components/ImageSlideShow";
-
+import InterImageSlider from "@/components/InterImageSlider";
 export default function InternationalOfficePage() {
   return (
     <main className="min-h-screen bg-background">
-      <ImageSlideShow />
-<div className="flex flex-col justify-center mx-auto py-8 sm:py-12 md:py-16 px-4 sm:px-6">
+      <InterImageSlider />
+<div className="flex flex-col  justify-center mx-auto py-8 sm:py-12 md:py-16 px-4 sm:px-6">
   <div className="absolute -z-10 w-full h-full opacity-50 hidden md:block" style={{
     backgroundImage: "url('/bg1.jpg')",
     backgroundSize: 'cover',
@@ -19,14 +19,14 @@ export default function InternationalOfficePage() {
               OFFICES
             </span>
             <span
-              className="absolute top-8 text-[48px] text-[#B87333] md:top-16 md:text-7xl"
+              className="absolute top-8 text-[48px] text-[#B87333] md:top-[80px] md:text-7xl"
               style={{ fontFamily: 'Southland, serif' }}
             >
               Around the World
             </span>
             </header>
             <span className="text-xl sm:text-2xl md:text-3xl mt-8 sm:mt-10 md:mt-12 text-[#383E42] justify-center flex" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>Get in touch:</span>
-            </div>
+          </div>
             
 
           <div className="mx-auto mt-6 sm:mt-8 md:mt-10 flex flex-col md:flex-row w-full max-w-5xl justify-center gap-8 md:gap-12 lg:gap-[100px] px-4">

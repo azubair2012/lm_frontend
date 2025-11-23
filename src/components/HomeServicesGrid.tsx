@@ -21,7 +21,7 @@ const SERVICES = [
   },
   {
     label: 'Neighborhood Guides',
-    href: '/resources/buyer-guide',
+    href: '/blog',
     image: '/s1.webp',
   },
   {

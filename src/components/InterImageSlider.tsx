@@ -13,19 +13,19 @@ type ImageSlide = {
 const IMAGE_SLIDES: ImageSlide[] = [
   {
     id: 1,
-    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/1579144537.webp',
+    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/darcey-beau-q8D7WZc40eA-unsplash.jpg',
     title: 'London Move',
     subtitle: 'Experience the beauty of nature.',
   },
   {
     id: 2,
-    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/pexels-pho-tomass-883344227-32506477%20%282%29.webp',
+    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/twilight-hero-banner.webp',
     title: 'London Move',
     subtitle: 'Discover city adventures.',
   },
   {
     id: 3,
-    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/Islington_Square_12.ec896ae94ee0fa956657a33126818815.webp',
+    src: 'https://oncklxh09kyqnp5l.public.blob.vercel-storage.com/international%20properties/binghatti-skyblade-hero-banner.webp',
     title: 'London Move',
     subtitle: 'Discover city adventures.',
   },
@@ -44,7 +44,7 @@ export default function ImageSlider() {
   }, []);
 
   return (
-    <section className="relative h-full min-h-[360px] w-full overflow-hidden bg-white sm:h-full">
+    <section className="relative h-full md:min-h-[650px] min-h-[500px] w-full overflow-hidden bg-white sm:h-full">
       {/* Image layers */}
       {IMAGE_SLIDES.map((slide, index) => {
         const isActive = index === activeIndex;

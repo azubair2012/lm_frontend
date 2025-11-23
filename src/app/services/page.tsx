@@ -5,16 +5,16 @@ export default function ServicesPage() {
     <main className="min-h-screen bg-background">
       <ImageSlideShow />
       <section className="mx-auto">
-      <div className="absolute -z-10 w-full h-full opacity-50 hidden md:block" style={{
-      backgroundImage: "url('/bg1.jpg')",
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
+        <div className="absolute -z-10 w-full h-full opacity-50 hidden md:block" style={{
+        backgroundImage: "url('/bg1.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         }}>
           
         </div>
         {/* Heading */}
         <div className="flex flex-col items-center gap-6 text-center">
-          <div className="relative flex flex-col md:items-end">
+          <div className="relative flex flex-col md:mt-16 mt-6 md:items-end">
             <span
               className="text-[48px] sm:text-[64px] text-black uppercase md:text-[90px]"
               style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
@@ -79,7 +79,7 @@ export default function ServicesPage() {
             </div>
           </section>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             <h2 className="text-2xl font-semibold uppercase text-[#111518]">Our Fees</h2>
             <div>
               <div>
