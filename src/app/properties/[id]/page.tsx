@@ -132,7 +132,7 @@ export default function PropertyPage() {
 
         {/* Map Section */}
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-4" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}>
+          <h2 className="text-2xl font-semibold mb-4 ml-[8rem]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}>
             Location
           </h2>
           <PropertyMap property={property} height="500px" />

@@ -34,7 +34,7 @@ export default function PropertyMapClient({ coordinates, address }: PropertyMapC
     <MapContainer
       center={[coordinates.latitude, coordinates.longitude]}
       zoom={15}
-      style={{ height: '100%', width: '100%' }}
+      style={{ height: '100%', width: '80%', margin: '0 auto' }}
       ref={mapRef}
       scrollWheelZoom={true}
     >

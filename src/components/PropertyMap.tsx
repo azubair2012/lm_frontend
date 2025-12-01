@@ -20,7 +20,20 @@ interface PropertyMapProps {
 }
 
 export default function PropertyMap({ property, height = '400px' }: PropertyMapProps) {
+  // Debug logging - always log to help diagnose
+  console.log('🔍 PropertyMap Debug:', {
+    propref: property.propref,
+    geolocation: property.geolocation,
+    geolocationType: typeof property.geolocation,
+    geolocationLength: property.geolocation?.length,
+    hasGeolocation: !!property.geolocation,
+    geolocationValue: JSON.stringify(property.geolocation),
+    allPropertyKeys: Object.keys(property),
+  });
+
   const coordinates = parseGeolocation(property.geolocation);
+
+  console.log('📍 Parsed coordinates:', coordinates);
 
   if (!coordinates) {
     return (
@@ -39,7 +52,7 @@ export default function PropertyMap({ property, height = '400px' }: PropertyMapP
   }
 
   return (
-    <div style={{ height }} className="rounded-lg overflow-hidden border border-gray-200">
+    <div style={{ height }} className="rounded-lg overflow-hidden">
       <PropertyMapClient coordinates={coordinates} address={property.displayaddress} />
     </div>
   );
