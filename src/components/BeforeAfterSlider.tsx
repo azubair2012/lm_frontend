@@ -16,7 +16,7 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, alt }: BeforeAf
 
   return (
     <div className="relative h-full w-full select-none overflow-hidden border-[16px] border-[rgba(15,15,15,0.9)]">
-      <img-comparison-slider hover="hover" className="h-full w-full">
+      <img-comparison-slider hover={true} className="h-full w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img slot="first" src={beforeSrc} alt={`${alt} - Before`} className="h-full w-full object-cover" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
