@@ -235,4 +235,63 @@ export const rentmanApi = {
   },
 };
 
+// Blog types
+export interface BlogLink {
+  label: string;
+  href: string;
+}
+
+export interface BlogPost {
+  id: number;
+  category: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  content: string[];
+  links: BlogLink[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface BlogPostInput {
+  category: string;
+  title: string;
+  subtitle: string;
+  excerpt: string;
+  content: string[];
+  links: BlogLink[];
+}
+
+// Blog API functions
+export const blogApi = {
+  // Get all blog posts
+  getAllBlogs: async (): Promise<BlogPost[]> => {
+    const response = await api.get<ApiResponse<BlogPost[]>>('/blogs');
+    return response.data.data;
+  },
+
+  // Get a single blog post by ID
+  getBlogById: async (id: number): Promise<BlogPost> => {
+    const response = await api.get<ApiResponse<BlogPost>>(`/blogs/${id}`);
+    return response.data.data;
+  },
+
+  // Create a new blog post
+  createBlog: async (input: BlogPostInput): Promise<BlogPost> => {
+    const response = await api.post<ApiResponse<BlogPost>>('/blogs', input);
+    return response.data.data;
+  },
+
+  // Update an existing blog post
+  updateBlog: async (id: number, input: Partial<BlogPostInput>): Promise<BlogPost> => {
+    const response = await api.put<ApiResponse<BlogPost>>(`/blogs/${id}`, input);
+    return response.data.data;
+  },
+
+  // Delete a blog post
+  deleteBlog: async (id: number): Promise<void> => {
+    await api.delete<ApiResponse<void>>(`/blogs/${id}`);
+  },
+};
+
 export default rentmanApi;

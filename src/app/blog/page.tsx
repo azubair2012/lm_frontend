@@ -1,77 +1,58 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import ImageSlideShow from '@/components/ImageSlideShow';
 import Link from 'next/link';
-
-type BlogLink = {
-  label: string;
-  href: string;
-};
-
-type BlogPost = {
-  id: number;
-  category: string;
-  title: string;
-  subtitle: string;
-  excerpt: string;
-  content: string[];
-  links: BlogLink[];
-};
-
-const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    category: 'Market Insights',
-    title: 'London Housing Market: Quick Read',
-    subtitle: 'London Housing Market Outlook | What Buyers, Sellers and Landlords Should Know',
-    excerpt: 'A short take on London\'s market now. Lending calmer, buyers selective, rents easing from last year\'s pace. Practical moves for each group.',
-    content: [
-      'London feels steadier than it did at the peak of uncertainty. Mortgage pricing has eased from 2023 highs, which has brought more serious viewings back into the diary, but buyers are still selective and quality matters. Well-presented homes in good pockets close to Tube or Overground stations continue to move fastest. The middle of the market is active where pricing is realistic and photographs tell a clear story. Chains are holding together better, although anything that looks like work without a clear upside can linger.',
-      'On the rental side, the frenzy has cooled. Demand remains strong but tenants have a shade more choice than last year, so presentation and sensible pricing now make a visible difference to time on market. Energy performance and running costs are in sharper focus, with applicants asking more questions about insulation, glazing and heating systems.',
-      'For sellers, the best strategy is simple. Fix the easy wins, stage to show space, price off the last good comparable rather than the frothiest outlier and use editorial-quality marketing. For buyers, line up an agreement in principle, target layouts that use space well and be ready to move when the right home appears. For landlords, reduce voids with smart refreshes, clean compliance and clear tenant communications.',
-      'If you want a street-level view, we can map likely demand, recommend value-add improvements and guide timing so you launch at your best.',
-    ],
-    links: [
-      { label: 'concierge service', href: '/concierge' },
-      { label: 'recent sales', href: '/properties' },
-      { label: 'book a market appraisal', href: '/valuation' },
-    ],
-  },
-  {
-    id: 2,
-    category: 'Neighbourhood Guide',
-    title: 'Islington',
-    subtitle: 'Islington Neighbourhood Guide | Culture, Dining, Connectivity',
-    excerpt: 'A local\'s cut on Islington. Upper Street energy, Camden Passage browsing, canal walks and excellent Tube and Overground links.',
-    content: [
-      'Islington manages that rare London trick of feeling like a village and a city at once. Upper Street is the spine, running from Angel to Highbury Corner with restaurants, cinemas and independent shops strung along it. Slip into Camden Passage for antiques and vintage finds, then wander the Regent\'s Canal for an easy reset. Evenings often end at the Almeida, a small theatre that consistently punches above its weight.',
-      'Homes are varied and good looking. Elegant terraces and squares sit beside conversions and mansion blocks, with newer apartments dotted close to transport. Barnsbury and Canonbury are favourites for their calm streets and classic façades, while apartments near Angel and Highbury & Islington draw first-time buyers and renters who want everything on the doorstep.',
-      'Getting around is simple. Angel gives you the Northern line, Highbury & Islington brings the Victoria line and the Overground, and buses fill the gaps. If you want walkable living with culture and fast links to the City and West End, Islington keeps life easy.',
-    ],
-    links: [
-      { label: 'property search Islington', href: '/properties' },
-      { label: 'book a valuation', href: '/valuation' },
-      { label: 'landlord services', href: '/landlords' },
-    ],
-  },
-  {
-    id: 3,
-    category: 'Neighbourhood Guide',
-    title: 'Highbury',
-    subtitle: 'Highbury Neighbourhood Guide | Parks, Period Homes, Fast Transport',
-    excerpt: 'A quick, local take on living in Highbury. Green space, period terraces, Arsenal heritage and speedy links from Highbury & Islington.',
-    content: [
-      'Highbury has that easy North London rhythm people move for. Mornings begin on Highbury Fields with runners, dogs and strong coffees, and most errands can be done on foot between the Barn and Blackstock Road. The housing is a big part of the appeal. Georgian and Victorian terraces wrap quiet streets near the park, while conversions and mansion blocks offer handsome flats with good proportions. Around Drayton Park and towards Finsbury Park you will find great value one and two beds that rent or sell quickly when well presented.',
-      'The transport story is hard to beat. Highbury & Islington connects to the Victoria line, the Overground and trains to Moorgate, so the West End, the City and Shoreditch are all within easy reach. Football is woven into the place too. The old Arsenal ground lives on as Highbury Square, where the Art Deco façades frame calm communal gardens and a sense of history without the match day crush.',
-      'If you like character, walkability and a short commute, Highbury hits the brief. And if you are selling or letting, light upgrades and thoughtful staging go a long way here.',
-    ],
-    links: [
-      { label: 'valuations', href: '/valuation' },
-      { label: 'concierge service', href: '/concierge' },
-      { label: 'Highbury area listings', href: '/properties' },
-    ],
-  },
-];
+import { blogApi, BlogPost } from '@/lib/api';
 
 export default function BlogPage() {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true);
+        const posts = await blogApi.getAllBlogs();
+        setBlogPosts(posts);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching blogs:', err);
+        setError('Failed to load blog posts. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-background">
+        <ImageSlideShow />
+        <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <p className="text-lg text-muted-foreground">Loading blog posts...</p>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="min-h-screen bg-background">
+        <ImageSlideShow />
+        <section className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <p className="text-lg text-red-500">{error}</p>
+          </div>
+        </section>
+      </main>
+    );
+  }
   return (
     <main className="min-h-screen bg-background">
       <ImageSlideShow />
@@ -91,7 +72,12 @@ export default function BlogPage() {
 
         {/* Blog Posts Grid */}
         <div className="mx-auto max-w-6xl space-y-16 sm:space-y-20 md:space-y-24">
-          {blogPosts.map((post, index) => (
+          {blogPosts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">No blog posts available yet.</p>
+            </div>
+          ) : (
+            blogPosts.map((post, index) => (
             <article
               key={post.id}
               className="group relative"
@@ -161,7 +147,8 @@ export default function BlogPage() {
                 </div>
               )}
             </article>
-          ))}
+            ))
+          )}
         </div>
       </section>
     </main>
