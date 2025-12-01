@@ -31,7 +31,7 @@ export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[rgba(56,62,66,0.95)] backdrop-blur-md py-4">
+    <header className="sticky top-0 z-100 w-full bg-[rgba(56,62,66,0.95)] backdrop-blur-md py-4">
       <nav className="mx-auto flex w-full px-4 sm:px-8 md:px-[6rem] items-center justify-between font-semibold uppercase tracking-[0.3em] text-white sm:text-sm">
         <Link
           href="/"
