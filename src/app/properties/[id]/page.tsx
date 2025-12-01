@@ -6,6 +6,7 @@ import { Property } from '@/lib/api';
 import { rentmanApi } from '@/lib/api';
 import PropertyDetails from '@/components/PropertyDetails';
 import PropertyGallery from '@/components/PropertyGallery';
+import PropertyMap from '@/components/PropertyMap';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, ArrowLeft, Home, Share2 } from 'lucide-react';
@@ -127,6 +128,14 @@ export default function PropertyPage() {
           <div className="space-y-6">
             <PropertyDetails property={property} />
           </div>
+        </div>
+
+        {/* Map Section */}
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold mb-4" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}>
+            Location
+          </h2>
+          <PropertyMap property={property} height="500px" />
         </div>
       </div>
     </div>
