@@ -135,6 +135,13 @@ button {
   transform: scale(1.05);
 }
 
+/* Leaflet map z-index fix - ensure map container stays below navbar */
+/* Map controls and popups can still appear above with their own z-index values */
+.leaflet-container {
+  position: relative;
+  z-index: 1;
+}
+
 /* Loading animation */
 @keyframes spin {
   to {

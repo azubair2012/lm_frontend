@@ -63,3 +63,5 @@ export function formatCoordinates(coords: Coordinates): string {
   return `${coords.latitude.toFixed(6)}, ${coords.longitude.toFixed(6)}`;
 }
 
+
+

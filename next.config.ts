@@ -15,17 +15,34 @@ const imageHostname = getImageHostname();
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [imageHostname],
+    domains: ['localhost', 'res.cloudinary.com'],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: imageHostname,
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001',
         pathname: '/api/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'framerusercontent.com',
+        pathname: '/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+        pathname: '/**',
       },
     ],
   },
   env: {
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001/api',
+    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   },
 };
 

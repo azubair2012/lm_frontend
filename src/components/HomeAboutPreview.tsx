@@ -6,7 +6,7 @@ export default function HomeAboutPreview() {
   return (
     <section className="bg-[#f5f3f0] py-12 sm:py-16 md:py-24 px-4">
       <div className="container mx-auto flex max-w-7xl flex-col gap-8 rounded-[32px] bg-white/5 p-6 backdrop-blur-lg md:flex-row md:p-10">
-        <div className="flex-1 space-y-4 border-8 sm:border-[16px] border-[#101418] w-full h-[300px] sm:h-[200px] md:h-[560px]">
+        <div className="flex-1 border-8 sm:border-[16px] border-[#101418] w-full h-[300px] sm:h-[200px] md:h-[560px] overflow-hidden relative">
           <ImageSlideShow/>
         </div>
         <div className="flex max-w-lg flex-1 flex-col gap-6 md:gap-0 md:items-start items-center text-center md:text-start" style={{ fontFamily: 'Public Sans, sans-serif'}}>

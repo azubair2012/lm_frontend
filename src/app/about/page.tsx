@@ -1,5 +1,4 @@
 import ImageSlideShow from '@/components/ImageSlideShow';
-import Image from 'next/image';
 import Link from 'next/link';
 
 

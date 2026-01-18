@@ -44,7 +44,7 @@ export default function ImageSlider() {
   }, []);
 
   return (
-    <section className="relative h-full min-h-[600px] w-full overflow-hidden bg-white sm:h-full">
+    <section className="relative h-full w-full overflow-hidden bg-white">
       {/* Image layers */}
       {IMAGE_SLIDES.map((slide, index) => {
         const isActive = index === activeIndex;

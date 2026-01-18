@@ -52,7 +52,7 @@ export default function PropertyMap({ property, height = '400px' }: PropertyMapP
   }
 
   return (
-    <div style={{ height }} className="rounded-lg overflow-hidden">
+    <div style={{ height }} className="rounded-2xl overflow-hidden">
       <PropertyMapClient coordinates={coordinates} address={property.displayaddress} />
     </div>
   );
