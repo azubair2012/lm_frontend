@@ -13,8 +13,12 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
   const {
     propref,
     displayaddress,
+    street,
+    postcode,
     images,
   } = property;
+
+  const addressLabel = street && postcode ? `${street}, ${postcode}` : displayaddress;
 
   return (
     <Link href={`/properties/${propref}`} className="block h-full">
@@ -23,7 +27,7 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
         <div className="relative md:aspect-[16/10] aspect-[16/12] overflow-hidden rounded-none">
           <Image
             src={images?.main?.large || images?.main?.medium || `${getBaseUrl()}/api/images/${property.photo1}` || '/placeholder-property.jpg'}
-            alt={displayaddress}
+            alt={addressLabel}
             fill
             unoptimized
             className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
@@ -33,7 +37,7 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
           {/* Property Title */}
           <div className="space-y-2 absolute z-20 bg-[#383e42b1] backdrop-blur-sm p-2 w-full bottom-14 lg:bottom-8 left-0">
             <p className="font-medium text-white text-md leading-tight line-clamp-2 group-hover:text-primary transition-colors" style={{ fontFamily: 'Roboto, sans-serif' }}>
-              {displayaddress}
+              {addressLabel}
             </p>
           </div>
         </div>

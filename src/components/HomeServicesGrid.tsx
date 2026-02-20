@@ -6,7 +6,7 @@ import Link from 'next/link';
 const SERVICES = [
   {
     label: 'List With Us',
-    href: '/looking-to-sell',
+    href: '/contact',
     image: '/s1.webp',
   },
   {

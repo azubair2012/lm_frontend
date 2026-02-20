@@ -16,6 +16,8 @@ export default function PropertyCard({ property }: PropertyCardProps) {
   const {
     propref,
     displayaddress,
+    street,
+    postcode,
     rentmonth,
     beds,
     singles,
@@ -28,6 +30,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     images,
   } = property;
 
+  const addressLabel = street && postcode ? `${street}, ${postcode}` : displayaddress;
   const totalBeds = parseInt(beds) + parseInt(singles) + parseInt(doubles);
 
   return (
@@ -35,7 +38,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={images?.main?.medium || images?.main?.thumb || `${getBaseUrl()}/api/images/${property.photo1}` || '/placeholder-property.jpg'}
-          alt={displayaddress}
+          alt={addressLabel}
           fill
           unoptimized
           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -46,7 +49,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       <CardContent className="p-4">
         <div className="space-y-2">
           <h3 className="font-semibold text-lg leading-tight line-clamp-2">
-            {displayaddress}
+            {addressLabel}
           </h3>
           
           {strapline && (

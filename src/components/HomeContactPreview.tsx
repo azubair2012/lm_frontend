@@ -59,7 +59,7 @@ export default function HomeContactPreview({ header }: HomeContactPreviewProps =
               <p className="text-sm sm:text-base">Wednesday 9.00am - 6.00pm</p>
               <p className="text-sm sm:text-base">Thursday 9.00am - 6.00pm</p>
               <p className="text-sm sm:text-base">Friday 9.00am - 6.00pm</p>
-              <p className="text-sm sm:text-base">Saturday 10.00am - 3.00pm</p>
+              <p className="text-sm sm:text-base">Saturday 10.00am - 4.00pm</p>
               <p className="text-sm sm:text-base">Sunday: Closed</p>
             </div>
           </div>

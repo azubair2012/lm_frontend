@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="bg-background">
       <ImageSlideShow />
       <section className="mx-auto min-h-[80vh] relative">
 

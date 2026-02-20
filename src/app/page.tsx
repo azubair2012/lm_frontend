@@ -13,6 +13,7 @@ import HomeServicesGrid from '@/components/HomeServicesGrid';
 import HomeAboutPreview from '@/components/HomeAboutPreview';
 import HomeContactPreview from '@/components/HomeContactPreview';
 import HeroSlider from '@/components/HeroSlider';
+import TestimonialsSlider from '@/components/TestimonialsSlider';
 
 const CACHE_KEY = 'home-top-properties-cache';
 const CACHE_TIMESTAMP_KEY = 'home-top-properties-cache-timestamp';
@@ -131,7 +132,7 @@ export default function HomePage() {
                             TO LET
                         </Button>
                           <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
-                            GET VALUATION
+                            PROPERTY VALUATION
                         </Button>
                         </div>
                       ) : (
@@ -147,39 +148,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className='relative'>
-      <div className="flex justify-center items-center py-8 sm:py-12 px-4 max-w-[1400px] mx-auto min-h-[400px] sm:h-[500px]"  style={{
-    backgroundImage: "url('/bg1.jpg')",
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-      }}>
-  
-          <div className="relative z-50 flex flex-col items-center text-center px-4">
-            <span
-              className="text-[60px] text-black uppercase md:text-[80px]"
-              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
-            >
-              WHAT OUR
-            </span>
-            <span
-              className="absolute top-12 text-[42px] text-[#B87333] md:top-16 md:text-7xl"
-              style={{ fontFamily: 'Southland, serif' }}
-            >
-              Customers Are Saying
-            </span>
-            <div className='w-full max-w-[900px] mt-6 sm:mt-8 text-sm sm:text-base md:text-[18px] px-4'>
-              <span>I have used London move for a few years now. Great communication. They support when I need them and don&apos;t bother me for unnecessary things. Very personable too! I highly recommend!
-                <br />
-                <br />
-                -Kel
-              </span>
-              <div className='flex items-center justify-center mt-6 sm:mb-4'>              
-                <Link href="/testimonial" className="bg-[#383E42] text-xs sm:text-sm hover:text-[#B87333] text-white rounded-none text-center font-semibold h-[45px] sm:h-[50px] w-full max-w-[280px] px-4 flex items-center justify-center" style={{ fontFamily: 'Roboto, sans-serif' }}>SEE MORE TESTIMONIALS</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <TestimonialsSlider />
 
       {/* Before and After */}
       <section className="md:py-16 py-6 text-black">

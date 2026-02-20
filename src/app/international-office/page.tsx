@@ -36,7 +36,7 @@ export default function InternationalOfficePage() {
             style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
           >
             <div>
-              <h3 className="font-semibold text-lg">London Move</h3>
+              <h3 className="font-semibold text-lg">London Move – Embayt</h3>
               <p>Office 220</p>
               <p>Al Attar Business Center</p>
               <p>Al Barsha, Dubai</p>
