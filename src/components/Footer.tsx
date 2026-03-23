@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Facebook, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
+import { SiFacebook, SiInstagram, SiX, SiYoutube } from 'react-icons/si';
+import { FaLinkedinIn } from 'react-icons/fa6';
 import Image from 'next/image';
 
 const servicesLinks = [
@@ -74,27 +75,27 @@ export default function Footer() {
           <div className="flex items-center justify-center gap-3 order-2 sm:order-1">
             <a aria-label="Facebook" href="https://facebook.com" target="_blank" rel="noreferrer" className="group">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-                <Facebook className="h-5 w-5" />
+                <SiFacebook className="h-4 w-4" />
               </span>
             </a>
             <a aria-label="Instagram" href="https://instagram.com" target="_blank" rel="noreferrer" className="group">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-                <Instagram className="h-5 w-5" />
+                <SiInstagram className="h-4 w-4" />
               </span>
             </a>
-            <a aria-label="Twitter" href="https://twitter.com" target="_blank" rel="noreferrer" className="group">
+            <a aria-label="X" href="https://x.com" target="_blank" rel="noreferrer" className="group">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-                <Twitter className="h-5 w-5" />
+                <SiX className="h-4 w-4" />
               </span>
             </a>
             <a aria-label="LinkedIn" href="https://linkedin.com" target="_blank" rel="noreferrer" className="group">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-                <Linkedin className="h-5 w-5" />
+                <FaLinkedinIn className="h-4 w-4" />
               </span>
             </a>
             <a aria-label="YouTube" href="https://youtube.com" target="_blank" rel="noreferrer" className="group">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
-                <Youtube className="h-5 w-5" />
+                <SiYoutube className="h-4 w-4" />
               </span>
             </a>
           </div>
