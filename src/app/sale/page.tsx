@@ -176,13 +176,13 @@ export default function SalePage() {
             className="text-[48px] sm:text-[64px] text-black uppercase md:text-[90px]"
             style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 700 }}
           >
-            sale properties
+            Properties for sale
           </span>
           <span
             className="absolute top-8 text-[48px] text-[#B87333] md:top-[90px] md:text-7xl"
             style={{ fontFamily: 'Southland, serif' }}
           >
-            Live Where You Love
+            Make it a home
           </span>
         </div>
       </div>
