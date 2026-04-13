@@ -14,6 +14,7 @@ import HomeAboutPreview from '@/components/HomeAboutPreview';
 import HomeContactPreview from '@/components/HomeContactPreview';
 import HeroSlider from '@/components/HeroSlider';
 import TestimonialsSlider from '@/components/TestimonialsSlider';
+import { CONTENT_REGISTRY } from '@/lib/content-registry';
 
 const CACHE_KEY = 'home-top-properties-cache';
 const CACHE_TIMESTAMP_KEY = 'home-top-properties-cache-timestamp';
@@ -22,9 +23,13 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 export default function HomePage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  const [conciergeDescription, setConciergeDescription] = useState(
+    CONTENT_REGISTRY.conciergeDescription.defaultValue
+  );
 
   useEffect(() => {
     loadTopProperties();
+    loadEditableContent();
   }, []);
 
   const loadTopProperties = async () => {
@@ -57,6 +62,30 @@ export default function HomePage() {
       console.error('Error loading top properties:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadEditableContent = async () => {
+    try {
+      const response = await fetch(
+        `/api/content?keys=${encodeURIComponent(CONTENT_REGISTRY.conciergeDescription.key)}`
+      );
+      const payload = (await response.json()) as {
+        success: boolean;
+        data?: Array<{ key: string; value: string }>;
+      };
+      if (!response.ok || !payload.success || !payload.data) {
+        return;
+      }
+
+      const conciergeEntry = payload.data.find(
+        (entry) => entry.key === CONTENT_REGISTRY.conciergeDescription.key
+      );
+      if (conciergeEntry?.value?.trim()) {
+        setConciergeDescription(conciergeEntry.value.trim());
+      }
+    } catch (error) {
+      console.error('Error loading editable homepage content:', error);
     }
   };
 
@@ -170,9 +199,7 @@ export default function HomePage() {
             </header>
            
             <p className="text-base leading-7">
-              London Move&apos;s concierge service transforms properties to maximize their market value. Our team of experts
-              handles everything from minor repairs to complete renovations, staging, and bespoke marketing strategies,
-              ensuring your home launches with impact.
+              {conciergeDescription}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
             <Link href="/concierge" className="bg-[#383E42] text-sm hover:text-[#B87333] text-white rounded-none text-center font-semibold h-[50px] w-[250px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>LEARN MORE</Link>

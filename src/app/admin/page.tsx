@@ -45,6 +45,15 @@ export default function AdminPage() {
       color: 'bg-blue-50 border-blue-200 hover:bg-blue-100',
       textColor: 'text-blue-700',
     },
+    {
+      title: 'Site Content',
+      description: 'Edit homepage and section copy',
+      href: '/admin/content',
+      icon: '🧩',
+      count: null,
+      color: 'bg-purple-50 border-purple-200 hover:bg-purple-100',
+      textColor: 'text-purple-700',
+    },
     // Add more admin sections here in the future
     // {
     //   title: 'Properties',

@@ -2,15 +2,33 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
-const NAV_ITEMS = [
+type NavSubLinkLeaf = { label: string; href: string };
+type NavSubLinkNested = { label: string; submenu: NavSubLinkLeaf[] };
+type NavSubLink = NavSubLinkLeaf | NavSubLinkNested;
+
+function isNavSubNested(link: NavSubLink): link is NavSubLinkNested {
+  return 'submenu' in link;
+}
+
+type NavItem =
+  | { label: string; href: string }
+  | { label: string; submenu: NavSubLink[] };
+
+const NAV_ITEMS: NavItem[] = [
   { label: 'HOME', href: '/' },
   {
     label: 'PROPERTIES',
     submenu: [
-      { label: 'London Properties', href: '/properties' },
+      {
+        label: 'London Properties',
+        submenu: [
+          { label: 'To Let', href: '/properties' },
+          { label: 'For Sale', href: '/sale' },
+        ],
+      },
       { label: 'International Homes', href: '/international-properties' },
     ],
   },
@@ -69,7 +87,7 @@ export default function NavBar() {
             }}
           />
         </Link>
-        
+
         {/* Desktop Navigation */}
         <div className="hidden lg:flex ml-auto flex-1 items-center justify-end gap-6 xl:gap-16">
           {NAV_ITEMS.map((item) => (
@@ -102,12 +120,100 @@ export default function NavBar() {
   );
 }
 
-function NavItemLink({ item }: { item: (typeof NAV_ITEMS)[number] }) {
-  const [open, setOpen] = useState(false);
+function DesktopSubmenuLink({
+  link,
+  mainMenuOpen,
+  onNestedOpenChange,
+  siblingNestedOpen,
+}: {
+  link: NavSubLink;
+  mainMenuOpen: boolean;
+  onNestedOpenChange?: (open: boolean) => void;
+  siblingNestedOpen?: boolean;
+}) {
+  const [nestedOpen, setNestedOpen] = useState(false);
 
-  if (!item.submenu) {
+  useEffect(() => {
+    if (!mainMenuOpen) {
+      setNestedOpen(false);
+    }
+  }, [mainMenuOpen]);
+
+  if (!isNavSubNested(link)) {
+    const hidden = Boolean(siblingNestedOpen);
     return (
-      <Link href={item.href ?? '/'} className="transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px]">
+      <div
+        aria-hidden={hidden}
+        className={`overflow-hidden transition-[max-height,opacity] duration-150 ease-out ${
+          hidden ? 'max-h-0 opacity-0 pointer-events-none' : 'max-h-40 opacity-100'
+        }`}
+      >
+        <Link
+          href={link.href}
+          tabIndex={hidden ? -1 : undefined}
+          className="text-[14px] py-4 bg-[rgba(56,62,66,0.95)] tracking-tight text-white transition hover:text-[#B87333] block"
+        >
+          {link.label}
+        </Link>
+      </div>
+    );
+  }
+
+  const setNested = (next: boolean) => {
+    setNestedOpen(next);
+    onNestedOpenChange?.(next);
+  };
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setNested(true)}
+      onMouseLeave={() => setNested(false)}
+    >
+      <div
+        className="text-[14px] py-4 bg-[rgba(56,62,66,0.95)] tracking-tight text-white transition hover:text-[#B87333] cursor-default"
+        aria-expanded={nestedOpen}
+      >
+        {link.label}
+      </div>
+      <div
+        className="absolute left-full top-0 z-30 flex w-[180px] flex-col gap-[2px] pl-[2px] text-center uppercase tracking-tight shadow-lg transition-all duration-200 ease-out"
+        style={{
+          opacity: nestedOpen ? 1 : 0,
+          transform: nestedOpen ? 'translateX(0)' : 'translateX(-6px)',
+          pointerEvents: nestedOpen ? 'auto' : 'none',
+        }}
+      >
+        {link.submenu.map((child) => (
+          <Link
+            key={child.href}
+            href={child.href}
+            className="text-[14px] py-4 bg-[rgba(56,62,66,0.95)] tracking-tight text-white transition hover:text-[#B87333]"
+          >
+            {child.label}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function NavItemLink({ item }: { item: NavItem }) {
+  const [open, setOpen] = useState(false);
+  const [nestedFlyoutOpen, setNestedFlyoutOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) {
+      setNestedFlyoutOpen(false);
+    }
+  }, [open]);
+
+  if (!('submenu' in item)) {
+    return (
+      <Link
+        href={item.href}
+        className="transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px]"
+      >
         {item.label}
       </Link>
     );
@@ -117,9 +223,17 @@ function NavItemLink({ item }: { item: (typeof NAV_ITEMS)[number] }) {
     <div
       className="relative"
       onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseLeave={() => {
+        setOpen(false);
+        setNestedFlyoutOpen(false);
+      }}
     >
-      <button className="transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px]">{item.label}</button>
+      <button
+        type="button"
+        className="transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px]"
+      >
+        {item.label}
+      </button>
       <div
         className="absolute right-[-46px] top-full pt-[26px] z-20 flex w-[180px] -translate-x-1/2 flex-col gap-[2px] text-center text-[11px] font-regular uppercase tracking-tight text-[#101418] shadow-lg transition-all duration-200 ease-out"
         style={{
@@ -129,26 +243,75 @@ function NavItemLink({ item }: { item: (typeof NAV_ITEMS)[number] }) {
         }}
       >
         {item.submenu.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="text-[14px] py-4 bg-[rgba(56,62,66,0.95)] tracking-tight text-white transition hover:text-[#B87333]"
-          >
-            {link.label}
-          </Link>
+          <DesktopSubmenuLink
+            key={isNavSubNested(link) ? link.label : link.href}
+            link={link}
+            mainMenuOpen={open}
+            onNestedOpenChange={isNavSubNested(link) ? setNestedFlyoutOpen : undefined}
+            siblingNestedOpen={!isNavSubNested(link) ? nestedFlyoutOpen : undefined}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function MobileNavItem({ item, onClose }: { item: (typeof NAV_ITEMS)[number]; onClose: () => void }) {
+function MobileSubmenuLink({
+  link,
+  onClose,
+}: {
+  link: NavSubLink;
+  onClose: () => void;
+}) {
+  const [nestedOpen, setNestedOpen] = useState(false);
+
+  if (!isNavSubNested(link)) {
+    return (
+      <Link
+        href={link.href}
+        onClick={onClose}
+        className="text-white text-[14px] py-2 transition hover:text-[#B87333]"
+      >
+        {link.label}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="flex flex-col">
+      <button
+        type="button"
+        onClick={() => setNestedOpen(!nestedOpen)}
+        className="flex items-center justify-between text-white text-[14px] py-2 text-left transition hover:text-[#B87333]"
+      >
+        {link.label}
+        <span className={`text-white transition-transform ${nestedOpen ? 'rotate-180' : ''}`}>▼</span>
+      </button>
+      {nestedOpen && (
+        <div className="flex flex-col pl-4 gap-2 mt-1">
+          {link.submenu.map((child) => (
+            <Link
+              key={child.href}
+              href={child.href}
+              onClick={onClose}
+              className="text-white text-[13px] py-2 transition hover:text-[#B87333]"
+            >
+              {child.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MobileNavItem({ item, onClose }: { item: NavItem; onClose: () => void }) {
   const [open, setOpen] = useState(false);
 
-  if (!item.submenu) {
+  if (!('submenu' in item)) {
     return (
-      <Link 
-        href={item.href ?? '/'} 
+      <Link
+        href={item.href}
         onClick={onClose}
         className="text-white transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px] py-2"
       >
@@ -160,6 +323,7 @@ function MobileNavItem({ item, onClose }: { item: (typeof NAV_ITEMS)[number]; on
   return (
     <div className="flex flex-col">
       <button
+        type="button"
         onClick={() => setOpen(!open)}
         className="flex items-center justify-between text-white transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px] py-2 text-left"
       >
@@ -169,14 +333,7 @@ function MobileNavItem({ item, onClose }: { item: (typeof NAV_ITEMS)[number]; on
       {open && (
         <div className="flex flex-col pl-4 gap-2 mt-2">
           {item.submenu.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={onClose}
-              className="text-white text-[14px] py-2 transition hover:text-[#B87333]"
-            >
-              {link.label}
-            </Link>
+            <MobileSubmenuLink key={isNavSubNested(link) ? link.label : link.href} link={link} onClose={onClose} />
           ))}
         </div>
       )}

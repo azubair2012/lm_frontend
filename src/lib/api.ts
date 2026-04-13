@@ -44,6 +44,7 @@ export interface Property {
   propref: string;
   displayaddress: string;
   displayprice: string;
+  saleprice?: string;
   rentmonth: string;
   rentorbuy: number;
   number: string;
@@ -156,6 +157,7 @@ export interface SearchParams {
   beds?: number;
   minPrice?: number;
   maxPrice?: number;
+  minSalePrice?: number;
   featured?: boolean;
   page?: number;
   limit?: number;
@@ -262,6 +264,49 @@ export interface BlogPostInput {
   links: BlogLink[];
 }
 
+export interface ContentEntry {
+  key: string;
+  label: string;
+  group: string;
+  type: 'text' | 'textarea' | 'richtext' | 'json';
+  value: string;
+  isPublished: boolean;
+  updatedAt: string;
+  updatedBy?: string;
+}
+
+export interface ContentUpdateInput {
+  label?: string;
+  group?: string;
+  type?: 'text' | 'textarea' | 'richtext' | 'json';
+  value: string;
+  isPublished?: boolean;
+  updatedBy?: string;
+}
+
+const CONTENT_RETRYABLE_CODES = new Set(['ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT']);
+
+async function withContentRetry<T>(fn: () => Promise<T>, maxAttempts = 3): Promise<T> {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error;
+      const code = (error as { code?: string })?.code;
+      const isRetryable = typeof code === 'string' && CONTENT_RETRYABLE_CODES.has(code);
+      if (!isRetryable || attempt === maxAttempts) {
+        throw error;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, attempt * 250));
+    }
+  }
+
+  throw lastError;
+}
+
 // Blog API functions
 export const blogApi = {
   // Get all blog posts
@@ -291,6 +336,32 @@ export const blogApi = {
   // Delete a blog post
   deleteBlog: async (id: number): Promise<void> => {
     await api.delete<ApiResponse<void>>(`/blogs/${id}`);
+  },
+};
+
+export const contentApi = {
+  getContent: async (keys?: string[], includeUnpublished = false): Promise<ContentEntry[]> => {
+    const params = new URLSearchParams();
+    if (keys && keys.length > 0) {
+      params.set('keys', keys.join(','));
+    }
+    if (includeUnpublished) {
+      params.set('includeUnpublished', 'true');
+    }
+
+    const query = params.toString();
+    const response = await withContentRetry(() =>
+      api.get<ApiResponse<ContentEntry[]>>(`/content${query ? `?${query}` : ''}`)
+    );
+    return response.data.data;
+  },
+
+  updateContentByKey: async (key: string, input: ContentUpdateInput): Promise<ContentEntry> => {
+    const encodedKey = encodeURIComponent(key);
+    const response = await withContentRetry(() =>
+      api.put<ApiResponse<ContentEntry>>(`/content/${encodedKey}`, input)
+    );
+    return response.data.data;
   },
 };
 

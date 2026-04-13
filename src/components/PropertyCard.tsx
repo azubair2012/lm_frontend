@@ -10,9 +10,10 @@ import { MapPin, Bed, Bath, Car, Calendar } from 'lucide-react';
 
 interface PropertyCardProps {
   property: Property;
+  showSalePrice?: boolean;
 }
 
-export default function PropertyCard({ property }: PropertyCardProps) {
+export default function PropertyCard({ property, showSalePrice = false }: PropertyCardProps) {
   const {
     propref,
     displayaddress,
@@ -28,10 +29,13 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     available,
     strapline,
     images,
+    saleprice,
   } = property;
 
   const addressLabel = street && postcode ? `${street}, ${postcode}` : displayaddress;
   const totalBeds = parseInt(beds) + parseInt(singles) + parseInt(doubles);
+  const parsedSalePrice = parseFloat(saleprice ?? '');
+  const hasValidSalePrice = showSalePrice && Number.isFinite(parsedSalePrice) && parsedSalePrice >= 1000;
 
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -100,8 +104,10 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         <div className="flex items-center justify-between w-full">
           <div className="space-y-1">
             <div className="text-2xl font-bold text-primary">
-              {formatPrice(parseFloat(rentmonth))}
-              <span className="text-sm font-normal text-muted-foreground">/month</span>
+              {hasValidSalePrice ? formatPrice(parsedSalePrice) : formatPrice(parseFloat(rentmonth))}
+              {!hasValidSalePrice && (
+                <span className="text-sm font-normal text-muted-foreground">/month</span>
+              )}
             </div>
            
           </div>
