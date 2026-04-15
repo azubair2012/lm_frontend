@@ -198,7 +198,7 @@ export default function HomePage() {
             </span>
             </header>
            
-            <p className="text-base leading-7">
+            <p className="text-base leading-7 text-[#383E42]">
               {conciergeDescription}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">

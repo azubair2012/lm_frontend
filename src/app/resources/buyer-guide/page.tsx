@@ -1,5 +1,5 @@
+import { redirect } from 'next/navigation';
+
 export default function BuyerGuidePage() {
-  return (
-    <main className="min-h-screen bg-background" />
-  );
+  redirect('/resources/buyer-guides');
 }

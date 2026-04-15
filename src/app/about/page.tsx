@@ -45,8 +45,8 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center justify-center text-white backdrop-blur-sm p-4 mt-8">
-        <h1 className="text-3xl font-bold text-black ">Find Out More</h1>
+        <div className="flex flex-col items-center justify-center text-white backdrop-blur-sm p-4 mt-8" >
+        <h1 className="text-3xl font-bold text-black style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }} ">Find Out More</h1>
        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 my-6">    
                   <Link href="/properties" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px] p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>LONDON PROPERTIES</Link>
                   <Link href="/valuation" className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none text-center h-[55px] w-[180px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>GET VALUATION</Link>

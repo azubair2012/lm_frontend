@@ -9,7 +9,6 @@ const servicesLinks = [
   { label: 'Looking to sell', href: '/looking-to-sell' },
   { label: 'Building & Maintenance', href: '/building-maintenance' },
   { label: 'Property Management', href: '/property-management' },
-  { label: 'Project Strategy', href: '/project-strategy' },
 ];
 
 const aboutLinks = [
@@ -23,7 +22,7 @@ const aboutLinks = [
 const resourcesLinks = [
   { label: 'Buyer Guides', href: '/resources/buyer-guides' },
   { label: 'Seller Guides', href: '/resources/seller-guides' },
-  { label: 'Property News', href: '/resources/property-news' },
+  { label: 'Property News', href: '/blog' },
 ];
 
 export default function Footer() {
