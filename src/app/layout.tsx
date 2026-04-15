@@ -7,12 +7,12 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Rentman Properties - Find Your Perfect Home',
+  title: 'London Move - Find Your Perfect Home',
   description: 'Discover amazing properties for rent and sale across the UK. Search, filter, and find your perfect home with our comprehensive property listings.',
   keywords: 'properties, rent, sale, UK, housing, real estate',
-  authors: [{ name: 'Rentman Properties' }],
+  authors: [{ name: 'London Move' }],
   openGraph: {
-    title: 'Rentman Properties - Find Your Perfect Home',
+    title: 'London Move - Find Your Perfect Home',
     description: 'Discover amazing properties for rent and sale across the UK.',
     type: 'website',
     locale: 'en_GB',
