@@ -99,13 +99,13 @@ export default function Footer() {
             </a>
           </div>
           <div className="flex items-center justify-center gap-2 sm:gap-2 order-1 sm:order-2 flex-wrap">
-            <Link href="https://safeagents.co.uk/" target="_blank" rel="noreferrer" aria-label="Safeagent" className="opacity-80 transition hover:opacity-100">
+            <Link href="/docs/prs.pdf" target="_blank" rel="noreferrer" aria-label="Safeagent" className="opacity-80 transition hover:opacity-100">
               <Image src="/f1.png" alt="Safeagent" width={90} height={28} className="h-fit w-fit" />
             </Link>
-            <Link href="https://www.clientmoneyprotect.co.uk/" target="_blank" rel="noreferrer" aria-label="Client Money Protect" className="opacity-80 transition hover:opacity-100">
+            <Link href="/docs/CMP.pdf" target="_blank" rel="noreferrer" aria-label="Client Money Protect" className="opacity-80 transition hover:opacity-100">
               <Image src="/f2.png" alt="Client Money Protect" width={90} height={28} className="h-fit w-fit" />
             </Link>
-            <Link href="https://www.propertyredress.co.uk/" target="_blank" rel="noreferrer" aria-label="Property Redress" className="opacity-80 transition hover:opacity-100">
+            <Link href="/docs/safe_agent.pdf" target="_blank" rel="noreferrer" aria-label="Property Redress" className="opacity-80 transition hover:opacity-100">
               <Image src="/f3.png" alt="Property Redress" width={90} height={28} className="h-fit w-fit" />
             </Link>
           </div>
