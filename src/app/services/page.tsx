@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ImageSlideShow from '@/components/ImageSlideShow';
 import { CONTENT_REGISTRY } from '@/lib/content-registry';
 
 export default function ServicesPage() {
@@ -38,9 +37,9 @@ export default function ServicesPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="relative min-h-screen overflow-hidden bg-background">
       <section className="mx-auto">
-        <div className="absolute -z-10 w-full h-full opacity-50 hidden md:block" style={{
+        <div className="absolute inset-0 -z-10 opacity-50 hidden md:block" style={{
         backgroundImage: "url('/bg1.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',

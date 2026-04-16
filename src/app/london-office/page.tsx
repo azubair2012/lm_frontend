@@ -2,16 +2,16 @@ import ImageSlideShow from '@/components/ImageSlideShow';
 import HomeContactPreview from '@/components/HomeContactPreview';
 export default function LondonOfficePage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="relative min-h-screen overflow-hidden bg-background">
         <ImageSlideShow />
       <div className="flex flex-col justify-center mx-auto ">
-        <div className="absolute -z-10 hidden md:block w-full h-[85vh] opacity-50" style={{
+        <div className="absolute inset-0 -z-10 hidden md:block opacity-50" style={{
             backgroundImage: "url('/bg2.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             }}>
         </div>
-          <div className="md:mt-16 mt-6">
+          <div className="md:mt-16 mt-46">
             <header className="relative flex flex-col items-center">
             <span
               className="text-[64px] text-black uppercase sm:text-[90px]"

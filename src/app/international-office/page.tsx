@@ -1,10 +1,10 @@
 import InterImageSlider from "@/components/InterImageSlider";
 export default function InternationalOfficePage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="relative min-h-screen overflow-hidden bg-background">
       <InterImageSlider />
 <div className="flex flex-col  justify-center mx-auto py-8 sm:py-12 md:py-16 px-4 sm:px-6">
-  <div className="absolute -z-10 w-full h-[85vh] opacity-50 hidden md:block" style={{
+  <div className="absolute inset-0 -z-10 opacity-50 hidden md:block" style={{
     backgroundImage: "url('/bg1.jpg')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',

@@ -27,7 +27,7 @@ const resourcesLinks = [
 
 export default function Footer() {
   return (
-    <footer className="text-[#383E42] border-t-2 border-[#383E42] mt-8">
+    <footer className="text-[#383E42] border-t-2 border-[#383E42] ">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 pt-6 pb-8">
         <div className="flex flex-col sm:flex-row justify-between sm:justify-evenly gap-8 sm:gap-10">
           <nav className="flex flex-col gap-3 uppercase tracking-[0.25em]">

@@ -3,10 +3,18 @@ import HomeContactPreview from '@/components/HomeContactPreview';
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="relative min-h-screen overflow-hidden bg-background">
+      <div
+          className="absolute inset-0 -z-10 opacity-50"
+          style={{
+            backgroundImage: "url('/bg2.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        ></div>
       <section className="container mx-auto">
         {/* London Move Islington section */}
-        <div className="mx-auto mt-16 flex max-w-4xl flex-col items-center gap-8 text-center">
+        <div className="mx-auto pt-16 flex max-w-4xl flex-col items-center gap-8 text-center">
           <div className="relative flex flex-col items-center md:items-end">
             <span
               className="text-[60px] text-black uppercase md:text-[80px]"
@@ -42,7 +50,7 @@ export default function ContactPage() {
         </div>
 
         {/* Contact Form */}
-        <div className="mt-8 md:mt-4">
+        <div className="mt-4 md:mt-4">
         <HomeContactPreview />
         </div>
       </section>
