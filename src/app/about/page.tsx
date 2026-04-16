@@ -37,9 +37,9 @@ export default function AboutPage() {
   return (
     <main className="bg-background">
       <ImageSlideShow />
-      <section className="mx-auto min-h-[80vh] relative">
+      
         <div
-          className="absolute -z-10 w-full h-full mx-auto opacity-50"
+          className="absolute -z-10 w-full h-[70vh] mx-auto opacity-50"
           style={{
             backgroundImage: "url('/bg2.jpg')",
             backgroundSize: 'cover',
@@ -65,7 +65,7 @@ export default function AboutPage() {
         </div>
 
         <div
-          className="mx-auto mt-8 sm:mt-10 md:mt-12 max-w-3xl px-4 sm:px-6 space-y-4 sm:space-y-6 text-left sm:text-justify text-base sm:text-lg leading-7 sm:leading-6"
+          className="mx-auto mt-8 sm:mt-10 md:mt-12 max-w-3xl px-4 sm:px-6 space-y-4 sm:space-y-6 text-left sm:text-justify text-[16px] leading-7 text-[#383E42]"
           style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 200 }}
           dangerouslySetInnerHTML={{ __html: aboutPageBody }}
         ></div>
@@ -98,7 +98,7 @@ export default function AboutPage() {
             </Link>
           </div>
         </div>
-      </section>
+      
     </main>
   );
 }

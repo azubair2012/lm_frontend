@@ -1,15 +1,16 @@
-import ImageSlideShow from "@/components/ImageSlideShow";
 import InterImageSlider from "@/components/InterImageSlider";
 export default function InternationalOfficePage() {
   return (
     <main className="min-h-screen bg-background">
       <InterImageSlider />
 <div className="flex flex-col  justify-center mx-auto py-8 sm:py-12 md:py-16 px-4 sm:px-6">
-  <div className="absolute -z-10 w-full h-full opacity-50 hidden md:block" style={{
+  <div className="absolute -z-10 w-full h-[85vh] opacity-50 hidden md:block" style={{
     backgroundImage: "url('/bg1.jpg')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-      }}></div>
+      }}>
+        
+      </div>
           <div>
             <header className="relative flex flex-col items-center">
             <span

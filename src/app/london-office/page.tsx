@@ -5,7 +5,7 @@ export default function LondonOfficePage() {
     <main className="min-h-screen bg-background">
         <ImageSlideShow />
       <div className="flex flex-col justify-center mx-auto ">
-        <div className="absolute -z-10 hidden md:block w-full h-full opacity-50" style={{
+        <div className="absolute -z-10 hidden md:block w-full h-[85vh] opacity-50" style={{
             backgroundImage: "url('/bg2.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center',
