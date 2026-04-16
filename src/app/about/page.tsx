@@ -36,7 +36,6 @@ export default function AboutPage() {
 
   return (
     <main className="bg-background">
-      <ImageSlideShow />
       
         <div
           className="absolute -z-10 w-full h-[70vh] mx-auto opacity-50"

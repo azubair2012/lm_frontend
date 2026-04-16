@@ -39,7 +39,6 @@ export default function ServicesPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <ImageSlideShow />
       <section className="mx-auto">
         <div className="absolute -z-10 w-full h-full opacity-50 hidden md:block" style={{
         backgroundImage: "url('/bg1.jpg')",
