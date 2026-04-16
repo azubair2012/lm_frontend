@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Property } from '@/lib/api';
 import { formatPrice, formatDate } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -200,9 +201,9 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
            
-            <button className="flex-1 text-white hover:text-[#B87333] border border-input bg-[#282e32] hover:bg-accent hover:text-accent-foreground px-6 py-3 font-medium transition-colors">
+            <Link href="/contact" className="flex-1 text-center text-white hover:text-[#B87333] border border-input bg-[#282e32] hover:bg-accent hover:text-accent-foreground px-6 py-3 font-medium transition-colors">
               Contact Us
-            </button>
+            </Link>
           </div>
         </CardContent>
       </Card>
