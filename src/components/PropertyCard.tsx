@@ -91,7 +91,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
             </div>
           )}
 
-          {furnished && (
+          {furnished && !showSalePrice && (
             <div className="text-sm">
               <span className="text-muted-foreground">Furnished: </span>
               <span className="font-medium">{furnished === 1 ? 'Yes' : furnished === 2 ? 'No' : furnished === 3 ? 'Part' : 'Unknown'}</span>

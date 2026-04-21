@@ -11,23 +11,24 @@ interface PropertyGalleryProps {
   property: Property;
 }
 
+type GalleryView = 'photos' | 'floorplan';
+
 export default function PropertyGallery({ property }: PropertyGalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [galleryImages, setGalleryImages] = useState(property.images?.gallery || []);
+  const [modalShowsFloorplan, setModalShowsFloorplan] = useState(false);
   const [isLoadingGallery, setIsLoadingGallery] = useState(false);
   const [galleryLoaded, setGalleryLoaded] = useState(false);
+  const [activeView, setActiveView] = useState<GalleryView>('photos');
 
   const { images } = property;
-  
-  // Load gallery images on demand
+
   const loadGalleryImages = async () => {
     if (galleryLoaded || isLoadingGallery) return;
-    
+
     setIsLoadingGallery(true);
     try {
-      const galleryData = await rentmanApi.getPropertyGallery(property.propref);
-      // setGalleryImages(galleryData?.gallery || []);
+      await rentmanApi.getPropertyGallery(property.propref);
       setGalleryLoaded(true);
     } catch (error) {
       console.error('Failed to load gallery images:', error);
@@ -36,7 +37,6 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     }
   };
 
-  // Create images from raw photo fields if images object is not available
   const createImagesFromRawPhotos = () => {
     const photos = [
       property.photo1,
@@ -48,7 +48,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
       property.photo7,
       property.photo8,
       property.photo9,
-    ].filter(photo => photo && photo.trim() !== '');
+    ].filter((photo) => photo && photo.trim() !== '');
 
     return photos.map((photo, index) => ({
       id: `photo-${index}`,
@@ -62,42 +62,65 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     }));
   };
 
-  const toAbsolute = (u?: string) => u && u.startsWith('/api') ? `${getBaseUrl()}${u}` : u || '';
+  const toAbsolute = (u?: string) => (u && u.startsWith('/api') ? `${getBaseUrl()}${u}` : u || '');
 
-  const allImages = images ? [
-    ...(images.gallery || []).map((img, index) => {
-      type GalleryFlat = { id?: string; caption?: string; url?: string; thumbnail?: string };
-      type GalleryUrls = { urls?: { thumb?: string; medium?: string; large?: string; original?: string } };
-      const g: GalleryFlat & GalleryUrls = img as GalleryFlat & GalleryUrls;
+  const floorplanSrc = (() => {
+    const fp = images?.floorplan;
+    if (fp?.medium) return toAbsolute(fp.medium);
+    if (fp?.large) return toAbsolute(fp.large);
+    if (fp?.original) return toAbsolute(fp.original);
+    if (property.floorplan?.trim()) {
+      return `${getBaseUrl()}/api/images/${property.floorplan.trim()}`;
+    }
+    return '';
+  })();
 
-      const hasUrlsObj = typeof g.urls === 'object' && g.urls !== null;
+  const floorplanModalSrc =
+    (images?.floorplan?.original && toAbsolute(images.floorplan.original)) ||
+    (images?.floorplan?.large && toAbsolute(images.floorplan.large)) ||
+    floorplanSrc;
 
-      const urlFromFlat = toAbsolute(g.url);
-      const thumbFromFlat = toAbsolute(g.thumbnail);
+  const allImages = images
+    ? [...(images.gallery || []).map((img, index) => {
+        type GalleryFlat = { id?: string; caption?: string; url?: string; thumbnail?: string };
+        type GalleryUrls = { urls?: { thumb?: string; medium?: string; large?: string; original?: string } };
+        const g: GalleryFlat & GalleryUrls = img as GalleryFlat & GalleryUrls;
 
-      const normalizedFromObj = hasUrlsObj
-        ? {
-            thumb: toAbsolute(g.urls?.thumb),
-            medium: toAbsolute(g.urls?.medium),
-            large: toAbsolute(g.urls?.large),
-            original: toAbsolute(g.urls?.original),
-          }
-        : { thumb: undefined, medium: undefined, large: undefined, original: undefined };
+        const hasUrlsObj = typeof g.urls === 'object' && g.urls !== null;
 
-      const medium = normalizedFromObj.medium || urlFromFlat;
-      const thumb = normalizedFromObj.thumb || thumbFromFlat || medium;
-      const large = normalizedFromObj.large || medium;
-      const original = normalizedFromObj.original || large;
+        const urlFromFlat = toAbsolute(g.url);
+        const thumbFromFlat = toAbsolute(g.thumbnail);
 
-      return {
-        id: g.id || `gallery-${index}`,
-        caption: g.caption || `Property Image ${index + 1}`,
-        urls: { thumb, medium, large, original },
-      };
-    }),
-  ] : createImagesFromRawPhotos();
+        const normalizedFromObj = hasUrlsObj
+          ? {
+              thumb: toAbsolute(g.urls?.thumb),
+              medium: toAbsolute(g.urls?.medium),
+              large: toAbsolute(g.urls?.large),
+              original: toAbsolute(g.urls?.original),
+            }
+          : { thumb: undefined, medium: undefined, large: undefined, original: undefined };
 
-  const currentImage = allImages[currentImageIndex];
+        const medium = normalizedFromObj.medium || urlFromFlat;
+        const thumb = normalizedFromObj.thumb || thumbFromFlat || medium;
+        const large = normalizedFromObj.large || medium;
+        const original = normalizedFromObj.original || large;
+
+        return {
+          id: g.id || `gallery-${index}`,
+          caption: g.caption || `Property Image ${index + 1}`,
+          urls: { thumb, medium, large, original },
+        };
+      })]
+    : createImagesFromRawPhotos();
+
+  const hasPhotos = allImages.length > 0;
+  const hasFloorplan = !!floorplanSrc;
+  const showTabs = hasPhotos && hasFloorplan;
+
+  const showPhotoMain = hasPhotos && (!hasFloorplan || activeView === 'photos');
+  const showFloorplanMain = hasFloorplan && (!hasPhotos || activeView === 'floorplan');
+
+  const currentImage = hasPhotos ? allImages[currentImageIndex] : null;
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
@@ -108,22 +131,29 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
   };
 
   const openModal = () => {
+    setModalShowsFloorplan(showFloorplanMain);
     setIsModalOpen(true);
-    // Load gallery images when modal opens
-    loadGalleryImages();
+    if (showPhotoMain) {
+      loadGalleryImages();
+    }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  if (allImages.length === 0) {
+  const tabClass = (view: GalleryView) =>
+    `flex-1 px-4 py-3 text-sm font-bold uppercase tracking-[0.12em] transition-colors sm:text-base ${
+      activeView === view
+        ? 'border-b-2 border-[#B87333] bg-muted/40 text-[#B87333]'
+        : 'border-b-2 border-transparent text-muted-foreground hover:bg-muted/20 hover:text-foreground'
+    }`;
+
+  if (!hasPhotos && !hasFloorplan) {
     return (
       <Card>
         <CardContent className="p-8 text-center">
-          <div className="text-muted-foreground">
-            No images available for this property
-          </div>
+          <div className="text-muted-foreground">No images available for this property</div>
         </CardContent>
       </Card>
     );
@@ -133,63 +163,104 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     <>
       <Card>
         <CardContent className="p-0">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg">
-            <Image
-              src={currentImage.urls.large || currentImage.urls.medium}
-              alt={currentImage.caption || 'Property image'}
-              fill
-              unoptimized
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
-            />
-            
-            {/* Navigation Arrows */}
-            {allImages.length > 1 && (
+          <div className="overflow-hidden rounded-t-lg">
+            {showTabs && (
+              <div
+                className="flex border-b bg-card"
+                style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}
+                role="tablist"
+              >
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeView === 'photos'}
+                  className={tabClass('photos')}
+                  onClick={() => setActiveView('photos')}
+                >
+                  Photos
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activeView === 'floorplan'}
+                  className={tabClass('floorplan')}
+                  onClick={() => setActiveView('floorplan')}
+                >
+                  Floor plan
+                </button>
+              </div>
+            )}
+
+            <div className="relative aspect-[4/3] overflow-hidden">
+            {showPhotoMain && currentImage && (
               <>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white"
-                  onClick={prevImage}
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white"
-                  onClick={nextImage}
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
+                <Image
+                  src={currentImage.urls.large || currentImage.urls.medium}
+                  alt={currentImage.caption || 'Property image'}
+                  fill
+                  unoptimized
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+                />
+
+                {allImages.length > 1 && (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white"
+                      onClick={prevImage}
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white"
+                      onClick={nextImage}
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
+                  </>
+                )}
+
+                <div className="absolute bottom-4 left-4 rounded bg-black/70 px-2 py-1 text-sm text-white">
+                  {currentImageIndex + 1} / {allImages.length}
+                </div>
               </>
             )}
 
-            {/* Image Counter */}
-            <div className="absolute bottom-4 left-4 bg-black/70 text-white px-2 py-1 rounded text-sm">
-              {currentImageIndex + 1} / {allImages.length}
-            </div>
+            {showFloorplanMain && floorplanSrc && (
+              <Image
+                src={floorplanSrc}
+                alt="Property floor plan"
+                fill
+                unoptimized
+                className="object-contain bg-muted/30"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+              />
+            )}
 
-            {/* Fullscreen Button */}
             <Button
               variant="outline"
               size="icon"
-              className="absolute top-4 right-4 bg-white/90 hover:bg-white"
+              className="absolute right-4 top-4 bg-white/90 hover:bg-white"
               onClick={openModal}
             >
               <Maximize2 className="w-4 h-4" />
             </Button>
+            </div>
           </div>
 
-          {/* Thumbnail Strip */}
           <div className="p-4">
-            {allImages.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto mb-4">
+            {showPhotoMain && allImages.length > 1 && (
+              <div className="mb-4 flex gap-2 overflow-x-auto">
                 {allImages.map((image, index) => (
                   <button
                     key={image.id}
+                    type="button"
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`relative flex-shrink-0 w-20 h-16 rounded overflow-hidden border-2 transition-colors ${
+                    className={`relative h-16 w-20 flex-shrink-0 overflow-hidden rounded border-2 transition-colors ${
                       index === currentImageIndex
                         ? 'border-primary'
                         : 'border-transparent hover:border-muted-foreground'
@@ -207,9 +278,8 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                 ))}
               </div>
             )}
-            
-            {/* Load More Images Button */}
-            {!galleryLoaded && (
+
+            {showPhotoMain && !galleryLoaded && (
               <div className="text-center">
                 <Button
                   onClick={loadGalleryImages}
@@ -219,7 +289,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                 >
                   {isLoadingGallery ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Loading more images...
                     </>
                   ) : (
@@ -232,31 +302,39 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
         </CardContent>
       </Card>
 
-      {/* Fullscreen Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
-          <div className="relative max-w-7xl max-h-full">
-            <Image
-              src={currentImage.urls.original || currentImage.urls.large}
-              alt={currentImage.caption || 'Property image'}
-              width={1200}
-              height={800}
-              unoptimized
-              className="max-w-full max-h-full object-contain"
-            />
-            
-            {/* Close Button */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
+          <div className="relative max-h-full max-w-7xl">
+            {modalShowsFloorplan && floorplanModalSrc ? (
+              <Image
+                src={floorplanModalSrc}
+                alt="Property floor plan"
+                width={1200}
+                height={800}
+                unoptimized
+                className="max-h-full max-w-full object-contain"
+              />
+            ) : currentImage ? (
+              <Image
+                src={currentImage.urls.original || currentImage.urls.large}
+                alt={currentImage.caption || 'Property image'}
+                width={1200}
+                height={800}
+                unoptimized
+                className="max-h-full max-w-full object-contain"
+              />
+            ) : null}
+
             <Button
               variant="outline"
               size="icon"
-              className="absolute top-4 right-4 bg-white/90 hover:bg-white"
+              className="absolute right-4 top-4 bg-white/90 hover:bg-white"
               onClick={closeModal}
             >
               <X className="w-4 h-4" />
             </Button>
 
-            {/* Navigation in Modal */}
-            {allImages.length > 1 && (
+            {!modalShowsFloorplan && currentImage && allImages.length > 1 && (
               <>
                 <Button
                   variant="outline"
@@ -277,18 +355,26 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
               </>
             )}
 
-            {/* Image Info */}
-            <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-2 rounded">
-              <div className="text-sm font-medium">{currentImage.caption}</div>
-              <div className="text-xs text-muted-foreground">
-                {currentImageIndex + 1} of {allImages.length}
-              </div>
-              {isLoadingGallery && (
-                <div className="flex items-center gap-2 mt-2">
-                  <Loader2 className="w-3 h-3 animate-spin" />
-                  <span className="text-xs">Loading more images...</span>
-                </div>
-              )}
+            <div className="absolute bottom-4 left-4 rounded bg-black/70 px-3 py-2 text-white">
+              {modalShowsFloorplan ? (
+                <>
+                  <div className="text-sm font-medium">Floor plan</div>
+                  <div className="text-xs text-white/70">Full size</div>
+                </>
+              ) : currentImage ? (
+                <>
+                  <div className="text-sm font-medium">{currentImage.caption}</div>
+                  <div className="text-xs text-white/70">
+                    {currentImageIndex + 1} of {allImages.length}
+                  </div>
+                  {isLoadingGallery && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      <span className="text-xs">Loading more images...</span>
+                    </div>
+                  )}
+                </>
+              ) : null}
             </div>
           </div>
         </div>
