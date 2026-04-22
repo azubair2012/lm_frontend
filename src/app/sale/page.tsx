@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Property, SearchParams } from '@/lib/api';
 import { rentmanApi } from '@/lib/api';
 import PropertyCard from '@/components/PropertyCard';
@@ -186,6 +187,22 @@ export default function SalePage() {
           </span>
         </div>
       </div>
+      <section className="py-4 mt-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-[#B87333]/30 bg-[#B87333]/5 px-4 py-5 text-center">
+            <p className="text-sm text-[#383E42] sm:text-base">
+              Looking to rent instead of buy? Explore our latest rental properties.
+            </p>
+            <Link
+              href="/properties"
+              className="inline-flex h-[44px] items-center justify-center rounded-none bg-[#383E42] px-6 text-sm font-semibold text-white transition-colors hover:text-[#B87333]"
+              style={{ fontFamily: 'Roboto, sans-serif' }}
+            >
+              VIEW RENTAL PROPERTIES
+            </Link>
+          </div>
+        </div>
+      </section>
       <section className="py-4 mt-8">
         <div className="container mx-auto px-4">
           <SearchFilters onSearch={handleSearch} loading={searchLoading} areas={filters.areas} />

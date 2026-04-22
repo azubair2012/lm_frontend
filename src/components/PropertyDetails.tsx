@@ -71,6 +71,13 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
         ? parsedSalePrice
         : 0;
   const showMonthlySuffix = !showSaleAsPrimary && hasValidRentPrice;
+  const formattedAvailableDate = (() => {
+    const raw = String(available ?? '').trim();
+    if (!raw) return '';
+    const parsed = new Date(raw);
+    if (Number.isNaN(parsed.getTime())) return raw;
+    return parsed.toLocaleDateString('en-GB');
+  })();
 
   // Get description value (check all possible description fields and ensure it's not empty)
   const descriptionText = 
@@ -204,7 +211,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
           <CardContent>
             <div className="flex items-center gap-2 text-[#B87333]">
               <Calendar className="w-5 h-5" />
-              <span className="font-medium">Available {available}</span>
+              <span className="font-medium">Available {formattedAvailableDate}</span>
             </div>
           </CardContent>
         </Card>

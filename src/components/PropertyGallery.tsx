@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Property, rentmanApi, getBaseUrl } from '@/lib/api';
 import { Button } from '@/components/ui/button';
@@ -11,12 +11,12 @@ interface PropertyGalleryProps {
   property: Property;
 }
 
-type GalleryView = 'photos' | 'floorplan';
+type GalleryView = 'photos' | 'video' | 'floorplan';
 
 export default function PropertyGallery({ property }: PropertyGalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalShowsFloorplan, setModalShowsFloorplan] = useState(false);
+  const [modalView, setModalView] = useState<GalleryView>('photos');
   const [isLoadingGallery, setIsLoadingGallery] = useState(false);
   const [galleryLoaded, setGalleryLoaded] = useState(false);
   const [activeView, setActiveView] = useState<GalleryView>('photos');
@@ -80,6 +80,36 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     (images?.floorplan?.large && toAbsolute(images.floorplan.large)) ||
     floorplanSrc;
 
+  const videoEmbedUrl = (() => {
+    const raw = String(property.evt ?? '').trim();
+    if (!raw) return '';
+
+    try {
+      const url = new URL(raw);
+      const host = url.hostname.replace(/^www\./, '').toLowerCase();
+
+      if (host === 'youtube.com' || host === 'm.youtube.com') {
+        if (url.pathname === '/watch') {
+          const id = url.searchParams.get('v');
+          return id ? `https://www.youtube.com/embed/${id}` : '';
+        }
+        if (url.pathname.startsWith('/embed/')) {
+          const id = url.pathname.split('/embed/')[1]?.split('/')[0];
+          return id ? `https://www.youtube.com/embed/${id}` : '';
+        }
+      }
+
+      if (host === 'youtu.be') {
+        const id = url.pathname.replace(/^\/+/, '').split('/')[0];
+        return id ? `https://www.youtube.com/embed/${id}` : '';
+      }
+    } catch {
+      return '';
+    }
+
+    return '';
+  })();
+
   const allImages = images
     ? [...(images.gallery || []).map((img, index) => {
         type GalleryFlat = { id?: string; caption?: string; url?: string; thumbnail?: string };
@@ -114,13 +144,48 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
     : createImagesFromRawPhotos();
 
   const hasPhotos = allImages.length > 0;
+  const hasVideo = !!videoEmbedUrl;
   const hasFloorplan = !!floorplanSrc;
-  const showTabs = hasPhotos && hasFloorplan;
+  const availableViewsCount = [hasPhotos, hasVideo, hasFloorplan].filter(Boolean).length;
+  const showTabs = availableViewsCount > 1;
 
-  const showPhotoMain = hasPhotos && (!hasFloorplan || activeView === 'photos');
-  const showFloorplanMain = hasFloorplan && (!hasPhotos || activeView === 'floorplan');
+  const showPhotoMain = hasPhotos && (activeView === 'photos' || (!hasVideo && !hasFloorplan));
+  const showVideoMain = hasVideo && (activeView === 'video' || (!hasPhotos && !hasFloorplan));
+  const showFloorplanMain = hasFloorplan && (activeView === 'floorplan' || (!hasPhotos && !hasVideo));
 
   const currentImage = hasPhotos ? allImages[currentImageIndex] : null;
+
+  useEffect(() => {
+    if (activeView === 'photos' && !hasPhotos) {
+      if (hasVideo) {
+        setActiveView('video');
+        return;
+      }
+      if (hasFloorplan) {
+        setActiveView('floorplan');
+      }
+      return;
+    }
+    if (activeView === 'video' && !hasVideo) {
+      if (hasPhotos) {
+        setActiveView('photos');
+        return;
+      }
+      if (hasFloorplan) {
+        setActiveView('floorplan');
+      }
+      return;
+    }
+    if (activeView === 'floorplan' && !hasFloorplan) {
+      if (hasPhotos) {
+        setActiveView('photos');
+        return;
+      }
+      if (hasVideo) {
+        setActiveView('video');
+      }
+    }
+  }, [activeView, hasPhotos, hasVideo, hasFloorplan]);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
@@ -131,7 +196,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
   };
 
   const openModal = () => {
-    setModalShowsFloorplan(showFloorplanMain);
+    setModalView(activeView);
     setIsModalOpen(true);
     if (showPhotoMain) {
       loadGalleryImages();
@@ -149,7 +214,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
         : 'border-b-2 border-transparent text-muted-foreground hover:bg-muted/20 hover:text-foreground'
     }`;
 
-  if (!hasPhotos && !hasFloorplan) {
+  if (!hasPhotos && !hasFloorplan && !hasVideo) {
     return (
       <Card>
         <CardContent className="p-8 text-center">
@@ -179,6 +244,17 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                 >
                   Photos
                 </button>
+                {hasVideo && (
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeView === 'video'}
+                    className={tabClass('video')}
+                    onClick={() => setActiveView('video')}
+                  >
+                    Walkthrough Video
+                  </button>
+                )}
                 <button
                   type="button"
                   role="tab"
@@ -238,6 +314,17 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                 unoptimized
                 className="object-contain bg-muted/30"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+              />
+            )}
+
+            {showVideoMain && videoEmbedUrl && (
+              <iframe
+                src={videoEmbedUrl}
+                title="Property video"
+                className="h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
               />
             )}
 
@@ -305,7 +392,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4">
           <div className="relative max-h-full max-w-7xl">
-            {modalShowsFloorplan && floorplanModalSrc ? (
+            {modalView === 'floorplan' && floorplanModalSrc ? (
               <Image
                 src={floorplanModalSrc}
                 alt="Property floor plan"
@@ -313,6 +400,15 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                 height={800}
                 unoptimized
                 className="max-h-full max-w-full object-contain"
+              />
+            ) : modalView === 'video' && videoEmbedUrl ? (
+              <iframe
+                src={videoEmbedUrl}
+                title="Property video fullscreen"
+                className="h-[80vh] w-[80vw] max-w-7xl"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
               />
             ) : currentImage ? (
               <Image
@@ -334,7 +430,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
               <X className="w-4 h-4" />
             </Button>
 
-            {!modalShowsFloorplan && currentImage && allImages.length > 1 && (
+            {modalView === 'photos' && currentImage && allImages.length > 1 && (
               <>
                 <Button
                   variant="outline"
@@ -356,10 +452,15 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
             )}
 
             <div className="absolute bottom-4 left-4 rounded bg-black/70 px-3 py-2 text-white">
-              {modalShowsFloorplan ? (
+              {modalView === 'floorplan' ? (
                 <>
                   <div className="text-sm font-medium">Floor plan</div>
                   <div className="text-xs text-white/70">Full size</div>
+                </>
+              ) : modalView === 'video' ? (
+                <>
+                  <div className="text-sm font-medium">Property video</div>
+                  <div className="text-xs text-white/70">YouTube</div>
                 </>
               ) : currentImage ? (
                 <>

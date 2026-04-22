@@ -40,6 +40,13 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
   const totalBeds = parseInt(beds) + parseInt(singles) + parseInt(doubles);
   const parsedSalePrice = parseFloat(saleprice ?? '');
   const hasValidSalePrice = showSalePrice && Number.isFinite(parsedSalePrice) && parsedSalePrice >= 1000;
+  const formattedAvailableDate = (() => {
+    const raw = String(available ?? '').trim();
+    if (!raw) return '';
+    const parsed = new Date(raw);
+    if (Number.isNaN(parsed.getTime())) return raw;
+    return parsed.toLocaleDateString('en-GB');
+  })();
   const normalizedArea = String(property.area ?? '')
     .replace(/[\u00A0\u2007\u202F\u200B-\u200D\uFEFF]/g, ' ')
     .trim();
@@ -104,7 +111,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
           {available && !showSalePrice && (
             <div className="flex items-center gap-1 text-sm text-[#B87333]">
               <Calendar className="w-4 h-4" />
-              <span>Available {available}</span>
+              <span>Available {formattedAvailableDate}</span>
             </div>
           )}
 
