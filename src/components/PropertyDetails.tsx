@@ -32,6 +32,10 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     price,
     saleprice,
     rentmonth,
+    displayaddress,
+    street,
+    address3,
+    address4,
     TYPE,
     type,
     beds,
@@ -78,6 +82,9 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     if (Number.isNaN(parsed.getTime())) return raw;
     return parsed.toLocaleDateString('en-GB');
   })();
+  const lineOne = [street, address3].filter(Boolean).join(', ').trim();
+  const lineTwo = [address4, postcode].filter(Boolean).join(', ').trim();
+  const fallbackAddress = displayaddress || [area, postcode].filter(Boolean).join(', ').trim();
 
   // Get description value (check all possible description fields and ensure it's not empty)
   const descriptionText = 
@@ -126,9 +133,13 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
         <div className="flex items-start justify-between pt-8">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">{address}</h1>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <MapPin className="w-4 h-4" />
-              <span>{area}, {postcode}</span>
+            <div className="flex items-start gap-2 text-muted-foreground">
+              <MapPin className="mt-0.5 w-4 h-4" />
+              <span>
+                {lineOne && <span className="block">{lineOne}</span>}
+                {lineTwo && <span className="block">{lineTwo}</span>}
+                {!lineOne && !lineTwo && <span className="block">{fallbackAddress}</span>}
+              </span>
             </div>
           </div>
           <div className="text-right">
