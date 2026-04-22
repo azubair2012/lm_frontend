@@ -6,7 +6,7 @@ import Image from 'next/image';
 const servicesLinks = [
   { label: 'Services', href: '/services' },
   { label: 'Buying', href: '/resources/buyer-guides' },
-  { label: 'Looking to sell', href: '/looking-to-sell' },
+  { label: 'Looking to sell', href: '/contact' },
   { label: 'Building & Maintenance', href: '/building-maintenance' },
   { label: 'Property Management', href: '/property-management' },
 ];

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Property } from '@/lib/api';
 import { rentmanApi } from '@/lib/api';
 import PropertyDetails from '@/components/PropertyDetails';
@@ -14,6 +14,7 @@ import { Loader2, ArrowLeft, Home, Share2 } from 'lucide-react';
 export default function PropertyPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,6 +87,8 @@ export default function PropertyPage() {
     );
   }
 
+  const showSalePrice = searchParams.get('sale') === '1';
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -126,7 +129,7 @@ export default function PropertyPage() {
 
           {/* Details */}
           <div className="space-y-6">
-            <PropertyDetails property={property} />
+            <PropertyDetails property={property} showSalePrice={showSalePrice} />
           </div>
         </div>
 

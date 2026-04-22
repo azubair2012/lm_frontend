@@ -71,7 +71,7 @@ export default function HomeContactPreview({ header }: HomeContactPreviewProps =
                 <input
                   type="text"
                   name="name"
-                  className="rounded-md border border-[#e5e7eb] bg-[#f6f4f2] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333]"
+                  className="rounded-md border border-[#cfd4db] bg-[#f6f4f2] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333]"
                   placeholder="Jane Smith"
                 />
               </label>
@@ -80,7 +80,7 @@ export default function HomeContactPreview({ header }: HomeContactPreviewProps =
                 <input
                   type="email"
                   name="email"
-                  className="rounded-md border border-[#e5e7eb] bg-[#f6f4f2] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333]"
+                  className="rounded-md border border-[#cfd4db] bg-[#f6f4f2] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333]"
                   placeholder="jane@email.com"
                 />
               </label>
@@ -91,7 +91,7 @@ export default function HomeContactPreview({ header }: HomeContactPreviewProps =
               <input
                 type="text"
                 name="subject"
-                className="rounded-md border border-[#e5e7eb] bg-[#f6f4f2] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333]"
+                className="rounded-md border border-[#cfd4db] bg-[#f6f4f2] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333]"
                 placeholder="Subject"
               />
             </label>
@@ -101,7 +101,7 @@ export default function HomeContactPreview({ header }: HomeContactPreviewProps =
               <textarea
                 name="message"
                 rows={6}
-                className="rounded-md border border-[#e5e7eb] bg-[#f6f4f2] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333] resize-y"
+                className="rounded-md border border-[#cfd4db] bg-[#f6f4f2] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333] resize-y"
                 placeholder="Your message..."
               />
             </label></div>

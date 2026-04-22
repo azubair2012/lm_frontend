@@ -21,14 +21,16 @@ import {
 
 interface PropertyDetailsProps {
   property: Property;
+  showSalePrice?: boolean;
 }
 
-export default function PropertyDetails({ property }: PropertyDetailsProps) {
+export default function PropertyDetails({ property, showSalePrice = false }: PropertyDetailsProps) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   
   const {
     address,
     price,
+    saleprice,
     rentmonth,
     TYPE,
     type,
@@ -56,6 +58,19 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
   const totalBeds = parseInt(beds || '0') + parseInt(singles || '0') + parseInt(doubles || '0');
   const bathsNum = parseInt(baths || '0');
   const recepsNum = parseInt(receps || '0');
+  const parsedSalePrice = parseFloat(String(saleprice ?? price ?? '').trim());
+  const hasValidSalePrice = Number.isFinite(parsedSalePrice) && parsedSalePrice >= 1000;
+  const parsedRentPrice = parseFloat(String(rentmonth ?? '').trim());
+  const hasValidRentPrice = Number.isFinite(parsedRentPrice) && parsedRentPrice > 0;
+  const showSaleAsPrimary = showSalePrice && hasValidSalePrice;
+  const primaryPrice = showSaleAsPrimary
+    ? parsedSalePrice
+    : hasValidRentPrice
+      ? parsedRentPrice
+      : hasValidSalePrice
+        ? parsedSalePrice
+        : 0;
+  const showMonthlySuffix = !showSaleAsPrimary && hasValidRentPrice;
 
   // Get description value (check all possible description fields and ensure it's not empty)
   const descriptionText = 
@@ -111,12 +126,14 @@ export default function PropertyDetails({ property }: PropertyDetailsProps) {
           </div>
           <div className="text-right">
             <div className="text-3xl font-bold text-primary">
-              {formatPrice(parseInt(rentmonth || '0'))}
-              <span className="text-lg font-normal text-muted-foreground">/month</span>
+              {formatPrice(primaryPrice)}
+              {showMonthlySuffix && (
+                <span className="text-lg font-normal text-muted-foreground">/month</span>
+              )}
             </div>
-            {price && price !== '0' && (
+            {!showSaleAsPrimary && hasValidSalePrice && (
               <div className="text-sm text-muted-foreground">
-                Sale: {formatPrice(parseInt(price))}
+                Sale: {formatPrice(parsedSalePrice)}
               </div>
             )}
           </div>

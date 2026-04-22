@@ -36,6 +36,15 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
   const totalBeds = parseInt(beds) + parseInt(singles) + parseInt(doubles);
   const parsedSalePrice = parseFloat(saleprice ?? '');
   const hasValidSalePrice = showSalePrice && Number.isFinite(parsedSalePrice) && parsedSalePrice >= 1000;
+  const normalizedArea = String(property.area ?? '')
+    .replace(/[\u00A0\u2007\u202F\u200B-\u200D\uFEFF]/g, ' ')
+    .trim();
+  const displayArea = normalizedArea
+    .split(/\s+/)
+    .filter((token) => token.replace(/[^\d]/g, '') !== '0')
+    .join(' ')
+    .trim();
+  const hasVisibleArea = displayArea !== '';
 
   return (
     <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -79,12 +88,14 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
             )}
           </div>
 
-          <div className="flex items-center gap-2 text-sm">
-            <MapPin className="w-4 h-4 text-muted-foreground" />
-            <span className="text-muted-foreground">{property.area}</span>
-          </div>
+          {hasVisibleArea && (
+            <div className="flex items-center gap-2 text-sm">
+              <MapPin className="w-4 h-4 text-muted-foreground" />
+              <span className="text-muted-foreground">{displayArea}</span>
+            </div>
+          )}
 
-          {available && (
+          {available && !showSalePrice && (
             <div className="flex items-center gap-1 text-sm text-[#B87333]">
               <Calendar className="w-4 h-4" />
               <span>Available {available}</span>
@@ -111,7 +122,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
             </div>
            
           </div>
-          <Link href={`/properties/${propref}`}>
+          <Link href={showSalePrice ? `/properties/${propref}?sale=1` : `/properties/${propref}`}>
             <Button 
               className="rounded-none bg-[#383E42] text-white hover:text-[#B87333] hover:bg-black/90"
             >

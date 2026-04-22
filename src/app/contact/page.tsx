@@ -5,7 +5,7 @@ export default function ContactPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-background">
       <div
-          className="absolute inset-0 -z-10 opacity-50"
+          className="absolute inset-0 -z-10 opacity-40"
           style={{
             backgroundImage: "url('/bg2.jpg')",
             backgroundSize: 'cover',
