@@ -11,7 +11,7 @@ import {
   MapPin, 
   Bed, 
   Bath, 
-  Car, 
+  Sofa, 
   Star, 
   Calendar, 
   Home, 
@@ -104,9 +104,9 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
   const features = [
     { icon: Bed, label: 'Bedrooms', value: `${totalBeds} bed${totalBeds !== 1 ? 's' : ''}` },
     { icon: Bath, label: 'Bathrooms', value: `${bathsNum} bath${bathsNum !== 1 ? 's' : ''}` },
-    { icon: Car, label: 'Receptions', value: `${recepsNum} reception${recepsNum !== 1 ? 's' : ''}` },
+    { icon: Sofa, label: 'Receptions', value: `${recepsNum} reception${recepsNum !== 1 ? 's' : ''}` },
     { icon: Home, label: 'Property Type', value: type || TYPE || 'Not specified' },
-    { icon: Ruler, label: 'Age', value: age || 'Not specified' },
+    ...(age ? [{ icon: Ruler, label: 'Age', value: age }] : []),
     { icon: Star, label: 'Rating', value: rating ? `${rating}/5` : 'Not rated' },
   ];
 
@@ -196,7 +196,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
       
 
       {/* Availability */}
-      {available && (
+      {available && !showSalePrice && (
         <Card>
           <CardHeader>
             <CardTitle>Availability</CardTitle>

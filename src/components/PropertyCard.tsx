@@ -18,6 +18,8 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
     propref,
     displayaddress,
     street,
+    address3,
+    address4,
     postcode,
     rentmonth,
     beds,
@@ -32,7 +34,9 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
     saleprice,
   } = property;
 
-  const addressLabel = street && postcode ? `${street}, ${postcode}` : displayaddress;
+  const lineOne = [street, address3].filter(Boolean).join(', ').trim();
+  const lineTwo = [address4, postcode].filter(Boolean).join(', ').trim();
+  const addressLabel = [lineOne, lineTwo].filter(Boolean).join(', ') || displayaddress;
   const totalBeds = parseInt(beds) + parseInt(singles) + parseInt(doubles);
   const parsedSalePrice = parseFloat(saleprice ?? '');
   const hasValidSalePrice = showSalePrice && Number.isFinite(parsedSalePrice) && parsedSalePrice >= 1000;
@@ -61,8 +65,10 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
 
       <CardContent className="p-4">
         <div className="space-y-2">
-          <h3 className="font-semibold text-lg leading-tight line-clamp-2">
-            {addressLabel}
+          <h3 className="font-semibold text-lg leading-tight">
+            {lineOne && <span className="block line-clamp-1">{lineOne}</span>}
+            {lineTwo && <span className="block line-clamp-1">{lineTwo}</span>}
+            {!lineOne && !lineTwo && <span className="block line-clamp-2">{displayaddress}</span>}
           </h3>
           
           {strapline && (
