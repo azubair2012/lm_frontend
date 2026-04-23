@@ -172,7 +172,7 @@ export default function SalePage() {
     <div className="min-h-screen bg-background">
       <ImageSlideShow />
       <div className="flex justify-center md:pt-20 pt-10">
-        <div className="relative flex flex-col items-center md:items-end">
+        <div className="relative flex flex-col items-center text-center">
           <span
             className="text-[48px] sm:text-[64px] text-black uppercase md:text-[90px]"
             style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 700 }}

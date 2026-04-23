@@ -35,10 +35,10 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <main className="bg-background">
+    <main className="relative min-h-[70vh] overflow-hidden bg-background">
       
         <div
-          className="absolute -z-10 w-full h-[70vh] mx-auto opacity-50"
+          className="absolute inset-0 -z-10 opacity-50 hidden md:block"
           style={{
             backgroundImage: "url('/bg2.jpg')",
             backgroundSize: 'cover',

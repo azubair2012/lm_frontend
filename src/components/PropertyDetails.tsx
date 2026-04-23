@@ -164,7 +164,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
         <div className="flex flex-wrap gap-2">
           <Badge variant="secondary">{type}</Badge>
           <Badge variant="outline">{status}</Badge>
-          {furnished && <Badge variant="outline">Furnished: {furnished === 1 ? 'Yes' : furnished === 2 ? 'No' : furnished === 3 ? 'Part' : 'Unknown'}</Badge>}
+          {furnished && !showSalePrice && <Badge variant="outline">Furnished: {furnished === 1 ? 'Yes' : furnished === 2 ? 'No' : furnished === 3 ? 'Part' : 'Unknown'}</Badge>}
           {heating && <Badge variant="outline">Heating: {heating}</Badge>}
         </div>
       </div>
