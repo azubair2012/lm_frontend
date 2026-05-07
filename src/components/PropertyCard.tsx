@@ -37,7 +37,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
   const lineOne = [street, address3].filter(Boolean).join(', ').trim();
   const lineTwo = [address4, postcode].filter(Boolean).join(', ').trim();
   const addressLabel = [lineOne, lineTwo].filter(Boolean).join(', ') || displayaddress;
-  const totalBeds = parseInt(beds) + parseInt(singles) + parseInt(doubles);
+  const totalBeds = parseInt(beds);
   const parsedSalePrice = parseFloat(saleprice ?? '');
   const hasValidSalePrice = showSalePrice && Number.isFinite(parsedSalePrice) && parsedSalePrice >= 1000;
   const formattedAvailableDate = (() => {

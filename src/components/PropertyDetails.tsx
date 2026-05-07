@@ -4,19 +4,21 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Property } from '@/lib/api';
 import { formatPrice, formatDate } from '@/lib/utils';
+import { formatTaxBand, formatEPC } from '@/lib/formatters';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  MapPin, 
-  Bed, 
-  Bath, 
-  Sofa, 
-  Star, 
-  Calendar, 
-  Home, 
+import {
+  MapPin,
+  Bed,
+  Bath,
+  Sofa,
+  Star,
+  Calendar,
+  Home,
   Ruler,
-  
+  FileText,
+  Zap,
 } from 'lucide-react';
 
 interface PropertyDetailsProps {
@@ -49,6 +51,8 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     status,
     rating,
     age,
+    taxband,
+    epcrating,
     DESCRIPTION,
     description,
     comments,
@@ -59,7 +63,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     url,
   } = property;
 
-  const totalBeds = parseInt(beds || '0') + parseInt(singles || '0') + parseInt(doubles || '0');
+  const totalBeds = parseInt(beds || '0');
   const bathsNum = parseInt(baths || '0');
   const recepsNum = parseInt(receps || '0');
   const parsedSalePrice = parseFloat(String(saleprice ?? price ?? '').trim());
@@ -120,8 +124,10 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     { icon: Bath, label: 'Bathrooms', value: `${bathsNum} bath${bathsNum !== 1 ? 's' : ''}` },
     { icon: Sofa, label: 'Receptions', value: `${recepsNum} reception${recepsNum !== 1 ? 's' : ''}` },
     { icon: Home, label: 'Property Type', value: type || TYPE || 'Not specified' },
+    { icon: Zap, label: 'EPC Rating', value: `${epcrating} ${formatEPC(epcrating)}` },
     ...(age ? [{ icon: Ruler, label: 'Age', value: age }] : []),
-    { icon: Star, label: 'Rating', value: rating ? `${rating}/5` : 'Not rated' },
+    ...(taxband ? [{ icon: FileText, label: 'Council Tax', value: formatTaxBand(taxband) }] : []),
+    ...(epcrating ? [{ icon: Zap, label: 'EPC Rating', value: formatEPC(epcrating) }] : []),
   ];
 
 

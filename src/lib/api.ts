@@ -74,6 +74,8 @@ export interface Property {
   shortlet: number;
   rating: string;
   age: string;
+  taxband: string;
+  epcrating: number | null;
   DESCRIPTION: string;
   comments: string;
   strapline: string;
