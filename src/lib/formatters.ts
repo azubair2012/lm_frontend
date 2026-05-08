@@ -27,6 +27,17 @@ export function formatTaxBand(band: string): string {
 export function formatEPC(rating: number | string | null): string {
   if (rating === null || rating === undefined || rating === '') return 'Not rated';
 
-  // Return the numeric value as-is
-  return String(rating);
+  const value = typeof rating === 'string' ? Number(rating) : rating;
+  if (!Number.isFinite(value)) return 'Not rated';
+
+  // UK EPC bands by score
+  if (value >= 92) return 'A';
+  if (value >= 81) return 'B';
+  if (value >= 69) return 'C';
+  if (value >= 55) return 'D';
+  if (value >= 39) return 'E';
+  if (value >= 21) return 'F';
+  if (value >= 1) return 'G';
+
+  return 'Not rated';
 }

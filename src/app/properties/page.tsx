@@ -20,7 +20,7 @@ export default function PropertiesPage() {
     limit: 12,
     q: '',
     area: '',
-    type: '',
+    type: 'rent',
     beds: undefined,
     minPrice: undefined,
     maxPrice: undefined,
@@ -47,19 +47,27 @@ export default function PropertiesPage() {
   const loadInitialData = async () => {
     try {
       setLoading(true);
-      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 12 });
+      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 12, type: 'rent' });
+
+      if (!searchResponse || !searchResponse.properties) {
+        console.error('Error loading initial data: unexpected response shape', searchResponse);
+        setProperties([]);
+        return;
+      }
 
       setProperties(searchResponse.properties);
 
       const cacheKey = JSON.stringify({ ...searchParams, page: 1 });
       setPageCache(new Map([[cacheKey, searchResponse.properties]]));
 
-      setPagination({
-        page: searchResponse.pagination.page,
-        totalPages: searchResponse.pagination.totalPages,
-        hasNext: searchResponse.pagination.hasNext,
-        hasPrev: searchResponse.pagination.hasPrev,
-      });
+      if (searchResponse.pagination) {
+        setPagination({
+          page: searchResponse.pagination.page,
+          totalPages: searchResponse.pagination.totalPages,
+          hasNext: searchResponse.pagination.hasNext,
+          hasPrev: searchResponse.pagination.hasPrev,
+        });
+      }
 
       if (searchResponse.filters) {
         setFilters({
@@ -80,7 +88,7 @@ export default function PropertiesPage() {
       setSearchLoading(true);
       setPageCache(new Map());
 
-      const searchParamsWithLimit = { ...params, page: 1, limit: 12 };
+      const searchParamsWithLimit = { ...params, type: 'rent', page: 1, limit: 12 };
       setSearchParams(searchParamsWithLimit);
 
       const response = await rentmanApi.searchProperties(searchParamsWithLimit);

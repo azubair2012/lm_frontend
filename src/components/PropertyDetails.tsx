@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Property } from '@/lib/api';
 import { formatPrice, formatDate } from '@/lib/utils';
-import { formatTaxBand, formatEPC } from '@/lib/formatters';
+import { formatTaxBand } from '@/lib/formatters';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -89,6 +89,8 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
   const lineOne = [street, address3].filter(Boolean).join(', ').trim();
   const lineTwo = [address4, postcode].filter(Boolean).join(', ').trim();
   const fallbackAddress = displayaddress || [area, postcode].filter(Boolean).join(', ').trim();
+  const epcValue =
+    epcrating !== null && epcrating !== undefined && epcrating !== '' ? String(epcrating) : 'Not rated';
 
   // Get description value (check all possible description fields and ensure it's not empty)
   const descriptionText = 
@@ -124,10 +126,9 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     { icon: Bath, label: 'Bathrooms', value: `${bathsNum} bath${bathsNum !== 1 ? 's' : ''}` },
     { icon: Sofa, label: 'Receptions', value: `${recepsNum} reception${recepsNum !== 1 ? 's' : ''}` },
     { icon: Home, label: 'Property Type', value: type || TYPE || 'Not specified' },
-    { icon: Zap, label: 'EPC Rating', value: `${epcrating} ${formatEPC(epcrating)}` },
+    { icon: Zap, label: 'EPC Rating', value: epcValue },
+    { icon: FileText, label: 'Council Tax', value: taxband ? formatTaxBand(taxband) : 'Not specified' },
     ...(age ? [{ icon: Ruler, label: 'Age', value: age }] : []),
-    ...(taxband ? [{ icon: FileText, label: 'Council Tax', value: formatTaxBand(taxband) }] : []),
-    ...(epcrating ? [{ icon: Zap, label: 'EPC Rating', value: formatEPC(epcrating) }] : []),
   ];
 
 
@@ -139,7 +140,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
         <div className="flex items-start justify-between pt-8">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">{address}</h1>
-            <div className="flex items-start gap-2 text-muted-foreground">
+            <div className="flex items-start gap-2 font-bold text-muted-foreground">
               <MapPin className="mt-0.5 w-4 h-4" />
               <span>
                 {lineOne && <span className="block">{lineOne}</span>}
@@ -152,7 +153,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
             <div className="text-3xl font-bold text-primary">
               {formatPrice(primaryPrice)}
               {showMonthlySuffix && (
-                <span className="text-lg font-normal text-muted-foreground">/month</span>
+                <span className="text-lg font-bold text-muted-foreground">/month</span>
               )}
             </div>
             {!showSaleAsPrimary && hasValidSalePrice && (
