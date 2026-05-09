@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Property } from '@/lib/api';
 import { formatPrice, formatDate } from '@/lib/utils';
-import { formatTaxBand } from '@/lib/formatters';
+import { formatTaxBand, formatEPCOrdinal } from '@/lib/formatters';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -89,8 +89,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
   const lineOne = [street, address3].filter(Boolean).join(', ').trim();
   const lineTwo = [address4, postcode].filter(Boolean).join(', ').trim();
   const fallbackAddress = displayaddress || [area, postcode].filter(Boolean).join(', ').trim();
-  const epcValue =
-    epcrating !== null && epcrating !== undefined && epcrating !== '' ? String(epcrating) : 'Not rated';
+  const epcValue = formatEPCOrdinal(epcrating);
 
   // Get description value (check all possible description fields and ensure it's not empty)
   const descriptionText = 
@@ -169,10 +168,8 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
         )}
 
         <div className="flex flex-wrap gap-2">
-          <Badge variant="secondary">{type}</Badge>
-          <Badge variant="outline">{status}</Badge>
-          {furnished && !showSalePrice && <Badge variant="outline">Furnished: {furnished === 1 ? 'Yes' : furnished === 2 ? 'No' : furnished === 3 ? 'Part' : 'Unknown'}</Badge>}
-          {heating && <Badge variant="outline">Heating: {heating}</Badge>}
+          {type && <Badge variant="secondary">{type}</Badge>}
+          {status && <Badge variant="outline">{status}</Badge>}
         </div>
       </div>
 
@@ -185,9 +182,11 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {features.map((feature, index) => (
               <div key={index} className="text-center space-y-2">
-                <feature.icon className="w-6 h-6 mx-auto text-primary" />
-                <div className="text-sm font-medium">{feature.value}</div>
-                <div className="text-xs text-muted-foreground">{feature.label}</div>
+                <feature.icon className="w-6 h-6 mx-auto text-primary shrink-0" />
+                <div className="text-sm font-medium leading-snug min-h-[2.5rem] flex items-center justify-center px-0.5">
+                  {feature.value}
+                </div>
+                <div className="text-xs text-muted-foreground leading-snug">{feature.label}</div>
               </div>
             ))}
           </div>
