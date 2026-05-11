@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
 
     if (!isAuthenticated) {
       // Redirect to login page
-      const loginUrl = new URL('/admin/login', request.url);
+      const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('redirect', pathname);
       return NextResponse.redirect(loginUrl);
     }

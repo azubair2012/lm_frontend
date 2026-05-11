@@ -7,7 +7,6 @@ import { blogApi } from '@/lib/api';
 
 export default function AdminPage() {
   const [blogCount, setBlogCount] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -17,8 +16,6 @@ export default function AdminPage() {
         setBlogCount(blogs.length);
       } catch (err) {
         console.error('Error fetching blog count:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -28,7 +25,7 @@ export default function AdminPage() {
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/logout', { method: 'POST' });
-      router.push('/admin/login');
+      router.push('/login');
       router.refresh();
     } catch (err) {
       console.error('Logout error:', err);
@@ -54,16 +51,15 @@ export default function AdminPage() {
       color: 'bg-purple-50 border-purple-200 hover:bg-purple-100',
       textColor: 'text-purple-700',
     },
-    // Add more admin sections here in the future
-    // {
-    //   title: 'Properties',
-    //   description: 'Manage property listings',
-    //   href: '/admin/properties',
-    //   icon: '🏠',
-    //   count: null,
-    //   color: 'bg-green-50 border-green-200 hover:bg-green-100',
-    //   textColor: 'text-green-700',
-    // },
+    {
+      title: 'International Properties',
+      description: 'Manage international property listings',
+      href: '/admin/international-properties',
+      icon: '🌍',
+      count: null,
+      color: 'bg-green-50 border-green-200 hover:bg-green-100',
+      textColor: 'text-green-700',
+    },
   ];
 
   return (
@@ -87,22 +83,6 @@ export default function AdminPage() {
               Logout
             </button>
           </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 mb-1">Total Blog Posts</p>
-                <p className="text-3xl font-bold text-[#111518]">
-                  {loading ? '...' : blogCount ?? 0}
-                </p>
-              </div>
-              <div className="text-4xl">📝</div>
-            </div>
-          </div>
-          {/* Add more stat cards here */}
         </div>
 
         {/* Admin Sections */}

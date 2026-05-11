@@ -4,16 +4,27 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import InterImageSlider from '@/components/InterImageSlider';
 import { type PropertyData } from './types';
+import { DEFAULT_INTERNATIONAL_PROPERTIES } from '@/lib/content-registry';
 
 export default function InternationalPropertiesPage() {
   const [selectedProperty, setSelectedProperty] = useState<PropertyData | null>(null);
   const [properties, setProperties] = useState<PropertyData[]>([]);
 
   useEffect(() => {
-    fetch('/data/properties.json')
-      .then((res) => res.json())
-      .then((data) => setProperties(data as PropertyData[]))
-      .catch((err) => console.error('Failed to load properties:', err));
+    const loadProperties = async () => {
+      try {
+        const res = await fetch('/api/content?keys=international.properties');
+        const payload = await res.json();
+        if (payload.success && payload.data?.[0]?.value) {
+          setProperties(JSON.parse(payload.data[0].value) as PropertyData[]);
+        } else {
+          setProperties(DEFAULT_INTERNATIONAL_PROPERTIES);
+        }
+      } catch {
+        setProperties(DEFAULT_INTERNATIONAL_PROPERTIES);
+      }
+    };
+    loadProperties();
   }, []);
 
   return (

@@ -63,7 +63,7 @@ export default function AdminBlogPage() {
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/logout', { method: 'POST' });
-      router.push('/admin/login');
+      router.push('/login');
       router.refresh();
     } catch (err) {
       console.error('Logout error:', err);

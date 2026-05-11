@@ -15,7 +15,6 @@ const imageHostname = getImageHostname();
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['localhost', 'res.cloudinary.com'],
     remotePatterns: [
       {
         protocol: 'http',
