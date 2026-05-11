@@ -11,51 +11,83 @@ const INTERNATIONAL_CONTENT_KEY = 'international.properties';
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dbj2rsthw';
 const UPLOAD_PRESET = 'international_properties';
 
+/** Cloudinary upload limit for the current plan (bytes). */
+const MAX_CLOUDINARY_UPLOAD_BYTES = 10 * 1024 * 1024;
+
+function formatFileSizeMb(bytes: number): string {
+  return (bytes / (1024 * 1024)).toFixed(1);
+}
+
 function MapButton({
   onUpload,
 }: {
   onUpload: (url: string) => void;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleClick = () => {
+    setError(null);
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = 'image/*';
+    input.accept = 'application/pdf';
 
     input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
-      setUploading(true);
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', UPLOAD_PRESET);
-      formData.append('folder', 'international');
-
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-        { method: 'POST', body: formData }
-      );
-      const data = await res.json();
-      if (data.secure_url) {
-        onUpload(data.secure_url);
+      if (file.size > MAX_CLOUDINARY_UPLOAD_BYTES) {
+        setError(
+          `This PDF is ${formatFileSizeMb(file.size)} MB. The maximum upload size is ${formatFileSizeMb(MAX_CLOUDINARY_UPLOAD_BYTES)} MB. Compress the file offline or use “Paste URL” with a link hosted elsewhere.`
+        );
+        return;
       }
-      setUploading(false);
+
+      setUploading(true);
+      setError(null);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', UPLOAD_PRESET);
+        formData.append('folder', 'international');
+
+        const res = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`,
+          { method: 'POST', body: formData }
+        );
+        const data = await res.json();
+        if (data.secure_url) {
+          onUpload(data.secure_url);
+        } else if (data.error?.message) {
+          setError(data.error.message);
+        } else {
+          setError('Upload failed. Please try again or use “Paste URL”.');
+        }
+      } catch {
+        setError('Upload failed (network error). Check your connection or use “Paste URL”.');
+      } finally {
+        setUploading(false);
+      }
     };
 
     input.click();
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      disabled={uploading}
-      className="px-3 py-2 bg-[#B87333] text-white text-sm hover:bg-[#A0662A] rounded-md transition-colors disabled:opacity-60 whitespace-nowrap"
-    >
-      {uploading ? 'Uploading...' : 'Upload Map'}
-    </button>
+    <div className="flex flex-col gap-1 max-w-md">
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={uploading}
+        className="px-3 py-2 bg-[#B87333] text-white text-sm hover:bg-[#A0662A] rounded-md transition-colors disabled:opacity-60 whitespace-nowrap self-start"
+      >
+        {uploading ? 'Uploading...' : 'Upload Map'}
+      </button>
+      <p className="text-xs text-gray-500 leading-snug">
+        PDFs up to {Math.round(MAX_CLOUDINARY_UPLOAD_BYTES / (1024 * 1024))} MB.
+      </p>
+      {error ? <p className="text-xs text-red-600 leading-snug">{error}</p> : null}
+    </div>
   );
 }
 
@@ -65,8 +97,10 @@ function BrochureButton({
   onUpload: (url: string) => void;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleClick = () => {
+    setError(null);
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/pdf';
@@ -75,49 +109,76 @@ function BrochureButton({
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
-      setUploading(true);
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', UPLOAD_PRESET);
-      formData.append('folder', 'international');
-
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`,
-        { method: 'POST', body: formData }
-      );
-      const data = await res.json();
-      if (data.secure_url) {
-        onUpload(data.secure_url);
+      if (file.size > MAX_CLOUDINARY_UPLOAD_BYTES) {
+        setError(
+          `This PDF is ${formatFileSizeMb(file.size)} MB. The maximum upload size is ${formatFileSizeMb(MAX_CLOUDINARY_UPLOAD_BYTES)} MB. Compress the file offline or use “Paste URL” with a link hosted elsewhere.`
+        );
+        return;
       }
-      setUploading(false);
+
+      setUploading(true);
+      setError(null);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', UPLOAD_PRESET);
+        formData.append('folder', 'international');
+
+        const res = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`,
+          { method: 'POST', body: formData }
+        );
+        const data = await res.json();
+        if (data.secure_url) {
+          onUpload(data.secure_url);
+        } else if (data.error?.message) {
+          setError(data.error.message);
+        } else {
+          setError('Upload failed. Please try again or use “Paste URL”.');
+        }
+      } catch {
+        setError('Upload failed (network error). Check your connection or use “Paste URL”.');
+      } finally {
+        setUploading(false);
+      }
     };
 
     input.click();
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      disabled={uploading}
-      className="px-3 py-2 bg-[#B87333] text-white text-sm hover:bg-[#A0662A] rounded-md transition-colors disabled:opacity-60 whitespace-nowrap"
-    >
-      {uploading ? 'Uploading...' : 'Upload PDF'}
-    </button>
+    <div className="flex flex-col gap-1 max-w-md">
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={uploading}
+        className="px-3 py-2 bg-[#B87333] text-white text-sm hover:bg-[#A0662A] rounded-md transition-colors disabled:opacity-60 whitespace-nowrap self-start"
+      >
+        {uploading ? 'Uploading...' : 'Upload PDF'}
+      </button>
+      <p className="text-xs text-gray-500 leading-snug">
+        PDFs up to {Math.round(MAX_CLOUDINARY_UPLOAD_BYTES / (1024 * 1024))} MB.
+      </p>
+      {error ? <p className="text-xs text-red-600 leading-snug">{error}</p> : null}
+    </div>
   );
 }
 
 function UploadButton({
   onUpload,
   multi = false,
+  hint,
 }: {
   onUpload: (url: string) => void;
   onMultiUpload?: (urls: string) => void;
   multi?: boolean;
+  hint?: string;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleClick = () => {
+    setError(null);
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -127,45 +188,70 @@ function UploadButton({
       const files = (e.target as HTMLInputElement).files;
       if (!files?.length) return;
 
-      setUploading(true);
-      const uploadedUrls: string[] = [];
-
-      for (const file of Array.from(files)) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', UPLOAD_PRESET);
-        formData.append('folder', 'international');
-
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-          { method: 'POST', body: formData }
-        );
-        const data = await res.json();
-        if (data.secure_url) {
-          uploadedUrls.push(data.secure_url);
+      const filesArr = Array.from(files);
+      for (const file of filesArr) {
+        if (file.size > MAX_CLOUDINARY_UPLOAD_BYTES) {
+          setError(
+            `This image is ${formatFileSizeMb(file.size)} MB. The maximum upload size is ${formatFileSizeMb(MAX_CLOUDINARY_UPLOAD_BYTES)} MB. Use a smaller file or paste a URL.`
+          );
+          return;
         }
       }
 
-      if (uploadedUrls.length === 1) {
-        onUpload(uploadedUrls[0]);
-      } else if (uploadedUrls.length > 1) {
-        onUpload(uploadedUrls.join('\n'));
+      setUploading(true);
+      setError(null);
+      try {
+        const uploadedUrls: string[] = [];
+        for (const file of filesArr) {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', UPLOAD_PRESET);
+          formData.append('folder', 'international');
+
+          const res = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+            { method: 'POST', body: formData }
+          );
+          const data = await res.json();
+          if (data.secure_url) {
+            uploadedUrls.push(data.secure_url);
+          } else if (data.error?.message) {
+            setError(data.error.message);
+            return;
+          } else {
+            setError('Upload failed. Try again or paste a URL.');
+            return;
+          }
+        }
+
+        if (uploadedUrls.length === 1) {
+          onUpload(uploadedUrls[0]);
+        } else if (uploadedUrls.length > 1) {
+          onUpload(uploadedUrls.join('\n'));
+        }
+      } catch {
+        setError('Upload failed (network error). Check your connection or paste a URL.');
+      } finally {
+        setUploading(false);
       }
-      setUploading(false);
     };
 
     input.click();
   };
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      disabled={uploading}
-      className="px-3 py-2 bg-[#B87333] text-white text-sm hover:bg-[#A0662A] rounded-md transition-colors disabled:opacity-60 whitespace-nowrap"
-    >
-      {uploading ? 'Uploading...' : multi ? 'Upload Images' : 'Upload Image'}
-    </button>
+    <div className="flex flex-col gap-1 max-w-md">
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={uploading}
+        className="px-3 py-2 bg-[#B87333] text-white text-sm hover:bg-[#A0662A] rounded-md transition-colors disabled:opacity-60 whitespace-nowrap self-start"
+      >
+        {uploading ? 'Uploading...' : multi ? 'Upload Images' : 'Upload Image'}
+      </button>
+      {hint ? <p className="text-xs text-gray-500 leading-snug">{hint}</p> : null}
+      {error ? <p className="text-xs text-red-600 leading-snug">{error}</p> : null}
+    </div>
   );
 }
 
@@ -474,7 +560,10 @@ function PropertyEditForm({ form, onChange, onSave, onCancel, saving }: Property
           <p className="text-sm text-gray-500 mb-3">No card image yet.</p>
         ) : null}
         <div className="flex flex-wrap gap-2 items-start">
-          <UploadButton onUpload={(url) => onChange({ ...form, image: url })} />
+          <UploadButton
+            hint={`Image up to ${Math.round(MAX_CLOUDINARY_UPLOAD_BYTES / (1024 * 1024))} MB.`}
+            onUpload={(url) => onChange({ ...form, image: url })}
+          />
           <details className="text-sm flex-1 min-w-[200px] rounded-lg border-2 border-gray-300 bg-gray-50/80 py-1 px-3 leading-snug open:py-2">
             <summary className="cursor-pointer list-none font-bold text-gray-700 hover:text-gray-900 [&::-webkit-details-marker]:hidden">
               Image URL (advanced)
@@ -525,6 +614,7 @@ function PropertyEditForm({ form, onChange, onSave, onCancel, saving }: Property
         <div className="flex flex-wrap gap-2 items-start">
           <UploadButton
             multi
+            hint={`Each image up to ${Math.round(MAX_CLOUDINARY_UPLOAD_BYTES / (1024 * 1024))} MB.`}
             onUpload={(urls) => {
               const current = (form.images || []).join('\n');
               const newUrls = current ? current + '\n' + urls : urls;
