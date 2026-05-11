@@ -47,7 +47,7 @@ export default function InternationalPropertiesPage() {
             </span>
           </div>
           <div className='flex flex-col sm:flex-row items-center sm:items-end justify-center gap-4 sm:gap-6 md:gap-10 mt-6 sm:mt-8'>
-            <div className='flex flex-col items-center gap-2'>
+            <div className='flex flex-col items-center gap-2 pb-2'>
               <img src="/LM_ICON.png" alt="Embayt" className="w-[20px] h-[32px] sm:w-[24px] sm:h-[40px] mx-auto" />
               <img src="/logo.png" alt="Embayt" className="w-[150px] h-[15px] sm:w-[200px] sm:h-[20px] mx-auto" />
             </div>
