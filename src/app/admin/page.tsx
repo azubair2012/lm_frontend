@@ -1,26 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { blogApi } from '@/lib/api';
 
 export default function AdminPage() {
-  const [blogCount, setBlogCount] = useState<number | null>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchBlogCount = async () => {
-      try {
-        const blogs = await blogApi.getAllBlogs();
-        setBlogCount(blogs.length);
-      } catch (err) {
-        console.error('Error fetching blog count:', err);
-      }
-    };
-
-    fetchBlogCount();
-  }, []);
 
   const handleLogout = async () => {
     try {
@@ -38,27 +22,21 @@ export default function AdminPage() {
       description: 'Create, edit, and manage blog posts',
       href: '/admin/blog',
       icon: '📝',
-      count: blogCount,
       color: 'bg-blue-50 border-blue-200 hover:bg-blue-100',
-      textColor: 'text-blue-700',
     },
     {
       title: 'Site Content',
       description: 'Edit homepage and section copy',
       href: '/admin/content',
       icon: '🧩',
-      count: null,
       color: 'bg-purple-50 border-purple-200 hover:bg-purple-100',
-      textColor: 'text-purple-700',
     },
     {
       title: 'International Properties',
       description: 'Manage international property listings',
       href: '/admin/international-properties',
       icon: '🌍',
-      count: null,
       color: 'bg-green-50 border-green-200 hover:bg-green-100',
-      textColor: 'text-green-700',
     },
   ];
 
@@ -97,14 +75,7 @@ export default function AdminPage() {
                 href={section.href}
                 className={`block p-6 rounded-lg border-2 transition-all hover:shadow-md ${section.color}`}
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="text-4xl">{section.icon}</div>
-                  {section.count !== null && (
-                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${section.textColor} bg-white`}>
-                      {section.count}
-                    </span>
-                  )}
-                </div>
+                <div className="text-4xl mb-4">{section.icon}</div>
                 <h3 className="text-xl font-semibold text-[#111518] mb-2" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}>
                   {section.title}
                 </h3>
@@ -159,4 +130,3 @@ export default function AdminPage() {
     </main>
   );
 }
-
