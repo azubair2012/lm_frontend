@@ -32,6 +32,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
     strapline,
     images,
     saleprice,
+    rentorbuy,
   } = property;
 
   const lineOne = [street, address3].filter(Boolean).join(', ').trim();
@@ -40,7 +41,12 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
   const totalBeds = parseInt(beds, 10);
   const parsedSalePrice = parseFloat(String(saleprice ?? '').replace(/[£,\s]/g, ''));
   const hasValidSalePrice = showSalePrice && Number.isFinite(parsedSalePrice) && parsedSalePrice >= 1000;
-  const rentRaw = String(rentmonth ?? property.displayprice ?? property.price ?? '')
+  // Rentman: rentorbuy 2 = for sale — never treat displayprice as monthly rent for sale stock
+  const isSaleStock = String(rentorbuy ?? '').trim() === '2';
+  const rentFallbackAllowed = !showSalePrice && !isSaleStock;
+  const rentRaw = String(
+    rentmonth ?? (rentFallbackAllowed ? property.displayprice ?? property.price ?? '' : '')
+  )
     .replace(/[£,\s]/g, '')
     .trim();
   const parsedRent = parseFloat(rentRaw);
