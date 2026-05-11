@@ -25,6 +25,18 @@ const resourcesLinks = [
   { label: 'Property News', href: '/blog' },
 ];
 
+const cloudinaryCloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? 'dbj2rsthw';
+
+function cloudinaryDocsPdfUrl(filename: string) {
+  return `https://res.cloudinary.com/${cloudinaryCloudName}/raw/upload/docs/${filename}`;
+}
+
+const footerAccreditationPdfs = {
+  safeAgent: cloudinaryDocsPdfUrl('safe_agent.pdf'),
+  clientMoneyProtect: cloudinaryDocsPdfUrl('CMP.pdf'),
+  propertyRedress: cloudinaryDocsPdfUrl('prs.pdf'),
+} as const;
+
 export default function Footer() {
   return (
     <footer className="text-[#383E42] border-t-2 border-[#383E42] ">
@@ -94,15 +106,33 @@ export default function Footer() {
             </a>
           </div>
           <div className="flex items-center justify-center gap-2 sm:gap-2 order-1 sm:order-2 flex-wrap">
-            <Link href="/docs/prs.pdf" target="_blank" rel="noreferrer" aria-label="Safeagent" className="opacity-80 transition hover:opacity-100">
+            <a
+              href={footerAccreditationPdfs.safeAgent}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Safeagent"
+              className="opacity-80 transition hover:opacity-100"
+            >
               <Image src="/f1.png" alt="Safeagent" width={90} height={28} className="h-fit w-fit" />
-            </Link>
-            <Link href="/docs/CMP.pdf" target="_blank" rel="noreferrer" aria-label="Client Money Protect" className="opacity-80 transition hover:opacity-100">
+            </a>
+            <a
+              href={footerAccreditationPdfs.clientMoneyProtect}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Client Money Protect"
+              className="opacity-80 transition hover:opacity-100"
+            >
               <Image src="/f2.png" alt="Client Money Protect" width={90} height={28} className="h-fit w-fit" />
-            </Link>
-            <Link href="/docs/safe_agent.pdf" target="_blank" rel="noreferrer" aria-label="Property Redress" className="opacity-80 transition hover:opacity-100">
+            </a>
+            <a
+              href={footerAccreditationPdfs.propertyRedress}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Property Redress"
+              className="opacity-80 transition hover:opacity-100"
+            >
               <Image src="/f3.png" alt="Property Redress" width={90} height={28} className="h-fit w-fit" />
-            </Link>
+            </a>
           </div>
           <div className="text-center text-xs sm:text-xs order-3 w-full sm:w-auto">
             © 2025 London Move, All Rights Reserved
