@@ -14,11 +14,15 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
     propref,
     displayaddress,
     street,
+    address3,
     postcode,
     images,
   } = property;
 
-  const addressLabel = street && postcode ? `${street}, ${postcode}` : displayaddress;
+  const addressLabel =
+    street && postcode
+      ? [street, address3, postcode].filter(Boolean).join(', ')
+      : displayaddress;
 
   return (
     <Link href={`/properties/${propref}`} className="block h-full">
