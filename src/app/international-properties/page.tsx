@@ -269,17 +269,23 @@ function PropertyModalContent({ property, onClose }: { property: PropertyData; o
 
           {/* Links */}
           <div className="flex flex-col items-center gap-3 sm:gap-4">
-            {property.ctas.map((cta) => (
+            {property.ctas.map((cta) => {
+              const openInNewTab = /^https?:\/\//i.test(cta.href.trim());
+              return (
               <a
                 key={cta.label}
                 href={cta.href}
+                {...(openInNewTab
+                  ? { target: '_blank', rel: 'noopener noreferrer' }
+                  : {})}
                 className="text-[#383E42] hover:underline hover:text-[#B87333] transition-colors text-sm sm:text-base md:text-lg w-full text-center"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="h-[1px] w-full bg-[#b87333db] mx-auto mb-2 sm:mb-[10px]"></div>
                 {cta.label}
               </a>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
