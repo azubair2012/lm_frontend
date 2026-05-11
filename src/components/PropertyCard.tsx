@@ -37,16 +37,33 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
   const lineOne = [street, address3].filter(Boolean).join(', ').trim();
   const lineTwo = [address4, postcode].filter(Boolean).join(', ').trim();
   const addressLabel = [lineOne, lineTwo].filter(Boolean).join(', ') || displayaddress;
-  const totalBeds = parseInt(beds);
-  const parsedSalePrice = parseFloat(saleprice ?? '');
+  const totalBeds = parseInt(beds, 10);
+  const parsedSalePrice = parseFloat(String(saleprice ?? '').replace(/[£,\s]/g, ''));
   const hasValidSalePrice = showSalePrice && Number.isFinite(parsedSalePrice) && parsedSalePrice >= 1000;
+  const rentRaw = String(rentmonth ?? property.displayprice ?? property.price ?? '')
+    .replace(/[£,\s]/g, '')
+    .trim();
+  const parsedRent = parseFloat(rentRaw);
+  const hasValidRentPrice = Number.isFinite(parsedRent) && parsedRent > 0;
   const formattedAvailableDate = (() => {
     const raw = String(available ?? '').trim();
     if (!raw) return '';
     const parsed = new Date(raw);
-    if (Number.isNaN(parsed.getTime())) return raw;
+    if (Number.isNaN(parsed.getTime())) return '';
+    const y = parsed.getFullYear();
+    // Rentman / bad data often uses distant-past sentinels
+    if (y < 1900 || y > 2100) return '';
     return parsed.toLocaleDateString('en-GB');
   })();
+  const furnishedCode = Number(furnished);
+  const furnishedLabel =
+    furnishedCode === 1
+      ? 'Yes'
+      : furnishedCode === 2
+        ? 'No'
+        : furnishedCode === 3
+          ? 'Part'
+          : null;
   const normalizedArea = String(property.area ?? '')
     .replace(/[\u00A0\u2007\u202F\u200B-\u200D\uFEFF]/g, ' ')
     .trim();
@@ -108,17 +125,17 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
             </div>
           )}
 
-          {available && !showSalePrice && (
+          {!showSalePrice && formattedAvailableDate && (
             <div className="flex items-center gap-1 text-sm text-[#B87333]">
               <Calendar className="w-4 h-4" />
               <span>Available {formattedAvailableDate}</span>
             </div>
           )}
 
-          {furnished && !showSalePrice && (
+          {!showSalePrice && furnishedLabel != null && (
             <div className="text-sm">
               <span className="text-muted-foreground">Furnished: </span>
-              <span className="font-medium">{furnished === 1 ? 'Yes' : furnished === 2 ? 'No' : furnished === 3 ? 'Part' : 'Unknown'}</span>
+              <span className="font-medium">{furnishedLabel}</span>
             </div>
           )}
         </div>
@@ -128,8 +145,12 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
         <div className="flex items-center justify-between w-full">
           <div className="space-y-1">
             <div className="text-2xl font-bold text-primary">
-              {hasValidSalePrice ? formatPrice(parsedSalePrice) : formatPrice(parseFloat(rentmonth))}
-              {!hasValidSalePrice && (
+              {hasValidSalePrice
+                ? formatPrice(parsedSalePrice)
+                : hasValidRentPrice
+                  ? formatPrice(parsedRent)
+                  : 'Price on application'}
+              {!hasValidSalePrice && hasValidRentPrice && (
                 <span className="text-sm font-normal text-muted-foreground">/month</span>
               )}
             </div>
