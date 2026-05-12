@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Property } from '@/lib/api';
 import { formatPrice, formatDate } from '@/lib/utils';
-import { formatTaxBand, formatEPCOrdinal } from '@/lib/formatters';
+import { formatTaxBand, formatEPC } from '@/lib/formatters';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -89,7 +89,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
   const lineOne = [street, address3].filter(Boolean).join(', ').trim();
   const lineTwo = [address4, postcode].filter(Boolean).join(', ').trim();
   const fallbackAddress = displayaddress || [area, postcode].filter(Boolean).join(', ').trim();
-  const epcValue = formatEPCOrdinal(epcrating);
+  const epcValue = formatEPC(epcrating);
 
   // Get description value (check all possible description fields and ensure it's not empty)
   const descriptionText = 
