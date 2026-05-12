@@ -157,7 +157,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
                   ? formatPrice(parsedRent)
                   : 'Price on application'}
               {!hasValidSalePrice && hasValidRentPrice && (
-                <span className="text-sm font-normal text-muted-foreground">/month</span>
+                <span className="text-sm font-normal text-muted-foreground">pcm</span>
               )}
             </div>
            

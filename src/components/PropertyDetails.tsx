@@ -140,10 +140,10 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">{address}</h1>
             <div className="flex items-start gap-2 font-bold text-muted-foreground">
-              <MapPin className="mt-0.5 w-4 h-4" />
+              {false && <MapPin className="mt-0.5 w-4 h-4" />}
               <span>
-                {lineOne && <span className="block">{lineOne}</span>}
-                {lineTwo && <span className="block">{lineTwo}</span>}
+                {lineOne && <span className="block text-3xl">{lineOne}</span>}
+                {lineTwo && <span className="block text-3xl">{lineTwo}</span>}
                 {!lineOne && !lineTwo && <span className="block">{fallbackAddress}</span>}
               </span>
             </div>
@@ -152,14 +152,10 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
             <div className="text-3xl font-bold text-primary">
               {formatPrice(primaryPrice)}
               {showMonthlySuffix && (
-                <span className="text-lg font-bold text-muted-foreground">/month</span>
+                <span className="text-lg font-bold text-muted-foreground">pcm</span>
               )}
             </div>
-            {!showSaleAsPrimary && hasValidSalePrice && (
-              <div className="text-sm text-muted-foreground">
-                Sale: {formatPrice(parsedSalePrice)}
-              </div>
-            )}
+            
           </div>
         </div>
 
