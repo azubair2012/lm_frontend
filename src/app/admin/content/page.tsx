@@ -23,10 +23,12 @@ export default function AdminContentPage() {
           throw new Error(payload.error || 'Failed to load content');
         }
 
-        const normalized = payload.data.map((entry) => ({
-          ...entry,
-          draftValue: entry.value,
-        }));
+        const normalized = payload.data
+          .filter((entry) => entry.key !== 'international.properties')
+          .map((entry) => ({
+            ...entry,
+            draftValue: entry.value,
+          }));
         setEntries(normalized);
         setError(null);
       } catch (err) {
@@ -130,8 +132,7 @@ export default function AdminContentPage() {
                     const definition = CONTENT_REGISTRY_BY_KEY[entry.key];
                     return (
                       <div key={entry.key} className="border border-gray-200 rounded-md p-4">
-                        <p className="font-semibold text-[#111518]">{definition?.label || entry.label}</p>
-                        <p className="text-xs text-gray-500 mb-3">{entry.key}</p>
+                        <p className="font-semibold text-[#111518] mb-3">{definition?.label || entry.label}</p>
                         {definition?.type === 'richtext' ? (
                           <RichTextEditor
                             value={entry.draftValue}

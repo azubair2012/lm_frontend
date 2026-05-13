@@ -18,12 +18,27 @@ function formatFileSizeMb(bytes: number): string {
   return (bytes / (1024 * 1024)).toFixed(1);
 }
 
+function UploadProgressBar({ progress }: { progress: number }) {
+  return (
+    <div className="w-full max-w-[280px]">
+      <div className="flex justify-between text-xs text-gray-600 mb-1">
+        <span>Uploading</span>
+        <span>{Math.round(progress)}%</span>
+      </div>
+      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div className="h-full bg-[#B87333] rounded-full transition-all duration-150" style={{ width: `${progress}%` }} />
+      </div>
+    </div>
+  );
+}
+
 function MapButton({
   onUpload,
 }: {
   onUpload: (url: string) => void;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   const handleClick = () => {
@@ -32,42 +47,57 @@ function MapButton({
     input.type = 'file';
     input.accept = 'application/pdf';
 
-    input.onchange = async (e) => {
+    input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
       if (file.size > MAX_CLOUDINARY_UPLOAD_BYTES) {
         setError(
-          `This PDF is ${formatFileSizeMb(file.size)} MB. The maximum upload size is ${formatFileSizeMb(MAX_CLOUDINARY_UPLOAD_BYTES)} MB. Compress the file offline or use “Paste URL” with a link hosted elsewhere.`
+          `This PDF is ${formatFileSizeMb(file.size)} MB. The maximum upload size is ${formatFileSizeMb(MAX_CLOUDINARY_UPLOAD_BYTES)} MB. Compress the file offline or use “Paste URL" with a link hosted elsewhere.`
         );
         return;
       }
 
       setUploading(true);
+      setProgress(0);
       setError(null);
-      try {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', UPLOAD_PRESET);
-        formData.append('folder', 'international');
 
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`,
-          { method: 'POST', body: formData }
-        );
-        const data = await res.json();
-        if (data.secure_url) {
-          onUpload(data.secure_url);
-        } else if (data.error?.message) {
-          setError(data.error.message);
-        } else {
-          setError('Upload failed. Please try again or use “Paste URL”.');
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', UPLOAD_PRESET);
+      formData.append('folder', 'international');
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          setProgress((e.loaded / e.total) * 100);
         }
-      } catch {
-        setError('Upload failed (network error). Check your connection or use “Paste URL”.');
-      } finally {
+      };
+
+      xhr.onload = () => {
         setUploading(false);
-      }
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.responseText);
+          if (data.secure_url) {
+            onUpload(data.secure_url);
+          } else if (data.error?.message) {
+            setError(data.error.message);
+          } else {
+            setError('Upload failed. Please try again or use “Paste URL".');
+          }
+        } else {
+          setError('Upload failed. Please try again or use “Paste URL".');
+        }
+      };
+
+      xhr.onerror = () => {
+        setUploading(false);
+        setError('Upload failed (network error). Check your connection or use “Paste URL".');
+      };
+
+      xhr.send(formData);
     };
 
     input.click();
@@ -83,6 +113,7 @@ function MapButton({
       >
         {uploading ? 'Uploading...' : 'Upload Map'}
       </button>
+      {uploading && <UploadProgressBar progress={progress} />}
       <p className="text-xs text-gray-500 leading-snug">
         PDFs up to {Math.round(MAX_CLOUDINARY_UPLOAD_BYTES / (1024 * 1024))} MB.
       </p>
@@ -97,6 +128,7 @@ function BrochureButton({
   onUpload: (url: string) => void;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   const handleClick = () => {
@@ -105,42 +137,57 @@ function BrochureButton({
     input.type = 'file';
     input.accept = 'application/pdf';
 
-    input.onchange = async (e) => {
+    input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
       if (file.size > MAX_CLOUDINARY_UPLOAD_BYTES) {
         setError(
-          `This PDF is ${formatFileSizeMb(file.size)} MB. The maximum upload size is ${formatFileSizeMb(MAX_CLOUDINARY_UPLOAD_BYTES)} MB. Compress the file offline or use “Paste URL” with a link hosted elsewhere.`
+          `This PDF is ${formatFileSizeMb(file.size)} MB. The maximum upload size is ${formatFileSizeMb(MAX_CLOUDINARY_UPLOAD_BYTES)} MB. Compress the file offline or use “Paste URL" with a link hosted elsewhere.`
         );
         return;
       }
 
       setUploading(true);
+      setProgress(0);
       setError(null);
-      try {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', UPLOAD_PRESET);
-        formData.append('folder', 'international');
 
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`,
-          { method: 'POST', body: formData }
-        );
-        const data = await res.json();
-        if (data.secure_url) {
-          onUpload(data.secure_url);
-        } else if (data.error?.message) {
-          setError(data.error.message);
-        } else {
-          setError('Upload failed. Please try again or use “Paste URL”.');
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', UPLOAD_PRESET);
+      formData.append('folder', 'international');
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          setProgress((e.loaded / e.total) * 100);
         }
-      } catch {
-        setError('Upload failed (network error). Check your connection or use “Paste URL”.');
-      } finally {
+      };
+
+      xhr.onload = () => {
         setUploading(false);
-      }
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.responseText);
+          if (data.secure_url) {
+            onUpload(data.secure_url);
+          } else if (data.error?.message) {
+            setError(data.error.message);
+          } else {
+            setError('Upload failed. Please try again or use “Paste URL".');
+          }
+        } else {
+          setError('Upload failed. Please try again or use “Paste URL".');
+        }
+      };
+
+      xhr.onerror = () => {
+        setUploading(false);
+        setError('Upload failed (network error). Check your connection or use “Paste URL".');
+      };
+
+      xhr.send(formData);
     };
 
     input.click();
@@ -156,6 +203,7 @@ function BrochureButton({
       >
         {uploading ? 'Uploading...' : 'Upload PDF'}
       </button>
+      {uploading && <UploadProgressBar progress={progress} />}
       <p className="text-xs text-gray-500 leading-snug">
         PDFs up to {Math.round(MAX_CLOUDINARY_UPLOAD_BYTES / (1024 * 1024))} MB.
       </p>
@@ -175,6 +223,7 @@ function UploadButton({
   hint?: string;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   const handleClick = () => {
@@ -184,7 +233,7 @@ function UploadButton({
     input.accept = 'image/*';
     input.multiple = multi;
 
-    input.onchange = async (e) => {
+    input.onchange = (e) => {
       const files = (e.target as HTMLInputElement).files;
       if (!files?.length) return;
 
@@ -199,41 +248,68 @@ function UploadButton({
       }
 
       setUploading(true);
+      setProgress(0);
       setError(null);
-      try {
-        const uploadedUrls: string[] = [];
-        for (const file of filesArr) {
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('upload_preset', UPLOAD_PRESET);
-          formData.append('folder', 'international');
 
-          const res = await fetch(
-            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-            { method: 'POST', body: formData }
-          );
-          const data = await res.json();
-          if (data.secure_url) {
-            uploadedUrls.push(data.secure_url);
-          } else if (data.error?.message) {
-            setError(data.error.message);
-            return;
-          } else {
-            setError('Upload failed. Try again or paste a URL.');
-            return;
+      const uploadedUrls: string[] = [];
+      let currentFileIdx = 0;
+
+      const uploadNext = () => {
+        if (currentFileIdx >= filesArr.length) {
+          setUploading(false);
+          if (uploadedUrls.length === 1) {
+            onUpload(uploadedUrls[0]);
+          } else if (uploadedUrls.length > 1) {
+            onUpload(uploadedUrls.join('\n'));
           }
+          return;
         }
 
-        if (uploadedUrls.length === 1) {
-          onUpload(uploadedUrls[0]);
-        } else if (uploadedUrls.length > 1) {
-          onUpload(uploadedUrls.join('\n'));
-        }
-      } catch {
-        setError('Upload failed (network error). Check your connection or paste a URL.');
-      } finally {
-        setUploading(false);
-      }
+        const file = filesArr[currentFileIdx];
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', UPLOAD_PRESET);
+        formData.append('folder', 'international');
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const fileProgress = (currentFileIdx + e.loaded / e.total) / filesArr.length * 100;
+            setProgress(fileProgress);
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            if (data.secure_url) {
+              uploadedUrls.push(data.secure_url);
+              currentFileIdx++;
+              uploadNext();
+            } else if (data.error?.message) {
+              setUploading(false);
+              setError(data.error.message);
+            } else {
+              setUploading(false);
+              setError('Upload failed. Try again or paste a URL.');
+            }
+          } else {
+            setUploading(false);
+            setError('Upload failed. Try again or paste a URL.');
+          }
+        };
+
+        xhr.onerror = () => {
+          setUploading(false);
+          setError('Upload failed (network error). Check your connection or paste a URL.');
+        };
+
+        xhr.send(formData);
+      };
+
+      uploadNext();
     };
 
     input.click();
@@ -249,6 +325,7 @@ function UploadButton({
       >
         {uploading ? 'Uploading...' : multi ? 'Upload Images' : 'Upload Image'}
       </button>
+      {uploading && <UploadProgressBar progress={progress} />}
       {hint ? <p className="text-xs text-gray-500 leading-snug">{hint}</p> : null}
       {error ? <p className="text-xs text-red-600 leading-snug">{error}</p> : null}
     </div>
@@ -379,18 +456,23 @@ export default function AdminInternationalPropertiesPage() {
       <div className="container mx-auto max-w-6xl">
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-            <div>
-              <Link href="/admin" className="text-sm text-gray-500 hover:text-gray-700 mb-2 block">← Admin Home</Link>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#111518]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}>
-                International Properties
-              </h1>
+            <h1 className="text-3xl sm:text-4xl font-bold text-[#111518]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}>
+              International Properties
+            </h1>
+            <div className="flex gap-2">
+              <Link
+                href="/admin"
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md transition-colors"
+              >
+                Admin Home
+              </Link>
+              <button
+                onClick={handleAddNew}
+                className="px-4 py-2 bg-[#B87333] text-white hover:bg-[#A0662A] rounded-md transition-colors"
+              >
+                Add New Property
+              </button>
             </div>
-            <button
-              onClick={handleAddNew}
-              className="px-4 py-2 bg-[#B87333] text-white hover:bg-[#A0662A] rounded-md transition-colors"
-            >
-              Add New Property
-            </button>
           </div>
           <p className="text-gray-600">Manage international property listings. Changes publish immediately.</p>
         </div>
@@ -685,18 +767,6 @@ function PropertyEditForm({ form, onChange, onSave, onCancel, saving }: Property
                 ×
               </button>
             </div>
-            <details className="text-sm w-full rounded-lg border-2 border-gray-300 bg-gray-50/80 p-3">
-              <summary className="cursor-pointer font-bold text-gray-700 hover:text-gray-900">
-                Paste URL
-              </summary>
-              <input
-                type="text"
-                value={cta.href}
-                onChange={(e) => updateCta(idx, 'href', e.target.value)}
-                placeholder="https://..."
-                className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B87333] font-mono text-xs"
-              />
-            </details>
           </div>
         ))}
         <button onClick={addCta} className="text-sm text-blue-600 hover:underline">
