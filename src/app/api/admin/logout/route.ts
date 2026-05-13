@@ -3,10 +3,9 @@ import { cookies } from 'next/headers';
 
 export async function POST() {
   const cookieStore = await cookies();
-  cookieStore.delete('admin-auth');
+  cookieStore.delete('admin-auth', {
+    path: '/',
+  });
 
   return NextResponse.json({ success: true });
 }
-
-
-

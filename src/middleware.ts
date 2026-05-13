@@ -1,16 +1,27 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
 
-export function middleware(request: NextRequest) {
+async function verifyToken(token: string): Promise<boolean> {
+  const secret = process.env.ADMIN_SESSION_SECRET;
+  if (!secret) return false;
+  const enc = new TextEncoder();
+  const key = enc.encode(secret);
+  try {
+    const { payload } = await jwtVerify(token, key, { algorithms: ['HS256'] });
+    return payload.exp ? payload.exp > Date.now() / 1000 : false;
+  } catch {
+    return false;
+  }
+}
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if accessing admin routes (exclude legacy /admin/login redirect page only)
   if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
-    // Check for auth cookie
-    const isAuthenticated = request.cookies.get('admin-auth')?.value === 'authenticated';
+    const token = request.cookies.get('admin-auth')?.value;
+    const isAuthenticated = token && await verifyToken(token);
 
     if (!isAuthenticated) {
-      // Redirect to login page
       const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('redirect', pathname);
       return NextResponse.redirect(loginUrl);
@@ -25,6 +36,3 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/admin', '/admin/:path*'],
 };
-
-
-

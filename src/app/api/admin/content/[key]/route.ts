@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { jwtVerify } from 'jose';
 import { contentApi } from '@/lib/api';
 import { CONTENT_REGISTRY_BY_KEY } from '@/lib/content-registry';
 
-function isAuthenticatedAdmin(cookieValue?: string) {
-  return cookieValue === 'authenticated';
+async function isAuthenticatedAdmin(cookieValue?: string) {
+  if (!cookieValue) return false;
+  try {
+    const secret = process.env.ADMIN_SESSION_SECRET;
+    if (!secret) return false;
+    const enc = new TextEncoder();
+    const { payload } = await jwtVerify(cookieValue, enc.encode(secret));
+    return !!payload;
+  } catch {
+    return false;
+  }
 }
 
 export async function PUT(
@@ -13,7 +23,7 @@ export async function PUT(
 ) {
   try {
     const cookieStore = await cookies();
-    if (!isAuthenticatedAdmin(cookieStore.get('admin-auth')?.value)) {
+    if (!(await isAuthenticatedAdmin(cookieStore.get('admin-auth')?.value))) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
