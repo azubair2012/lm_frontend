@@ -97,14 +97,14 @@ export default function SearchFilters({
                   value={filters.q || ''}
                   onChange={(e) => handleInputChange('q', e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              className="w-full h-10 px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full h-10 px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--copper)]"
             /></div>             
               {/* Bedrooms Filter */}
               <div>
                 <select
                   value={filters.beds || ''}
                   onChange={(e) => handleInputChange('beds', e.target.value ? parseInt(e.target.value) : undefined)}
-                  className="w-full h-10 px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full h-10 px-3 py-2 text-sm border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--copper)]"
                 >
                   <option value="">Number of Bedrooms</option>
                   {bedOptions.map((beds) => (
@@ -115,12 +115,12 @@ export default function SearchFilters({
                 </select>
               </div>
             <div className="flex gap-6">
-            <Button onClick={handleSearch} disabled={loading} className='bg-[#383E42] text-white rounded-none hover:text-[#B87333]'>
+            <Button onClick={handleSearch} disabled={loading} className='bg-[var(--charcoal)] text-white rounded-none hover:text-[var(--copper)]'>
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
              
-             <Button variant="outline" onClick={handleReset} className='hover:bg-[#9d3434] rounded-none border border-[#383E42] text-[#383E42] hover:text-white'>
+             <Button variant="outline" onClick={handleReset} className='hover:bg-[#9d3434] rounded-none border border-[var(--charcoal)] text-[var(--charcoal)] hover:text-white'>
                <X className="w-4 h-4 mr-2" />
                Reset
              </Button>

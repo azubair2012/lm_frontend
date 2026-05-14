@@ -125,42 +125,30 @@ export default function HomePage() {
                       {prop ? (
                         <TopPropertyCard property={prop} />
                       ) : idx === 0 ? (
-                        <div className="flex h-full w-full flex-col items-center justify-center p-4 sm:p-2">
-                          <div className="relative flex flex-col items-center md:items-end">
-                            <p
-                              className="text-[60px] text-black uppercase md:text-[80px]"
-                              style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}
-                            >
-                              FEATURED
-                            </p>
-                            <p
-                              className="absolute top-12 text-[48px] text-[#B87333] md:top-16 md:text-7xl"
-                              style={{ fontFamily: 'Southland, serif' }}
-                            >
-                              Listings
-                            </p>
-                          </div>
-                          <Link href="/properties" className="w-full sm:w-auto">
-                          <Button
-                              className="mt-8 h-[50px] sm:h-[55px] w-full sm:w-auto rounded-none bg-[#383E42] px-6 text-xs sm:text-sm tracking-tight text-white transition hover:text-[#B87333]"
-                              style={{ fontFamily: 'Roboto, sans-serif' }}
-                            >
-                              VIEW ALL PROPERTIES
-                          </Button>
-                          </Link>
-                        </div>
+                         // Position 0 (top-left): Featured section
+                         <div className="h-full w-full flex flex-col items-center p-2 justify-center">
+                         <div className='flex flex-col items-center md:items-end relative'>
+                        <p className="text-[80px] text-black uppercase" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}>FEATURED</p>
+                        <p className="text-7xl font-medium top-16 text-[#B87333] absolute" style={{ fontFamily: 'Southland, serif' }}>Listings</p>
+                         </div>
+                         <Button 
+                           className="bg-[#383E42] text-sm hover:text-[#B87333] tracking-tight text-white rounded-none h-[55px] w-fit mt-4" style={{ fontFamily: 'Roboto, sans-serif' }}
+                         >
+                           VIEW ALL PROPERTIES
+                         </Button>
+                       </div>
                       ) : idx === 8 ? (
                         <div
                           className="flex h-full w-full flex-col items-center justify-center gap-3 p-4 sm:p-2"
                           style={{ fontFamily: 'Roboto, sans-serif' }}
                         >
-                          <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
+                          <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[var(--charcoal)] text-white transition hover:text-[var(--copper)] md:w-[320px]">
                             SELL YOUR HOMES
                         </Button>
-                          <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
+                          <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[var(--charcoal)] text-white transition hover:text-[var(--copper)] md:w-[320px]">
                             TO LET
                         </Button>
-                          <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[#383E42] text-white transition hover:text-[#B87333] md:w-[320px]">
+                          <Button className="h-[50px] sm:h-[55px] w-full rounded-none bg-[var(--charcoal)] text-white transition hover:text-[var(--copper)] md:w-[320px]">
                             PROPERTY VALUATION
                         </Button>
                         </div>
@@ -187,12 +175,14 @@ export default function HomePage() {
             <span
               className="text-[60px] text-black uppercase md:text-[80px]"
               style={{ fontFamily: 'Barlow Semi Condensed, sans-serif' }}
+              aria-hidden="true"
             >
               CONCIERGE
             </span>
             <span
-              className="absolute top-12 text-[48px] text-[#B87333] md:top-16 md:text-7xl"
+              className="relative -top-3 md:-top-4 md:ml-8 text-[48px] text-[var(--copper)] md:text-7xl"
               style={{ fontFamily: 'Southland, serif' }}
+              aria-hidden="true"
             >
               Service
             </span>
@@ -202,7 +192,7 @@ export default function HomePage() {
               {conciergeDescription}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
-            <Link href="/concierge" className="bg-[#383E42] text-sm hover:text-[#B87333] text-white rounded-none text-center font-semibold h-[50px] w-[250px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>LEARN MORE</Link>
+            <Link href="/concierge" className="bg-[var(--charcoal)] text-sm hover:text-[var(--copper)] text-white rounded-none text-center font-semibold h-[50px] w-[250px]  p-4" style={{ fontFamily: 'Roboto, sans-serif' }}>LEARN MORE</Link>
             </div>
           </div>
           

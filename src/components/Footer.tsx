@@ -39,7 +39,7 @@ const footerAccreditationPdfs = {
 
 export default function Footer() {
   return (
-    <footer className="text-[#383E42] border-t-2 border-[#383E42] ">
+    <footer className="text-[var(--charcoal)] border-t-2 border-[var(--charcoal)]">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 pt-6 pb-8">
         <div className="flex flex-col sm:flex-row justify-between sm:justify-evenly gap-8 sm:gap-10">
           <nav className="flex flex-col gap-3 uppercase tracking-[0.25em]">
@@ -47,7 +47,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 sm:gap-4 text-xs sm:text-[0.7rem] tracking-[0.2em] sm:tracking-[0.2em]">
               {servicesLinks.map(({ label, href }) => (
                 <li key={href}>
-                  <Link href={href} className="transition-colors hover:text-[#B87333]">
+                  <Link href={href} className="transition-colors hover:text-[var(--copper)]">
                     {label}
                   </Link>
                 </li>
@@ -60,7 +60,7 @@ export default function Footer() {
             <ul className="flex flex-col sm:items-center gap-3 sm:gap-4 text-xs sm:text-[0.7rem] tracking-[0.2em]">
               {aboutLinks.map(({ label, href }) => (
                 <li key={href}>
-                  <Link href={href} className="transition-colors hover:text-[#B87333]">
+                  <Link href={href} className="transition-colors hover:text-[var(--copper)]">
                     {label}
                   </Link>
                 </li>
@@ -73,7 +73,7 @@ export default function Footer() {
             <ul className="flex flex-col sm:items-end gap-3 sm:gap-4 text-xs sm:text-[0.7rem] tracking-[0.2em]">
               {resourcesLinks.map(({ label, href }) => (
                 <li key={href}>
-                  <Link href={href} className="transition-colors hover:text-[#B87333]">
+                  <Link href={href} className="transition-colors hover:text-[var(--copper)]">
                     {label}
                   </Link>
                 </li>
@@ -82,25 +82,25 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4 text-[#383E42] border-t border-[#383E42] pt-6 sm:pt-8 text-xs">
+        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4 text-[var(--charcoal)] border-t border-[var(--charcoal)] pt-6 sm:pt-8 text-xs">
           <div className="flex items-center justify-center gap-3 order-2 sm:order-1">
             <a aria-label="Facebook" href="https://www.facebook.com/londonmoveuk" target="_blank" rel="noreferrer" className="group">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
+              <span className="inline-flex h-11 w-11 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--charcoal)] text-[var(--charcoal)] transition group-hover:border-[var(--copper)] group-hover:text-[var(--copper)]">
                 <SiFacebook className="h-4 w-4" />
               </span>
             </a>
             <a aria-label="Instagram" href="https://www.instagram.com/london_move" target="_blank" rel="noreferrer" className="group">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
+              <span className="inline-flex h-11 w-11 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--charcoal)] text-[var(--charcoal)] transition group-hover:border-[var(--copper)] group-hover:text-[var(--copper)]">
                 <SiInstagram className="h-4 w-4" />
               </span>
             </a>
             <a aria-label="X" href="https://x.com/london_move" target="_blank" rel="noreferrer" className="group">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
+              <span className="inline-flex h-11 w-11 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--charcoal)] text-[var(--charcoal)] transition group-hover:border-[var(--copper)] group-hover:text-[var(--copper)]">
                 <SiX className="h-4 w-4" />
               </span>
             </a>
             <a aria-label="YouTube" href="https://www.youtube.com/@londonmove4684" target="_blank" rel="noreferrer" className="group">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#383E42] text-[#383E42] transition group-hover:border-[#B87333] group-hover:text-[#B87333]">
+              <span className="inline-flex h-11 w-11 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-[var(--charcoal)] text-[var(--charcoal)] transition group-hover:border-[var(--copper)] group-hover:text-[var(--copper)]">
                 <SiYoutube className="h-4 w-4" />
               </span>
             </a>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -35,6 +35,9 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+    /* Brand colors - London Move */
+    --copper: #B87333;
+    --charcoal: #383E42;
   }
 
   .dark {
@@ -130,9 +133,14 @@ button {
   transition: all 0.2s ease;
 }
 
-/* Card hover effects */
-.group:hover .group-hover\:scale-105 {
-  transform: scale(1.05);
+/* Card hover effects - desktop only */
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .group-hover\:scale-105 {
+    transform: scale(1.05);
+  }
+  .group:hover .group-hover\:rotate-1 {
+    transform: rotate(1deg);
+  }
 }
 
 /* Leaflet map z-index fix - ensure map container stays below navbar */

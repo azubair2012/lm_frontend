@@ -23,7 +23,7 @@ export default function ContactPage() {
               LONDON MOVE
             </span>
             <span
-              className="absolute top-12 text-[48px] text-[#B87333] md:top-16 md:text-7xl left-[88px] md:left-0"
+              className="relative -top-3 md:-top-4 md:ml-8 text-[48px] text-[var(--copper)] md:text-7xl"
               style={{ fontFamily: 'Southland, serif', fontWeight: 400 }}
             >
               Islington
@@ -31,7 +31,7 @@ export default function ContactPage() {
           </div>
 
           <div
-            className="max-w-3xl mx-4 md:mx-0 space-y-6 text-justify text-sm leading-8 text-[#383E42] sm:text-base"
+            className="max-w-3xl mx-4 md:mx-0 space-y-6 text-justify text-sm leading-8 text-[var(--charcoal)] sm:text-base"
             style={{ fontFamily: 'Public Sans, sans-serif', fontWeight: 200 }}
           >
             <p>

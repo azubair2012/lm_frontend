@@ -28,8 +28,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="flex min-h-screen flex-col bg-background">
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[10000] focus:px-4 focus:py-2 focus:bg-[var(--charcoal)] focus:text-white focus:outline-none focus:ring-2 focus:ring-[var(--copper)]"
+          >
+            Skip to main content
+          </a>
           <NavBar />
-          <main className="flex-1">
+          <main id="main-content" className="flex-1">
           {children}
           </main>
           <Footer />

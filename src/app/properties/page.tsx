@@ -277,6 +277,7 @@ export default function PropertiesPage() {
                           variant={pagination.page === page ? 'default' : 'outline'}
                           size="sm"
                           className="min-w-10"
+                          aria-current={pagination.page === page ? 'page' : undefined}
                         >
                           {page}
                         </Button>

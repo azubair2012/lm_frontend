@@ -34,7 +34,7 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
         <div className="relative md:aspect-[16/10] aspect-[16/12] overflow-hidden rounded-none">
           <Image
             src={images?.main?.large || images?.main?.medium || `${getBaseUrl()}/api/images/${property.photo1}` || '/placeholder-property.jpg'}
-            alt={addressLabel}
+            alt={`Property at ${addressLabel} - featured listing`}
             fill
             unoptimized
             className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
@@ -43,14 +43,14 @@ export default function TopPropertyCard({ property }: TopPropertyCardProps) {
           />
           {shouldShowStatusBadge(STATUS) && (
             <Badge
-              variant="secondary"
-              className="pointer-events-none absolute left-3 top-3 z-10 max-w-[calc(100%-1.5rem)] truncate border-0 bg-[#383E42]/85 px-2.5 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur-sm sm:text-sm"
+              variant="outline"
+              className="pointer-events-none absolute left-3 top-3 z-10 max-w-[calc(100%-1.5rem)] truncate border-0 bg-[color-mix(in_srgb,var(--charcoal)_85%,transparent)] px-2.5 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur-sm sm:text-sm"
             >
               {String(STATUS).trim()}
             </Badge>
           )}
           {/* Property Title */}
-          <div className="space-y-2 absolute z-20 bg-[#383e42b1] backdrop-blur-sm p-2 w-full bottom-14 lg:bottom-8 left-0">
+          <div className="space-y-2 absolute z-20 bg-[color-mix(in_srgb,var(--charcoal)_70%,transparent)] backdrop-blur-sm p-2 w-full bottom-14 lg:bottom-8 left-0">
             <p className="font-medium text-white text-md leading-tight line-clamp-2 group-hover:text-primary transition-colors" style={{ fontFamily: 'Roboto, sans-serif' }}>
               {addressLabel}
             </p>

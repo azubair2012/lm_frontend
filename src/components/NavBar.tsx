@@ -48,8 +48,18 @@ export default function NavBar() {
   const [logoHover, setLogoHover] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [mobileMenuOpen]);
+
   return (
-    <header className="sticky top-0 z-[9999] w-full bg-[rgba(56,62,66,0.95)] backdrop-blur-md py-4">
+    <header className="sticky top-0 z-[9999] w-full bg-[var(--charcoal)] backdrop-blur-md py-4">
       <nav className="mx-auto flex w-full px-4 sm:px-8 md:px-[6rem] items-center justify-between font-semibold uppercase tracking-[0.3em] text-white sm:text-sm">
         <Link
           href="/"
@@ -99,8 +109,9 @@ export default function NavBar() {
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden text-white p-2"
+          className="lg:hidden text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -108,7 +119,7 @@ export default function NavBar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-white/10 bg-[rgba(56,62,66,0.98)]">
+        <div className="lg:hidden border-t border-white/10 bg-[color-mix(in_srgb,var(--charcoal)_98%,transparent)]">
           <div className="flex flex-col px-4 py-4 gap-4">
             {NAV_ITEMS.map((item) => (
               <MobileNavItem key={item.label} item={item} onClose={() => setMobileMenuOpen(false)} />
@@ -151,7 +162,7 @@ function DesktopSubmenuLink({
         <Link
           href={link.href}
           tabIndex={hidden ? -1 : undefined}
-          className="text-[14px] py-4 bg-[rgba(56,62,66,0.95)] tracking-tight text-white transition hover:text-[#B87333] block"
+          className="text-[14px] py-4 bg-[var(--charcoal)] tracking-tight text-white transition hover:text-[var(--copper)] block"
         >
           {link.label}
         </Link>
@@ -171,7 +182,7 @@ function DesktopSubmenuLink({
       onMouseLeave={() => setNested(false)}
     >
       <div
-        className="text-[14px] py-4 bg-[rgba(56,62,66,0.95)] tracking-tight text-white transition hover:text-[#B87333] cursor-default"
+        className="text-[14px] py-4 bg-[var(--charcoal)] tracking-tight text-white transition hover:text-[var(--copper)] cursor-default"
         aria-expanded={nestedOpen}
       >
         {link.label}
@@ -188,7 +199,7 @@ function DesktopSubmenuLink({
           <Link
             key={child.href}
             href={child.href}
-            className="text-[14px] py-4 bg-[rgba(56,62,66,0.95)] tracking-tight text-white transition hover:text-[#B87333]"
+            className="text-[14px] py-4 bg-[var(--charcoal)] tracking-tight text-white transition hover:text-[var(--copper)]"
           >
             {child.label}
           </Link>
@@ -212,7 +223,7 @@ function NavItemLink({ item }: { item: NavItem }) {
     return (
       <Link
         href={item.href}
-        className="transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px]"
+        className="transition-colors tracking-normal hover:text-[var(--copper)] font-['Roboto', sans-serif] font-medium text-[16px]"
       >
         {item.label}
       </Link>
@@ -230,7 +241,7 @@ function NavItemLink({ item }: { item: NavItem }) {
     >
       <button
         type="button"
-        className="transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px]"
+        className="transition-colors tracking-normal hover:text-[var(--copper)] font-['Roboto', sans-serif] font-medium text-[16px]"
       >
         {item.label}
       </button>
@@ -270,7 +281,7 @@ function MobileSubmenuLink({
       <Link
         href={link.href}
         onClick={onClose}
-        className="text-white text-[14px] py-2 transition hover:text-[#B87333]"
+        className="text-white text-[14px] py-2 transition hover:text-[var(--copper)]"
       >
         {link.label}
       </Link>
@@ -282,7 +293,7 @@ function MobileSubmenuLink({
       <button
         type="button"
         onClick={() => setNestedOpen(!nestedOpen)}
-        className="flex items-center justify-between text-white text-[14px] py-2 text-left transition hover:text-[#B87333]"
+        className="flex items-center justify-between text-white text-[14px] py-2 text-left transition hover:text-[var(--copper)]"
       >
         {link.label}
         <span className={`text-white transition-transform ${nestedOpen ? 'rotate-180' : ''}`}>▼</span>
@@ -294,7 +305,7 @@ function MobileSubmenuLink({
               key={child.href}
               href={child.href}
               onClick={onClose}
-              className="text-white text-[13px] py-2 transition hover:text-[#B87333]"
+              className="text-white text-[13px] py-2 transition hover:text-[var(--copper)]"
             >
               {child.label}
             </Link>
@@ -313,7 +324,7 @@ function MobileNavItem({ item, onClose }: { item: NavItem; onClose: () => void }
       <Link
         href={item.href}
         onClick={onClose}
-        className="text-white transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px] py-2"
+        className="text-white transition-colors tracking-normal hover:text-[var(--copper)] font-['Roboto', sans-serif] font-medium text-[16px] py-2"
       >
         {item.label}
       </Link>
@@ -325,7 +336,7 @@ function MobileNavItem({ item, onClose }: { item: NavItem; onClose: () => void }
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between text-white transition-colors tracking-normal hover:text-[#B87333] font-['Roboto', sans-serif] font-medium text-[16px] py-2 text-left"
+        className="flex items-center justify-between text-white transition-colors tracking-normal hover:text-[var(--copper)] font-['Roboto', sans-serif] font-medium text-[16px] py-2 text-left"
       >
         {item.label}
         <span className={`text-white transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>

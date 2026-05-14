@@ -272,7 +272,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
               <>
                 <Image
                   src={currentImage.urls.large || currentImage.urls.medium}
-                  alt={currentImage.caption || 'Property image'}
+                  alt={currentImage.caption || `Property image ${currentImageIndex + 1}`}
                   fill
                   unoptimized
                   className="object-cover"
@@ -284,16 +284,18 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                     <Button
                       variant="outline"
                       size="icon"
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white min-h-[44px] min-w-[44px]"
                       onClick={prevImage}
+                      aria-label="Previous image"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </Button>
                     <Button
                       variant="outline"
                       size="icon"
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white min-h-[44px] min-w-[44px]"
                       onClick={nextImage}
+                      aria-label="Next image"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </Button>
@@ -331,8 +333,9 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
             <Button
               variant="outline"
               size="icon"
-              className="absolute right-4 top-4 bg-white/90 hover:bg-white"
+              className="absolute right-4 top-4 bg-white/90 hover:bg-white min-h-[44px] min-w-[44px]"
               onClick={openModal}
+              aria-label="Open fullscreen gallery"
             >
               <Maximize2 className="w-4 h-4" />
             </Button>
@@ -341,13 +344,13 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
 
           <div className="p-4">
             {showPhotoMain && allImages.length > 1 && (
-              <div className="mb-4 flex gap-2 overflow-x-auto">
+              <div className="mb-4 flex gap-2 overflow-x-auto overscroll-x-contain snap-x snap-mandatory">
                 {allImages.map((image, index) => (
                   <button
                     key={image.id}
                     type="button"
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`relative h-16 w-20 flex-shrink-0 overflow-hidden rounded border-2 transition-colors ${
+                    className={`relative h-16 w-20 flex-shrink-0 overflow-hidden rounded border-2 transition-colors snap-center ${
                       index === currentImageIndex
                         ? 'border-primary'
                         : 'border-transparent hover:border-muted-foreground'
@@ -413,7 +416,7 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
             ) : currentImage ? (
               <Image
                 src={currentImage.urls.original || currentImage.urls.large}
-                alt={currentImage.caption || 'Property image'}
+                alt={currentImage.caption || `Property image ${currentImageIndex + 1}`}
                 width={1200}
                 height={800}
                 unoptimized
@@ -424,8 +427,9 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
             <Button
               variant="outline"
               size="icon"
-              className="absolute right-4 top-4 bg-white/90 hover:bg-white"
+              className="absolute right-4 top-4 bg-white/90 hover:bg-white min-h-[44px] min-w-[44px]"
               onClick={closeModal}
+              aria-label="Close gallery"
             >
               <X className="w-4 h-4" />
             </Button>
@@ -435,16 +439,18 @@ export default function PropertyGallery({ property }: PropertyGalleryProps) {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white min-h-[44px] min-w-[44px]"
                   onClick={prevImage}
+                  aria-label="Previous image"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white min-h-[44px] min-w-[44px]"
                   onClick={nextImage}
+                  aria-label="Next image"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </Button>

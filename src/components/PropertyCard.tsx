@@ -84,11 +84,11 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
   const hasVisibleArea = displayArea !== '';
 
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg">
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={images?.main?.medium || images?.main?.thumb || `${getBaseUrl()}/api/images/${property.photo1}` || '/placeholder-property.jpg'}
-          alt={addressLabel}
+          alt={`Property at ${addressLabel} - ${totalBeds} bed`}
           fill
           unoptimized
           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -96,8 +96,8 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
         />
         {shouldShowStatusBadge(STATUS) && (
           <Badge
-            variant="secondary"
-            className="pointer-events-none absolute left-3 top-3 z-10 max-w-[calc(100%-1.5rem)] truncate border-0 bg-[#383E42]/85 px-2.5 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur-sm sm:text-sm"
+            variant="outline"
+            className="pointer-events-none absolute left-3 top-3 z-10 max-w-[calc(100%-1.5rem)] truncate border-0 bg-[color-mix(in_srgb,var(--charcoal)_85%,transparent)] px-2.5 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur-sm sm:text-sm"
           >
             {String(STATUS).trim()}
           </Badge>
@@ -106,11 +106,11 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
 
       <CardContent className="p-4">
         <div className="space-y-2">
-          <h3 className="font-semibold text-lg leading-tight">
-            {lineOne && <span className="block line-clamp-1">{lineOne}</span>}
-            {lineTwo && <span className="block line-clamp-1">{lineTwo}</span>}
+          <div className="font-semibold text-lg leading-tight">
+            {lineOne && <span className="block line-clamp-2 break-words">{lineOne}</span>}
+            {lineTwo && <span className="block line-clamp-2 break-words text-muted-foreground">{lineTwo}</span>}
             {!lineOne && !lineTwo && <span className="block line-clamp-2">{displayaddress}</span>}
-          </h3>
+          </div>
           
           {strapline && (
             <p className="text-sm text-muted-foreground line-clamp-2">
@@ -143,7 +143,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
           )}
 
           {!showSalePrice && formattedAvailableDate && (
-            <div className="flex items-center gap-1 text-sm text-[#B87333]">
+            <div className="flex items-center gap-1 text-sm text-[var(--copper)]">
               <Calendar className="w-4 h-4" />
               <span>Available {formattedAvailableDate}</span>
             </div>
@@ -161,7 +161,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
       <CardFooter className="p-4 pt-0">
         <div className="flex items-center justify-between w-full">
           <div className="space-y-1">
-            <div className="text-2xl font-bold text-primary">
+            <div className="text-xl sm:text-2xl font-bold text-primary">
               {hasValidSalePrice
                 ? formatPrice(parsedSalePrice)
                 : hasValidRentPrice
@@ -175,7 +175,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
           </div>
           <Link href={showSalePrice ? `/properties/${propref}?sale=1` : `/properties/${propref}`}>
             <Button 
-              className="rounded-none bg-[#383E42] text-white hover:text-[#B87333] hover:bg-black/90"
+              className="rounded-none bg-[var(--charcoal)] text-white hover:text-[var(--copper)] hover:bg-black/90"
             >
               View Details
             </Button>
