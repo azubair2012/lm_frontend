@@ -6,6 +6,8 @@ import { Property, getBaseUrl } from '@/lib/api';
 import { formatPrice, truncateText } from '@/lib/utils';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { shouldShowStatusBadge } from '@/lib/status-badge';
 import { MapPin, Bed, Bath, Car, Calendar } from 'lucide-react';
 
 interface PropertyCardProps {
@@ -33,6 +35,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
     images,
     saleprice,
     rentorbuy,
+    STATUS,
   } = property;
 
   const lineOne = [street, address3].filter(Boolean).join(', ').trim();
@@ -91,6 +94,14 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
           className="object-cover transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
+        {shouldShowStatusBadge(STATUS) && (
+          <Badge
+            variant="secondary"
+            className="pointer-events-none absolute left-3 top-3 z-10 max-w-[calc(100%-1.5rem)] truncate border-0 bg-[#383E42]/85 px-2.5 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur-sm sm:text-sm"
+          >
+            {String(STATUS).trim()}
+          </Badge>
+        )}
       </div>
 
       <CardContent className="p-4">
