@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Property, SearchParams } from '@/lib/api';
-import { rentmanApi } from '@/lib/api';
+import { Property, SearchParams, rentmanApi } from '@/lib/api';
 import PropertyCard from '@/components/PropertyCard';
 import SearchFilters from '@/components/SearchFilters';
 import { Card, CardContent } from '@/components/ui/card';

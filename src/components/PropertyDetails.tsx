@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Property } from '@/lib/api';
-import { formatPrice, formatDate } from '@/lib/utils';
+import { formatPrice } from '@/lib/utils';
 import { formatTaxBand, formatEPC } from '@/lib/formatters';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -95,30 +95,9 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
   const descriptionText = 
     (DESCRIPTION && DESCRIPTION.trim()) || 
     (description && description.trim()) || 
-    (comments && comments.trim()) || 
-    (thoughts && thoughts.trim()) || 
+    (comments && comments.trim()) ||
+    (thoughts && thoughts.trim()) ||
     '';
-
-  // Debug: Log description fields
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Property Description Debug:', {
-      DESCRIPTION,
-      description,
-      comments,
-      thoughts,
-      descriptionText,
-      hasDESCRIPTION: !!(DESCRIPTION && DESCRIPTION.trim()),
-      hasDescription: !!(description && description.trim()),
-      hasComments: !!(comments && comments.trim()),
-      hasThoughts: !!(thoughts && thoughts.trim()),
-      hasDescriptionText: !!descriptionText,
-      propertyKeys: Object.keys(property).filter(k => 
-        k.toLowerCase().includes('desc') || 
-        k.toLowerCase().includes('comment') || 
-        k.toLowerCase().includes('thought')
-      )
-    });
-  }
 
   const features = [
     { icon: Bed, label: 'Bedrooms', value: `${totalBeds} bed${totalBeds !== 1 ? 's' : ''}` },

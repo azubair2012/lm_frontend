@@ -5,13 +5,19 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatPrice(price: number): string {
+export function formatPrice(price: string | number): string {
+  const numPrice = typeof price === 'string' ? parseFloat(price) : price;
+
+  if (isNaN(numPrice)) {
+    return 'Price on request';
+  }
+
   return new Intl.NumberFormat('en-GB', {
     style: 'currency',
     currency: 'GBP',
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(price);
+    maximumFractionDigits: 0
+  }).format(numPrice);
 }
 
 export function formatDate(dateString: string): string {
