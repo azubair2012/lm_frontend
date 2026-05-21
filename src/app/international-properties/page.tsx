@@ -55,7 +55,7 @@ export default function InternationalPropertiesPage() {
             <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold uppercase text-[#383E42]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif', fontWeight: 600 }}>
             In partnership with
             </p>
-              <img src="/emblogo.png" alt="Embayt" className="w-[70px] sm:w-[90px] mx-auto" />
+              <img src="/emblogo.png" alt="Embayt" className="w-[55px] sm:w-[75px] mx-auto" />
           </div>
           
         </div>

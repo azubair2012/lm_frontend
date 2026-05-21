@@ -36,6 +36,7 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
     saleprice,
     rentorbuy,
     STATUS,
+    TYPE,
   } = property;
 
   const lineOne = [street, address3].filter(Boolean).join(', ').trim();
@@ -84,24 +85,33 @@ export default function PropertyCard({ property, showSalePrice = false }: Proper
   const hasVisibleArea = displayArea !== '';
 
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg">
+    <Card className={`group overflow-hidden transition-all duration-300 hover:shadow-lg${TYPE === 'New Development' ? ' border-2 border-[#B87333]' : ''}`}>
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={images?.main?.medium || images?.main?.thumb || `${getBaseUrl()}/api/images/${property.photo1}` || '/placeholder-property.jpg'}
           alt={`Property at ${addressLabel} - ${totalBeds} bed`}
           fill
           unoptimized
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-1000 group-hover:scale-150"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {shouldShowStatusBadge(STATUS) && (
-          <Badge
-            variant="outline"
-            className="pointer-events-none absolute left-3 top-3 z-10 max-w-[calc(100%-1.5rem)] truncate border-0 bg-[color-mix(in_srgb,var(--charcoal)_85%,transparent)] px-2.5 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur-sm sm:text-sm"
-          >
-            {String(STATUS).trim()}
-          </Badge>
-        )}
+        <div className="flex flex-row justify-between">
+          {shouldShowStatusBadge(STATUS) && (
+            <Badge
+              variant="outline"
+              className="pointer-events-none absolute left-3 top-3 z-10 max-w-content truncate border-0 bg-[color-mix(in_srgb,var(--charcoal)_85%,transparent)] px-2.5 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur-sm sm:text-sm"
+            >
+              {String(STATUS).trim()}
+            </Badge>
+          )}
+          {TYPE === 'New Development' && (
+            <Badge className="pointer-events-none bg-[#B87333] text-white absolute right-[-3rem] top-8 z-10 rotate-45 w-[12rem] justify-center items-center text-[15px] drop-shadow-lg"
+            style={{ fontFamily: 'Roboto, serif'}}>
+              New Development
+            </Badge>
+          )}
+        </div>
+        
       </div>
 
       <CardContent className="p-4">

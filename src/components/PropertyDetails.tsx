@@ -13,8 +13,7 @@ import {
   Bed,
   Bath,
   Sofa,
-  Star,
-  Calendar,
+    Calendar,
   Home,
   Ruler,
   FileText,
@@ -39,7 +38,6 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     address3,
     address4,
     TYPE,
-    type,
     beds,
     singles,
     doubles,
@@ -103,7 +101,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     { icon: Bed, label: 'Bedrooms', value: `${totalBeds} bed${totalBeds !== 1 ? 's' : ''}` },
     { icon: Bath, label: 'Bathrooms', value: `${bathsNum} bath${bathsNum !== 1 ? 's' : ''}` },
     { icon: Sofa, label: 'Receptions', value: `${recepsNum} reception${recepsNum !== 1 ? 's' : ''}` },
-    { icon: Home, label: 'Property Type', value: type || TYPE || 'Not specified' },
+    { icon: Home, label: 'Property Type', value: TYPE || 'Not specified' },
     { icon: Zap, label: 'EPC Rating', value: epcValue },
     { icon: FileText, label: 'Council Tax', value: taxband ? formatTaxBand(taxband) : 'Not specified' },
     ...(age ? [{ icon: Ruler, label: 'Age', value: age }] : []),
@@ -143,7 +141,7 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
         )}
 
         <div className="flex flex-wrap gap-2">
-          {type && <Badge variant="secondary">{type}</Badge>}
+          {TYPE && <Badge variant="secondary">{TYPE}</Badge>}
           {status && <Badge variant="outline">{status}</Badge>}
         </div>
       </div>

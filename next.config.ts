@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 // Extract hostname from API URL for image configuration
 const getImageHostname = () => {
@@ -14,6 +15,8 @@ const getImageHostname = () => {
 const imageHostname = getImageHostname();
 
 const nextConfig: NextConfig = {
+  // Parent LM/ has its own package-lock.json; without this, Next infers the wrong root.
+  outputFileTracingRoot: path.join(__dirname),
   images: {
     remotePatterns: [
       {
