@@ -1,8 +1,10 @@
 /**
  * Property listing STATUS badge (Rentman `STATUS` field).
- * Option A: show whenever trimmed value is non-empty. If Available/Unavailable feel noisy,
- * consider hiding only `Unavailable` — see docs/plan-property-status-badge.md.
+ * Only show badge for special statuses. Hide "To Let" / "Available" as those are default.
  */
+const HIDDEN_STATUSES = ['available', 'to let', ''];
+
 export function shouldShowStatusBadge(status: string | undefined | null): boolean {
-  return String(status ?? '').trim().length > 0;
+  const normalized = String(status ?? '').trim().toLowerCase();
+  return normalized.length > 0 && !HIDDEN_STATUSES.includes(normalized);
 }
