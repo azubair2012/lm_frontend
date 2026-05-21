@@ -13,9 +13,8 @@ import {
   Bed,
   Bath,
   Sofa,
-    Calendar,
+  Calendar,
   Home,
-  Ruler,
   FileText,
   Zap,
 } from 'lucide-react';
@@ -48,7 +47,6 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     available,
     status,
     rating,
-    age,
     taxband,
     epcrating,
     DESCRIPTION,
@@ -104,7 +102,6 @@ export default function PropertyDetails({ property, showSalePrice = false }: Pro
     { icon: Home, label: 'Property Type', value: TYPE || 'Not specified' },
     { icon: Zap, label: 'EPC Rating', value: epcValue },
     { icon: FileText, label: 'Council Tax', value: taxband ? formatTaxBand(taxband) : 'Not specified' },
-    ...(age ? [{ icon: Ruler, label: 'Age', value: age }] : []),
   ];
 
 
