@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 interface HeaderConfig {
   firstLine: string;
   secondLine: string;
@@ -7,12 +9,50 @@ interface HeaderConfig {
 
 interface HomeContactPreviewProps {
   header?: HeaderConfig | null;
+  formType?: 'valuation' | 'general'; // default: 'general'
 }
 
-export default function HomeContactPreview({ header }: HomeContactPreviewProps = {}) {
+export default function HomeContactPreview({ header, formType = 'general' }: HomeContactPreviewProps = {}) {
   // Default header if not provided
   const defaultHeader: HeaderConfig = { firstLine: 'Contact', secondLine: 'Us' };
   const displayHeader = header !== null ? (header || defaultHeader) : null;
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const defaultSubject = formType === 'valuation' ? 'Valuation Request' : 'General Enquiry';
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    const form = e.currentTarget;
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const subject = (form.elements.namedItem('subject') as HTMLInputElement).value;
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message, formType }),
+      });
+
+      if (res.ok) {
+        setSuccess(true);
+      } else {
+        const data = await res.json();
+        setError(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setError('Network error. Please check your connection and try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <section className="py-12 md:py-24 px-4">
@@ -64,7 +104,7 @@ export default function HomeContactPreview({ header }: HomeContactPreviewProps =
             </div>
           </div>
 
-          <form className="order-1 lg:order-2 space-y-4 sm:space-y-6 text-sm text-[#111518] w-full lg:w-auto lg:min-w-[400px]">
+          <form onSubmit={handleSubmit} className="order-1 lg:order-2 space-y-4 sm:space-y-6 text-sm text-[#111518] w-full lg:w-auto lg:min-w-[400px]">
             <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 text-start">
               <label className="flex flex-col gap-2 text-[#8c8c8c]">
                 <span className="text-sm">Name</span>
@@ -91,6 +131,7 @@ export default function HomeContactPreview({ header }: HomeContactPreviewProps =
               <input
                 type="text"
                 name="subject"
+                defaultValue={defaultSubject}
                 className="rounded-md border border-[#cfd4db] bg-[#f6f4f2] px-4 py-3 text-sm text-[#383E42] outline-none transition focus:border-[#B87333]"
                 placeholder="Subject"
               />
@@ -105,15 +146,25 @@ export default function HomeContactPreview({ header }: HomeContactPreviewProps =
                 placeholder="Your message..."
               />
             </label></div>
-            
 
             <button
               type="submit"
-              className="w-full rounded-none bg-[#383E42] py-3 sm:py-4 text-xs sm:text-sm uppercase tracking-[0.3em] sm:tracking-[0.45em] text-white hover:text-[#B87333] transition hover:bg-[#2c3134]"
+              disabled={isLoading}
+              className="w-full rounded-none bg-[#383E42] py-3 sm:py-4 text-xs sm:text-sm uppercase tracking-[0.3em] sm:tracking-[0.45em] text-white hover:text-[#B87333] transition hover:bg-[#2c3134] disabled:opacity-50"
             >
-              Submit
+              {isLoading ? 'Sending...' : 'Submit'}
             </button>
           </form>
+
+          {success && (
+            <div className="order-1 lg:order-2 w-full lg:min-w-[400px] py-12 text-center">
+              <p className="text-lg text-[#383E42]">Thank you! We'll be in touch soon.</p>
+            </div>
+          )}
+
+          {error && (
+            <p className="text-red-600 text-sm mt-2">{error}</p>
+          )}
         </div>
       </div>
     </section>
