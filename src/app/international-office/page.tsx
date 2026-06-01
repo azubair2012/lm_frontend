@@ -17,7 +17,7 @@ export default function InternationalOfficePage() {
     const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, subject, message, formType: 'general' }),
