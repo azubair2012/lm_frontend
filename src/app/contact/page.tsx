@@ -51,7 +51,7 @@ export default function ContactPage() {
 
         {/* Contact Form */}
         <div className="mt-4 md:mt-4">
-        <HomeContactPreview />
+        <HomeContactPreview formType="general" />
         </div>
       </section>
     </main>

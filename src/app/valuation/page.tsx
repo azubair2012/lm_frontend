@@ -10,7 +10,7 @@ export default function ValuationPage() {
 
         
         <div className="mt-8 md:mt-4">
-        <HomeContactPreview header={{firstLine:"VALUATION", secondLine:"Do it with us"}} />
+        <HomeContactPreview header={{firstLine:"VALUATION", secondLine:"Do it with us"}} formType="valuation" />
         </div>
       </section>
     </main>

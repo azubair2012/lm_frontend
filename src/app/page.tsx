@@ -211,7 +211,7 @@ export default function HomePage() {
           {/* About Us */}
       <HomeAboutPreview />
           {/* Contact Us */}
-      <HomeContactPreview />
+      <HomeContactPreview formType="general" />
 
     </main>
   );

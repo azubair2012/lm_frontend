@@ -28,7 +28,7 @@ export default function LondonOfficePage() {
             </header>
             <span className="text-3xl md:mt-12 mt-4 text-[#383E42] justify-center flex" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>Get in touch:</span>
           </div>
-            <HomeContactPreview header={null}/>
+            <HomeContactPreview header={null} formType="general" />
             
       </div>
     </main>
