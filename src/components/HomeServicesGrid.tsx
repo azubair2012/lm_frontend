@@ -25,7 +25,7 @@ const SERVICES = [
     image: '/s1.webp',
   },
   {
-    label: 'Home Valuation',
+    label: 'Property Valuation',
     href: '/valuation',
     image: '/s1.webp',
   },
