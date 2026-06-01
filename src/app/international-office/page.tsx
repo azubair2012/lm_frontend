@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import InterImageSlider from "@/components/InterImageSlider";
 export default function InternationalOfficePage() {
