@@ -1,5 +1,40 @@
+import { useState } from 'react';
 import InterImageSlider from "@/components/InterImageSlider";
 export default function InternationalOfficePage() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    const form = e.currentTarget;
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const subject = (form.elements.namedItem('subject') as HTMLInputElement).value;
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value;
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message, formType: 'general' }),
+      });
+
+      if (res.ok) {
+        setSuccess(true);
+      } else {
+        const data = await res.json();
+        setError(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setError('Network error. Please check your connection and try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
   return (
     <main className="relative min-h-screen overflow-hidden bg-background">
       <InterImageSlider />
@@ -54,7 +89,7 @@ export default function InternationalOfficePage() {
           </div>
 
           {/* Form column */}
-          <form className="order-1 md:order-2 space-y-4 sm:space-y-6 w-full md:w-auto md:min-w-[400px]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>
+          <form onSubmit={handleSubmit} className="order-1 md:order-2 space-y-4 sm:space-y-6 w-full md:w-auto md:min-w-[400px]" style={{ fontFamily: 'Barlow Semi Condensed, sans-serif'}}>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <label className="flex flex-col gap-2 text-sm text-[#111518]">
                 <span>Name</span>
@@ -98,11 +133,22 @@ export default function InternationalOfficePage() {
 
             <button
               type="submit"
-              className="w-full rounded-none bg-[#383E42] py-3 sm:py-4 text-xs sm:text-sm uppercase tracking-[0.3em] sm:tracking-[0.45em] text-white transition hover:text-[#B87333]"
+              disabled={isLoading}
+              className="w-full rounded-none bg-[#383E42] py-3 sm:py-4 text-xs sm:text-sm uppercase tracking-[0.3em] sm:tracking-[0.45em] text-white transition hover:text-[#B87333] disabled:opacity-50"
             >
-              Submit
+              {isLoading ? 'Sending...' : 'Submit'}
             </button>
           </form>
+
+          {success && (
+            <div className="w-full py-12 text-center">
+              <p className="text-lg text-[#383E42]">Thank you! We'll be in touch soon.</p>
+            </div>
+          )}
+
+          {error && (
+            <p className="text-red-600 text-sm mt-4">{error}</p>
+          )}
         </div>
 </div>
     </main>
