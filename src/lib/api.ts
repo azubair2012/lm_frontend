@@ -163,6 +163,8 @@ export interface SearchParams {
   featured?: boolean;
   page?: number;
   limit?: number;
+  sortBy?: 'price';
+  sortOrder?: 'asc' | 'desc';
 }
 
 export interface SearchResponse {

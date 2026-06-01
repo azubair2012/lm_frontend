@@ -26,6 +26,8 @@ export default function SalePage() {
     maxPrice: undefined,
     minSalePrice: 1000,
     featured: false,
+    sortBy: 'price',
+    sortOrder: 'desc' as const,
   });
   const [pagination, setPagination] = useState({
     page: 1,
@@ -48,7 +50,7 @@ export default function SalePage() {
   const loadInitialData = async () => {
     try {
       setLoading(true);
-      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 12, minSalePrice: 1000 });
+      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 12, minSalePrice: 1000, type: 'sale', sortBy: 'price', sortOrder: 'desc' });
 
       setProperties(searchResponse.properties);
 

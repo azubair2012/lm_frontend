@@ -24,6 +24,8 @@ export default function PropertiesPage() {
     minPrice: undefined,
     maxPrice: undefined,
     featured: false,
+    sortBy: 'price',
+    sortOrder: 'desc' as const,
   });
   const [pagination, setPagination] = useState({
     page: 1,
@@ -46,7 +48,7 @@ export default function PropertiesPage() {
   const loadInitialData = async () => {
     try {
       setLoading(true);
-      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 12, type: 'rent' });
+      const searchResponse = await rentmanApi.searchProperties({ page: 1, limit: 12, type: 'rent', sortBy: 'price', sortOrder: 'desc' });
 
       if (!searchResponse || !searchResponse.properties) {
         console.error('Error loading initial data: unexpected response shape', searchResponse);
