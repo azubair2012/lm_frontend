@@ -83,8 +83,9 @@ export default function SalePage() {
       setSearchLoading(true);
       setPageCache(new Map());
 
-      const searchParamsWithLimit = { ...params, page: 1, limit: 12, minSalePrice: 1000 };
-      setSearchParams(searchParamsWithLimit);
+      // Always preserve sort order from state, not from SearchFilters (which doesn't pass sort params)
+      const searchParamsWithLimit = { ...params, page: 1, limit: 12, minSalePrice: 1000, sortBy: 'price', sortOrder: 'desc' as const };
+      setSearchParams(prev => ({ ...prev, ...searchParamsWithLimit }));
 
       const response = await rentmanApi.searchProperties(searchParamsWithLimit);
 
@@ -140,6 +141,8 @@ export default function SalePage() {
         minSalePrice: 1000,
         page: pageNumber,
         limit: 12,
+        sortBy: 'price',
+        sortOrder: 'desc' as const,
       });
 
       setPageCache((prev) => new Map(prev).set(cacheKey, response.properties));
